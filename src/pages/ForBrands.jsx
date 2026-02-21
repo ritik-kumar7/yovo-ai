@@ -132,7 +132,7 @@ export default function ForBrands() {
                         >
                             Turn your audience into
                             <br />
-                            <span className="gradient-text">your marketing engine.</span>
+                            <span >your marketing engine.</span>
                         </motion.h1>
                         <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
                             className="fb-hero-desc"

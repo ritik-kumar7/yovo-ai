@@ -16,6 +16,7 @@ import Contact from './pages/Contact'
 
 function SmoothScroll({ children }) {
   const location = useLocation()
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -26,16 +27,30 @@ function SmoothScroll({ children }) {
       smoothTouch: false,
       touchMultiplier: 2,
     })
+
     function raf(time) {
       lenis.raf(time)
       requestAnimationFrame(raf)
     }
-    requestAnimationFrame(raf)
-    return () => lenis.destroy()
+    const rafId = requestAnimationFrame(raf)
+
+    // Add lenis to window object so other effects can access it
+    window.lenis = lenis;
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy()
+      delete window.lenis;
+    }
   }, [])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    // If lenis is initialized, use it to scroll to top immediately, otherwise fallback to window
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, [location.pathname])
 
   return children

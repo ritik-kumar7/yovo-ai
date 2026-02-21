@@ -18,6 +18,7 @@ export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false)
     const location = useLocation()
     const ctaRef = useRef(null)
+    const isHomePage = location.pathname === '/'
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20)
@@ -49,7 +50,7 @@ export default function Navbar() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className={`navbar ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'}`}
+                className={`navbar ${scrolled || !isHomePage ? 'navbar-scrolled' : 'navbar-transparent'}`}
             >
                 <div className="navbar-container">
 

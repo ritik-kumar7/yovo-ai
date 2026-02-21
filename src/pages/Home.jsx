@@ -18,8 +18,8 @@ gsap.registerPlugin(ScrollTrigger)
 /* ─── Data ─── */
 const stats = [
     { number: '12M+', label: 'Organic Impressions', icon: <Eye size={22} />, color: '#f94b6eff' },
-    { number: '150+', label: 'Brand Campaigns', icon: <Megaphone size={22} />, color: '#e01111ff' },
-    { number: '10K+', label: 'Active Creators', icon: <UserPlus size={22} />, color: '#ff8902ff' },
+    { number: '150+', label: 'Brand Campaigns', icon: <Megaphone size={22} />, color: '#ff8400ff' },
+    { number: '10K+', label: 'Active Creators', icon: <UserPlus size={22} />, color: '#ffd902ff' },
 ]
 
 const features = [

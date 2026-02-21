@@ -9,6 +9,9 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './Home.css'
+import bgVideo from '../assets/video/bg_videoYovo.mp4'
+import futurasticAi from '../assets/images/futurasticAi.jpg'
+import techStyleDash from '../assets/images/techStyleDash.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -215,7 +218,7 @@ export default function Home() {
                 {/* BG Video (subtle, not dominant) */}
                 <div className="home-hero-bg">
                     <video autoPlay muted loop playsInline className="home-hero-video">
-                        <source src="/src/assets/video/bg_videoYovo.mp4" type="video/mp4" />
+                        <source src={bgVideo} type="video/mp4" />
                     </video>
                 </div>
 
@@ -515,7 +518,7 @@ export default function Home() {
                     <div className="home-split-grid">
                         <SectionReveal variant="fadeLeft" duration={1.1}>
                             <div className="home-image-wrapper">
-                                <img src="/src/assets/images/futurasticAi.jpg" alt="AI-Powered Future" className="home-image" />
+                                <img src={futurasticAi} alt="AI-Powered Future" className="home-image" />
                                 <div className="home-image-shadow" />
                             </div>
                         </SectionReveal>
@@ -609,7 +612,7 @@ export default function Home() {
                         </SectionReveal>
                         <SectionReveal delay={0.2} variant="fadeRight" duration={1.2}>
                             <div className="home-image-wrapper">
-                                <img src="/src/assets/images/techStyleDash.jpg" alt="AI Dashboard" className="home-image" />
+                                <img src={techStyleDash} alt="AI Dashboard" className="home-image" />
                                 <div className="home-image-shadow-alt" />
                             </div>
                         </SectionReveal>

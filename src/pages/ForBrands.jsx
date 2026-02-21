@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './ForBrands.css'
+import workplace from '../assets/images/workplace.jpg'
+import visualDashbord from '../assets/images/visualDashbord.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -115,7 +117,7 @@ export default function ForBrands() {
             {/* ════════════ HERO ════════════ */}
             <section className="fb-hero">
                 <div className="fb-hero-bg">
-                    <img src="/src/assets/images/workplace.jpg" alt="" className="fb-hero-bg-img" />
+                    <img src={workplace} alt="" className="fb-hero-bg-img" />
                     <div className="fb-hero-overlay"></div>
                 </div>
                 <div className="fb-hero-glow" />
@@ -232,7 +234,7 @@ export default function ForBrands() {
                             </div>
                         </SectionReveal>
                         <SectionReveal delay={0.2} variant="scaleUp" duration={1.2}>
-                            <img src="/src/assets/images/visualDashbord.jpg" alt="Brand Dashboard" className="fb-dashboard-img" />
+                            <img src={visualDashbord} alt="Brand Dashboard" className="fb-dashboard-img" />
                         </SectionReveal>
                     </div>
                 </div>

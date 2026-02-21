@@ -11,6 +11,8 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './ForCreators.css'
+import forCreateBg from '../assets/images/forCreate_bg.jpg'
+import usingTech from '../assets/images/usingTech.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -111,7 +113,7 @@ export default function ForCreators() {
             {/* ════════════ HERO ════════════ */}
             <section className="fc-hero">
                 <div className="fc-hero-bg">
-                    <img src="/src/assets/images/forCreate_bg.jpg" alt="" className="fc-hero-bg-img" />
+                    <img src={forCreateBg} alt="" className="fc-hero-bg-img" />
                     <div className="fc-hero-overlay"></div>
                 </div>
                 <div className="fc-hero-glow" />
@@ -253,7 +255,7 @@ export default function ForCreators() {
                         </SectionReveal>
                         <SectionReveal delay={0.2} variant="fadeRight" duration={1.1}>
                             <div className="fc-community-img-wrap">
-                                <img src="/src/assets/images/usingTech.jpg" alt="Creator Using Technology" className="fc-community-img" />
+                                <img src={usingTech} alt="Creator Using Technology" className="fc-community-img" />
                                 <div className="fc-community-img-glow" />
                             </div>
                         </SectionReveal>

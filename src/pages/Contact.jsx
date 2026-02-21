@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './Contact.css'
+import handleOnline from '../assets/images/handleOnline.jpg'
 
 const contactInfo = [
     { icon: <MapPin size={22} />, label: 'Visit Us', value: 'S-04, D-53, Sector 2, Noida, UP, India', href: null },
@@ -43,7 +44,7 @@ export default function Contact() {
             {/* ════════════ HERO ════════════ */}
             <section className="ct-hero">
                 <div className="ct-hero-bg">
-                    <img src="/src/assets/images/handleOnline.jpg" alt="" className="ct-hero-bg-img" />
+                    <img src={handleOnline} alt="" className="ct-hero-bg-img" />
                     <div className="ct-hero-overlay"></div>
                 </div>
                 <div className="ct-hero-glow ct-hero-glow-1" />

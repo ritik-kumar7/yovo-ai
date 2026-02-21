@@ -11,6 +11,9 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './About.css'
+import aboutBg from '../assets/images/fpkdl.com_960_1771655178_coworking-space-office-sharing-desk-corporate-workplace-diversity-efficiency-modern-work_926199-2735151.jpg'
+import contentReading from '../assets/images/contentReading.jpg'
+import stillLife from '../assets/images/stillLife.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -100,7 +103,7 @@ export default function About() {
             {/* ════════════ HERO ════════════ */}
             <section className="about-hero">
                 <div className="about-hero-bg">
-                    <img src="/src/assets/images/fpkdl.com_960_1771655178_coworking-space-office-sharing-desk-corporate-workplace-diversity-efficiency-modern-work_926199-2735151.jpg" alt="Background" className="about-hero-bg-img" />
+                    <img src={aboutBg} alt="Background" className="about-hero-bg-img" />
                     <div className="about-hero-overlay"></div>
                 </div>
 
@@ -175,7 +178,7 @@ export default function About() {
                 <div className="container-lg">
                     <div className="about-founder-grid">
                         <SectionReveal variant="scaleUp" duration={1.2}>
-                            <img src="/src/assets/images/contentReading.jpg" alt="Content Strategy" className="about-founder-img" />
+                            <img src={contentReading} alt="Content Strategy" className="about-founder-img" />
                         </SectionReveal>
                         <SectionReveal delay={0.2} variant="slideRotate" duration={1.1}>
                             <span className="section-label"><Lightbulb size={14} /> Founder's Perspective</span>
@@ -306,7 +309,7 @@ export default function About() {
                             </div>
                         </SectionReveal>
                         <SectionReveal delay={0.2} variant="fadeRight" duration={1.2}>
-                            <img src="/src/assets/images/stillLife.png" alt="Future Innovation" className="about-founder-img" />
+                            <img src={stillLife} alt="Future Innovation" className="about-founder-img" />
                         </SectionReveal>
                     </div>
                 </div>

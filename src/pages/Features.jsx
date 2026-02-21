@@ -11,6 +11,10 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './Features.css'
+import visualDashbord from '../assets/images/visualDashbord.jpg'
+import usingTech from '../assets/images/usingTech.jpg'
+import techStyleDash from '../assets/images/techStyleDash.jpg'
+import teachingTech from '../assets/images/teachingTech.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -58,9 +62,9 @@ function AuroraCard({ children, accent = '#f97316', index = 0, className = '' })
 }
 
 const coreFeatures = [
-    { icon: <Video size={28} />, title: 'AI Video Engine', desc: 'Transform raw footage into polished, brand-aligned content. Our AI understands composition, pacing, and storytelling to create scroll-stopping videos.', capabilities: ['Auto-editing & transitions', 'Brand overlay injection', 'Multi-format export', 'Trend-aware styling'], gradient: 'from-amber-400 to-orange-500', img: '/src/assets/images/visualDashbord.jpg' },
-    { icon: <AudioWaveform size={28} />, title: 'Voice Intelligence', desc: 'Advanced voice analysis that identifies authentic creator voices and amplifies their impact across audiences.', capabilities: ['Voice tone analysis', 'Audience resonance scoring', 'Multi-language support', 'Sentiment detection'], gradient: 'from-orange-400 to-red-500', img: '/src/assets/images/usingTech.jpg' },
-    { icon: <BrainCircuit size={28} />, title: 'AI Processing Engine', desc: 'The neural backbone of YovoAI. Our proprietary models process, optimize, and enhance content in real-time.', capabilities: ['Deep learning models', 'Real-time processing', 'Content quality scoring', 'Trend prediction'], gradient: 'from-yellow-400 to-amber-500', img: '/src/assets/images/techStyleDash.jpg' },
+    { icon: <Video size={28} />, title: 'AI Video Engine', desc: 'Transform raw footage into polished, brand-aligned content. Our AI understands composition, pacing, and storytelling to create scroll-stopping videos.', capabilities: ['Auto-editing & transitions', 'Brand overlay injection', 'Multi-format export', 'Trend-aware styling'], gradient: 'from-amber-400 to-orange-500', img: visualDashbord },
+    { icon: <AudioWaveform size={28} />, title: 'Voice Intelligence', desc: 'Advanced voice analysis that identifies authentic creator voices and amplifies their impact across audiences.', capabilities: ['Voice tone analysis', 'Audience resonance scoring', 'Multi-language support', 'Sentiment detection'], gradient: 'from-orange-400 to-red-500', img: usingTech },
+    { icon: <BrainCircuit size={28} />, title: 'AI Processing Engine', desc: 'The neural backbone of YovoAI. Our proprietary models process, optimize, and enhance content in real-time.', capabilities: ['Deep learning models', 'Real-time processing', 'Content quality scoring', 'Trend prediction'], gradient: 'from-yellow-400 to-amber-500', img: techStyleDash },
 ]
 
 const comparisonData = [
@@ -102,7 +106,7 @@ export default function Features() {
             <section className="features-hero">
                 {/* Background Image + Overlay */}
                 <div className="features-hero-bg">
-                    <img src="/src/assets/images/teachingTech.jpg" alt="" className="fh-bg-img" />
+                    <img src={teachingTech} alt="" className="fh-bg-img" />
                     <div className="fh-overlay"></div>
                 </div>
 

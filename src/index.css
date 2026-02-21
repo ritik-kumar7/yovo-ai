@@ -70,6 +70,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -78,7 +80,10 @@ body {
   color: var(--c-text);
   background: var(--c-bg);
   overflow-x: hidden;
+  max-width: 100%;
   line-height: 1.65;
+  margin: 0;
+  padding: 0;
 }
 
 h1,

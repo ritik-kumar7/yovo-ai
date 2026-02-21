@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-    ArrowRight, Play, TrendingUp, Users, Target, Star,
-    BarChart3, Video, Mic, Globe, Shield, Sparkles, ChevronRight, ChevronDown, Zap, Clock
+    ArrowRight, Play, LineChart, Eye, Megaphone, UserPlus, Star,
+    BarChart4, Video, AudioWaveform, Share2, ShieldCheck, Focus, ChevronRight, ChevronDown, Rocket, Timer, PlayCircle, Volume2, Zap, Sparkles
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './Home.css'
@@ -14,21 +14,21 @@ gsap.registerPlugin(ScrollTrigger)
 
 /* ─── Data ─── */
 const stats = [
-    { number: '12M+', label: 'Organic Impressions', icon: <TrendingUp size={20} /> },
-    { number: '150+', label: 'Brand Campaigns', icon: <Target size={20} /> },
-    { number: '10K+', label: 'Active Creators', icon: <Users size={20} /> },
+    { number: '12M+', label: 'Organic Impressions', icon: <Eye size={22} />, color: '#f94b6eff' },
+    { number: '150+', label: 'Brand Campaigns', icon: <Megaphone size={22} />, color: '#e01111ff' },
+    { number: '10K+', label: 'Active Creators', icon: <UserPlus size={22} />, color: '#ff8902ff' },
 ]
 
 const features = [
-    { icon: <Zap size={24} />, title: '100x Organic Reach', desc: 'AI-optimized UGC strategies that outperform traditional ads by putting real voices at the center.' },
-    { icon: <Clock size={24} />, title: '80% Faster Content', desc: 'Generate, refine, and publish studio-quality content in minutes — not weeks.' },
-    { icon: <TrendingUp size={24} />, title: '60% Better Engagement', desc: 'Authentic UGC + AI-optimized formats that audiences actually trust and share.' },
+    { icon: <Rocket size={26} />, title: '100x Organic Reach', desc: 'AI-optimized UGC strategies that outperform traditional ads by putting real voices at the center.', color: '#f73ce1ff' },
+    { icon: <Timer size={26} />, title: '80% Faster Content', desc: 'Generate, refine, and publish studio-quality content in minutes — not weeks.', color: '#ff671cff' },
+    { icon: <LineChart size={26} />, title: '60% Better Engagement', desc: 'Authentic UGC + AI-optimized formats that audiences actually trust and share.', color: '#ff0000ff' },
 ]
 
 const howItWorks = [
-    { step: '01', title: 'Activate', desc: 'Empower your users to create & share authentic content that represents your brand.', icon: <Users size={20} /> },
-    { step: '02', title: 'Amplify', desc: 'Refine, remix, and retarget content using advanced AI for maximum viral impact.', icon: <Sparkles size={20} /> },
-    { step: '03', title: 'Accelerate', desc: 'Achieve exponential reach, brand recall, and measurable ROI — at scale.', icon: <TrendingUp size={20} /> },
+    { step: '01', title: 'Activate', desc: 'Empower your users to create & share authentic content that represents your brand.', icon: <PlayCircle size={20} /> },
+    { step: '02', title: 'Amplify', desc: 'Refine, remix, and retarget content using advanced AI for maximum viral impact.', icon: <Volume2 size={20} /> },
+    { step: '03', title: 'Accelerate', desc: 'Achieve exponential reach, brand recall, and measurable ROI — at scale.', icon: <Zap size={20} /> },
 ]
 
 const testimonials = [
@@ -38,13 +38,150 @@ const testimonials = [
 ]
 
 const productShowcase = [
-    { icon: <Video size={20} />, title: 'AI Video Engine', desc: 'Transform raw footage into brand-aligned content automatically.' },
-    { icon: <Mic size={20} />, title: 'Voice Intelligence', desc: 'Analyze and amplify authentic creator voices that resonate.' },
-    { icon: <BarChart3 size={20} />, title: 'Smart Analytics', desc: 'Real-time performance tracking with AI-driven insights.' },
-    { icon: <Globe size={20} />, title: 'Distribution Engine', desc: 'Publish optimized content across all platforms simultaneously.' },
-    { icon: <Shield size={20} />, title: 'Brand Safety', desc: 'AI moderation ensures brand alignment at every touchpoint.' },
-    { icon: <Target size={20} />, title: 'Precision Matching', desc: 'Match with ideal creators and audiences intelligently.' },
+    { icon: <Video size={22} />, title: 'AI Video Engine', desc: 'Transform raw footage into brand-aligned content automatically.', color: '#DC143C' },
+    { icon: <AudioWaveform size={22} />, title: 'Voice Intelligence', desc: 'Analyze and amplify authentic creator voices that resonate.', color: '#800020' },
+    { icon: <BarChart4 size={22} />, title: 'Smart Analytics', desc: 'Real-time performance tracking with AI-driven insights.', color: '#E0115F' },
+    { icon: <Share2 size={22} />, title: 'Distribution Engine', desc: 'Publish optimized content across all platforms simultaneously.', color: '#FF2400' },
+    { icon: <ShieldCheck size={22} />, title: 'Brand Safety', desc: 'AI moderation ensures brand alignment at every touchpoint.', color: '#DE3163' },
+    { icon: <Focus size={22} />, title: 'Precision Matching', desc: 'Match with ideal creators and audiences intelligently.', color: '#960018' },
 ]
+
+
+/* ─── Premium 3D Tilt Card Component ─── */
+function PremiumCard({ children, className = '', index = 0, color = '#6366f1' }) {
+    const cardRef = useRef(null)
+    const glowRef = useRef(null)
+    const [isHovered, setIsHovered] = useState(false)
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: '-60px' })
+
+    const handleMouseMove = useCallback((e) => {
+        const card = cardRef.current
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const rotateX = ((y - centerY) / centerY) * -8
+        const rotateY = ((x - centerX) / centerX) * 8
+
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`
+
+        if (glowRef.current) {
+            glowRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${color}18, transparent 40%)`
+        }
+    }, [color])
+
+    const handleMouseLeave = useCallback(() => {
+        const card = cardRef.current
+        if (!card) return
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)'
+        if (glowRef.current) {
+            glowRef.current.style.background = 'transparent'
+        }
+        setIsHovered(false)
+    }, [])
+
+    const handleMouseEnter = useCallback(() => {
+        setIsHovered(true)
+    }, [])
+
+    const offsets = [0, 24, -12, 16, -20, 8]
+    const offset = offsets[index % offsets.length]
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{
+                duration: 0.7,
+                delay: index * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+            }}
+            style={{ marginTop: `${offset}px` }}
+        >
+            <div
+                ref={cardRef}
+                className={`premium-card ${isHovered ? 'premium-card--hovered' : ''} ${className}`}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onMouseEnter={handleMouseEnter}
+                style={{ '--card-accent': color }}
+            >
+                {/* Inner highlight */}
+                <div className="premium-card__highlight" />
+                {/* Dynamic glow */}
+                <div ref={glowRef} className="premium-card__glow" />
+                {/* Animated gradient border */}
+                <div className="premium-card__border" />
+                {/* Content */}
+                <div className="premium-card__content">
+                    {children}
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
+/* ─── Particle Canvas Component ─── */
+function ParticleField({ className = '' }) {
+    const canvasRef = useRef(null)
+
+    useEffect(() => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const ctx = canvas.getContext('2d')
+        let animationId
+        let particles = []
+
+        const resize = () => {
+            canvas.width = canvas.offsetWidth * window.devicePixelRatio
+            canvas.height = canvas.offsetHeight * window.devicePixelRatio
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+        }
+        resize()
+        window.addEventListener('resize', resize)
+
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.offsetWidth,
+                y: Math.random() * canvas.offsetHeight,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.3,
+                opacity: Math.random() * 0.4 + 0.1,
+            })
+        }
+
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
+            particles.forEach((p) => {
+                p.x += p.speedX
+                p.y += p.speedY
+                if (p.x < 0) p.x = canvas.offsetWidth
+                if (p.x > canvas.offsetWidth) p.x = 0
+                if (p.y < 0) p.y = canvas.offsetHeight
+                if (p.y > canvas.offsetHeight) p.y = 0
+
+                ctx.beginPath()
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+                ctx.fillStyle = `rgba(220, 20, 60, ${p.opacity})`
+                ctx.fill()
+            })
+            animationId = requestAnimationFrame(animate)
+        }
+        animate()
+
+        return () => {
+            cancelAnimationFrame(animationId)
+            window.removeEventListener('resize', resize)
+        }
+    }, [])
+
+    return <canvas ref={canvasRef} className={`particle-field ${className}`} />
+}
 
 
 /* ─── Stagger anim variants ─── */
@@ -187,20 +324,25 @@ export default function Home() {
             </section>
 
 
-            {/* ════════════════════ STATS ════════════════════ */}
-            <section className="home-stats">
+            {/* ════════════════════ STATS — PREMIUM ════════════════════ */}
+            <section className="home-stats premium-stats-section">
                 <div className="home-stats-container">
                     <div className="home-stats-grid">
                         {stats.map((stat, i) => (
-                            <SectionReveal key={stat.label} delay={i * 0.08}>
-                                <div className="home-stat-card">
-                                    <div className="home-stat-icon">
-                                        {stat.icon}
+                            <PremiumCard key={stat.label} index={i} color={stat.color} className="premium-stat-card">
+                                <div className="premium-stat-inner">
+                                    <div className="premium-icon-orb premium-icon-orb--stat" style={{ '--orb-color': stat.color }}>
+                                        <div className="premium-icon-orb__inner">
+                                            {stat.icon}
+                                        </div>
+                                        <div className="premium-icon-orb__pulse" />
                                     </div>
-                                    <div className="home-stat-number">{stat.number}</div>
-                                    <div className="home-stat-label">{stat.label}</div>
+                                    <div className="premium-stat-text">
+                                        <div className="premium-stat-number">{stat.number}</div>
+                                        <div className="premium-stat-label">{stat.label}</div>
+                                    </div>
                                 </div>
-                            </SectionReveal>
+                            </PremiumCard>
                         ))}
                     </div>
                 </div>
@@ -255,56 +397,70 @@ export default function Home() {
             </section>
 
 
-            {/* ════════════════════ WHY YOVOAI ════════════════════ */}
-            <section className="section-padding">
+            {/* ════════════════════ WHY YOVOAI — PREMIUM CARDS ════════════════════ */}
+            <section className="section-padding premium-section">
+                <div className="premium-section__bg">
+                    <div className="premium-section__radial premium-section__radial--1" />
+                    <div className="premium-section__radial premium-section__radial--2" />
+                    <ParticleField />
+                </div>
                 <div className="home-section-container">
                     <SectionReveal className="home-center-header">
-                        <span className="section-label"><Zap size={13} /> Why Choose Us</span>
-                        <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            Why <span className="gradient-text">YovoAI</span>?
+                        <span className="section-label section-label--glow"><Zap size={13} /> Why Choose Us</span>
+                        <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
+                            Why <span className="gradient-text-premium">YovoAI</span>?
                         </h2>
-                        <p className="section-subtext">The power of AI-driven UGC that transforms your brand's voice into measurable growth</p>
+                        <p className="section-subtext premium-subtext">The power of AI-driven UGC that transforms your brand's voice into measurable growth</p>
                     </SectionReveal>
 
-                    <div className="home-features-grid">
+                    <div className="premium-features-grid">
                         {features.map((f, i) => (
-                            <SectionReveal key={f.title} delay={i * 0.1}>
-                                <div className="home-feature-card">
-                                    <div className="home-feature-card-icon">
+                            <PremiumCard key={f.title} index={i} color={f.color}>
+                                <div className="premium-icon-orb" style={{ '--orb-color': f.color }}>
+                                    <div className="premium-icon-orb__inner">
                                         {f.icon}
                                     </div>
-                                    <h3 className="home-feature-card-title">{f.title}</h3>
-                                    <p className="home-feature-card-desc">{f.desc}</p>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                            </SectionReveal>
+                                <h3 className="premium-card-title">{f.title}</h3>
+                                <p className="premium-card-desc">{f.desc}</p>
+                            </PremiumCard>
                         ))}
                     </div>
                 </div>
             </section>
 
 
-            {/* ════════════════════ PRODUCT SHOWCASE ════════════════════ */}
-            <section ref={showcaseRef} className="section-padding gradient-subtle">
+            {/* ════════════════════ PRODUCT SHOWCASE — PREMIUM ════════════════════ */}
+            <section ref={showcaseRef} className="section-padding premium-section premium-section--alt">
+                <div className="premium-section__bg">
+                    <div className="premium-section__radial premium-section__radial--3" />
+                    <div className="premium-section__radial premium-section__radial--4" />
+                    <ParticleField />
+                </div>
                 <div className="home-section-container">
                     <SectionReveal className="home-center-header">
-                        <span className="section-label"><Sparkles size={13} /> Product</span>
-                        <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            The <span className="gradient-text">AI Engine</span> Behind Your Growth
+                        <span className="section-label section-label--glow"><Sparkles size={13} /> Product</span>
+                        <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
+                            The <span className="gradient-text-premium">AI Engine</span> Behind Your Growth
                         </h2>
-                        <p className="section-subtext">A complete ecosystem of intelligent tools designed to maximize your content impact</p>
+                        <p className="section-subtext premium-subtext">A complete ecosystem of intelligent tools designed to maximize your content impact</p>
                     </SectionReveal>
 
-                    <div className="home-showcase-grid">
-                        {productShowcase.map((item) => (
-                            <div key={item.title} className="showcase-card home-showcase-card">
-                                <div className="home-showcase-header">
-                                    <div className="home-showcase-icon">
-                                        {item.icon}
+                    <div className="premium-showcase-grid">
+                        {productShowcase.map((item, i) => (
+                            <PremiumCard key={item.title} index={i} color={item.color} className="premium-showcase-item">
+                                <div className="premium-showcase-top">
+                                    <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': item.color }}>
+                                        <div className="premium-icon-orb__inner">
+                                            {item.icon}
+                                        </div>
+                                        <div className="premium-icon-orb__pulse" />
                                     </div>
-                                    <h3 className="home-showcase-title">{item.title}</h3>
+                                    <h3 className="premium-showcase-title">{item.title}</h3>
                                 </div>
-                                <p className="home-showcase-desc">{item.desc}</p>
-                            </div>
+                                <p className="premium-card-desc premium-card-desc--sm">{item.desc}</p>
+                            </PremiumCard>
                         ))}
                     </div>
                 </div>
@@ -315,7 +471,7 @@ export default function Home() {
             <section className="section-padding">
                 <div className="home-section-container">
                     <SectionReveal className="home-center-header">
-                        <span className="section-label"><Target size={13} /> Process</span>
+                        <span className="section-label"><Focus size={13} /> Process</span>
                         <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
                             How It <span className="gradient-text">Works</span>
                         </h2>
@@ -342,7 +498,7 @@ export default function Home() {
                         <SectionReveal delay={0.4} className="home-process-stat">
                             <div className="home-process-stat-inner">
                                 <div className="home-process-stat-header">
-                                    <TrendingUp size={18} />
+                                    <LineChart size={18} />
                                     <span className="home-process-stat-title">3x Increase</span>
                                 </div>
                                 <p className="home-process-stat-desc">Avg. community-led conversions in 30 days</p>

@@ -171,7 +171,7 @@ p {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #404040 0%, #0A0A0A 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -447,4 +447,76 @@ html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* ─── Premium Icon Orb (Global) ─── */
+.premium-icon-orb {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1.75rem;
+}
+
+.premium-icon-orb--sm {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0;
+}
+
+.premium-icon-orb__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orb-color, #6366f1);
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.6) 100%);
+  box-shadow:
+    0 4px 16px -2px color-mix(in srgb, var(--orb-color, #6366f1) 25%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--orb-color, #6366f1) 15%, transparent),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  z-index: 2;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Base hover state across premium-card combinations */
+.premium-card--hovered .premium-icon-orb__inner,
+.prism-card--lit .premium-icon-orb__inner,
+.aurora-card--lit .premium-icon-orb__inner,
+.nova-card--lit .premium-icon-orb__inner,
+.neon-card--active .premium-icon-orb__inner,
+.ct-info-card:hover .premium-icon-orb__inner,
+.premium-icon-orb:hover .premium-icon-orb__inner {
+  transform: rotate(12deg) scale(1.08);
+  box-shadow:
+    0 8px 32px -4px color-mix(in srgb, var(--orb-color, #6366f1) 35%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--orb-color, #6366f1) 25%, transparent),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.premium-icon-orb__pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--orb-color, #6366f1) 12%, transparent);
+  z-index: 1;
+  animation: orb-pulse 3s ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.15;
+  }
 }

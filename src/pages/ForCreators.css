@@ -109,6 +109,10 @@
 }
 
 .fc-hero-title .gradient-text {
+    background: linear-gradient(135deg, #404040 0%, #0A0A0A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     text-shadow: none;
 }
 
@@ -145,6 +149,171 @@
     gap: 1rem;
 }
 
+/* ════════════════════ NOVA GLASS CARD SYSTEM (FOR CREATORS) ════════════════════ */
+.nova-card-wrap {
+    height: 100%;
+}
+
+.nova-card {
+    position: relative;
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    height: 100%;
+    box-shadow:
+        0 4px 15px -4px rgba(0, 0, 0, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.nova-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 20px 40px -10px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Base glowing morph layer */
+.nova-card__fluid {
+    position: absolute;
+    inset: -50%;
+    background: conic-gradient(from 90deg at 50% 50%,
+            transparent 0%,
+            color-mix(in srgb, var(--nova-accent) 15%, transparent) 20%,
+            color-mix(in srgb, var(--nova-accent) 5%, transparent) 50%,
+            transparent 80%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: novaFluidSpin 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.nova-card--lit .nova-card__fluid {
+    opacity: 1;
+}
+
+@keyframes novaFluidSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dynamic Spotlight tracking */
+.nova-card__spotlight {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at var(--nx, 50%) var(--ny, 50%),
+            color-mix(in srgb, var(--nova-accent) 20%, transparent),
+            transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.nova-card--lit .nova-card__spotlight {
+    opacity: 1;
+}
+
+/* Inner colored border */
+.nova-card__border {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: radial-gradient(400px circle at var(--nx, 50%) var(--ny, 50%),
+            var(--nova-accent),
+            transparent 40%);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.nova-card--lit .nova-card__border {
+    opacity: 1;
+}
+
+/* Inner content area */
+.nova-card__content {
+    position: relative;
+    z-index: 3;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Nova Typography & Components --- */
+.nova-icon-box {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: linear-gradient(135deg,
+            var(--nova-accent),
+            color-mix(in srgb, var(--nova-accent) 70%, #000));
+    box-shadow:
+        0 10px 25px color-mix(in srgb, var(--nova-accent) 30%, transparent),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    margin-bottom: 1.5rem;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nova-card--lit .nova-icon-box {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow:
+        0 15px 35px color-mix(in srgb, var(--nova-accent) 45%, transparent),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4);
+}
+
+.nova-icon-box--sm {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.nova-card-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--c-text);
+    margin-bottom: 0.75rem;
+    font-family: var(--f-heading);
+    letter-spacing: -0.01em;
+}
+
+.nova-card-title--sm {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.nova-card-desc {
+    color: var(--c-text-sec);
+    line-height: 1.625;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.nova-card-desc--sm {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
 /* ════════════════════ CREATOR BENEFITS ════════════════════ */
 .fc-center-header {
     text-align: center;
@@ -153,43 +322,13 @@
 
 .fc-grid-2 {
     display: grid;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 @media (min-width: 768px) {
     .fc-grid-2 {
         grid-template-columns: repeat(2, 1fr);
     }
-}
-
-.fc-benefit-card {
-    border-radius: 1.5rem;
-    padding: 2rem;
-}
-
-.fc-benefit-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1rem;
-    color: #fff;
-    margin-bottom: 1.25rem;
-}
-
-.fc-benefit-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: #0f0f1a;
-    margin-bottom: 0.75rem;
-    font-family: var(--f-heading);
-}
-
-.fc-benefit-desc {
-    color: #4a4a68;
-    line-height: 1.625;
-    margin-bottom: 1rem;
 }
 
 .fc-benefit-highlight {
@@ -205,7 +344,7 @@
 /* ════════════════════ CREATOR TOOLS ════════════════════ */
 .fc-grid-3 {
     display: grid;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 @media (min-width: 768px) {
@@ -218,37 +357,6 @@
     .fc-grid-3 {
         grid-template-columns: repeat(3, 1fr);
     }
-}
-
-.fc-tool-card {
-    border-radius: 1rem;
-    padding: 1.75rem;
-    height: 100%;
-}
-
-.fc-tool-icon {
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 0.75rem;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.25rem;
-}
-
-.fc-tool-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #0f0f1a;
-    margin-bottom: 0.5rem;
-    font-family: var(--f-heading);
-}
-
-.fc-tool-desc {
-    color: #5a5a7a;
-    font-size: 0.875rem;
-    line-height: 1.625;
 }
 
 /* ════════════════════ EARNINGS ENGINE ════════════════════ */
@@ -269,16 +377,8 @@
     }
 }
 
-.fc-tier-card {
-    border-radius: 1rem;
-    padding: 1.75rem;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
 .fc-tier-top {
-    box-shadow: 0 0 0 2px #f97316;
+    box-shadow: 0 0 0 2px #fef08a;
 }
 
 .fc-tier-badge {
@@ -287,29 +387,25 @@
     right: 0;
     padding: 0.25rem 0.75rem;
     color: #fff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    border-bottom-left-radius: 0.75rem;
-}
-
-.fc-tier-name {
-    font-size: 1.125rem;
+    font-size: 0.8125rem;
     font-weight: 800;
-    color: #0f0f1a;
-    margin-bottom: 0.25rem;
-    font-family: var(--f-heading);
+    border-bottom-left-radius: 0.75rem;
+    box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .fc-tier-range {
-    font-size: 0.75rem;
-    color: #8a8aa0;
+    font-size: 0.8125rem;
+    font-weight: 600;
     margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .fc-tier-earnings {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 1.25rem;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    line-height: 1;
 }
 
 .fc-tier-perks {
@@ -439,11 +535,7 @@
 
 /* ════════════════════ SUCCESS STORIES ════════════════════ */
 .fc-story-card {
-    border-radius: 1rem;
-    padding: 1.75rem;
     height: 100%;
-    display: flex;
-    flex-direction: column;
 }
 
 .fc-story-header {
@@ -451,29 +543,6 @@
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
-}
-
-.fc-story-avatar {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.fc-story-name {
-    font-weight: 700;
-    font-size: 0.875rem;
-    color: #0f0f1a;
-}
-
-.fc-story-niche {
-    font-size: 0.75rem;
-    color: #8a8aa0;
 }
 
 .fc-story-stats {
@@ -521,7 +590,6 @@
 
 /* ════════════════════ CTA ════════════════════ */
 .fc-cta-card {
-    border-radius: 1.5rem;
     padding: 2.5rem;
 }
 

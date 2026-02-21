@@ -17,6 +17,14 @@
     background: transparent;
 }
 
+/* Keep hero gradient-text dark */
+.about-hero .gradient-text {
+    background: linear-gradient(135deg, #404040 0%, #0A0A0A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 @media (min-width: 768px) {
     .about-hero {
         padding-top: 9rem;
@@ -127,7 +135,7 @@
 .about-split-grid {
     display: grid;
     gap: 2.5rem;
-    align-items: start;
+    align-items: stretch;
 }
 
 @media (min-width: 1024px) {
@@ -136,69 +144,254 @@
     }
 }
 
-.about-vision-card {
-    background: rgba(255, 255, 255, 0.7);
+/* ════════════════════ NEON EDGE CARD SYSTEM ════════════════════ */
+.neon-card {
+    position: relative;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    border-radius: 1.5rem;
-    padding: 2rem;
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     height: 100%;
+    box-shadow:
+        0 4px 20px -4px rgba(0, 0, 0, 0.06),
+        0 1px 4px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-@media (min-width: 768px) {
-    .about-vision-card {
-        padding: 2.5rem;
+.neon-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow:
+        0 20px 60px -12px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.06);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Glowing top edge */
+.neon-card__edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--neon-accent, #f97316) 20%,
+            color-mix(in srgb, var(--neon-accent) 80%, #fff) 50%,
+            var(--neon-accent, #f97316) 80%,
+            transparent 100%);
+    opacity: 0.4;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 2;
+}
+
+.neon-card--active .neon-card__edge {
+    opacity: 1;
+    height: 3px;
+    box-shadow:
+        0 0 15px color-mix(in srgb, var(--neon-accent) 50%, transparent),
+        0 0 40px color-mix(in srgb, var(--neon-accent) 25%, transparent);
+}
+
+/* Shimmer sweep on hover */
+.neon-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(105deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.4) 45%,
+            rgba(255, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0.4) 55%,
+            transparent 80%);
+    transform: skewX(-20deg);
+    transition: none;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.neon-card--active::before {
+    animation: neon-shimmer 0.8s ease forwards;
+}
+
+@keyframes neon-shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 150%;
     }
 }
 
-.about-vision-icon-1 {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* Inner colored glow overlay */
+.neon-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top,
+            color-mix(in srgb, var(--neon-accent, #f97316) 4%, transparent),
+            transparent);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.neon-card--active::after {
+    opacity: 1;
+}
+
+/* Cursor spotlight — stronger */
+.neon-card__spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            color-mix(in srgb, var(--neon-accent, #f97316) 12%, transparent),
+            transparent 45%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.neon-card--active .neon-card__spotlight {
+    opacity: 1;
+}
+
+.neon-card__content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+}
+
+/* ─── Neon Icon Container — Vivid ─── */
+.neon-icon-container {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 1rem;
-    background: linear-gradient(to right, #fbbf24, #f97316);
-    color: #fff;
-    margin-bottom: 1.5rem;
-}
-
-.about-vision-icon-2 {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1rem;
-    background: linear-gradient(to right, #fb923c, #ef4444);
     color: #fff;
+    background: linear-gradient(135deg,
+            var(--neon-accent, #f97316),
+            color-mix(in srgb, var(--neon-accent) 65%, #000));
     margin-bottom: 1.5rem;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow:
+        0 4px 16px color-mix(in srgb, var(--neon-accent) 35%, transparent),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
 }
 
-.about-vision-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+.neon-card--active .neon-icon-container {
+    transform: scale(1.12) rotate(-6deg);
+    box-shadow:
+        0 8px 30px color-mix(in srgb, var(--neon-accent) 45%, transparent),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+}
+
+/* ─── Floating Icon (for Vision/Mission) — Bigger ─── */
+.neon-icon-float {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: linear-gradient(135deg,
+            var(--neon-accent, #f97316),
+            color-mix(in srgb, var(--neon-accent) 60%, #1a1a1a));
+    margin-bottom: 1.75rem;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow:
+        0 6px 24px color-mix(in srgb, var(--neon-accent) 40%, transparent),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+        0 0 40px -10px color-mix(in srgb, var(--neon-accent) 20%, transparent);
+}
+
+.neon-card--active .neon-icon-float {
+    transform: translateY(-6px) scale(1.1) rotate(-3deg);
+    box-shadow:
+        0 12px 40px color-mix(in srgb, var(--neon-accent) 50%, transparent),
+        0 0 0 1px rgba(255, 255, 255, 0.35) inset,
+        0 0 60px -10px color-mix(in srgb, var(--neon-accent) 30%, transparent);
+}
+
+/* ─── Neon Card Title ─── */
+.neon-card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
     color: var(--c-text);
     font-family: var(--f-heading);
+    margin-bottom: 0.625rem;
+    letter-spacing: -0.02em;
+    position: relative;
+    display: inline-block;
+}
+
+.neon-card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--neon-accent, #f97316), transparent);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.neon-card--active .neon-card-title::after {
+    width: 100%;
+}
+
+.neon-card-desc {
+    color: var(--c-text-sec);
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+
+/* ─── Vision Card (larger) ─── */
+.neon-card--vision .neon-card__content {
+    padding: 2.75rem;
+}
+
+.neon-vision-title {
+    font-size: 1.625rem;
+    font-weight: 700;
+    margin-bottom: 1.125rem;
+    color: var(--c-text);
+    font-family: var(--f-heading);
+    letter-spacing: -0.03em;
 }
 
 @media (min-width: 768px) {
-    .about-vision-title {
-        font-size: 1.875rem;
+    .neon-vision-title {
+        font-size: 2rem;
     }
 }
 
-.about-vision-desc {
+.neon-vision-desc {
     color: var(--c-text-sec);
-    font-size: 1.125rem;
-    line-height: 1.625;
-    margin-bottom: 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 1.125rem;
 }
 
-.about-vision-subdesc {
+.neon-vision-subdesc {
     color: var(--c-text-mute);
-    line-height: 1.625;
+    line-height: 1.7;
+    font-size: 0.9375rem;
 }
 
 /* ════════════════════ FOUNDER ════════════════════ */
@@ -254,7 +447,7 @@
     padding-left: 1rem;
 }
 
-/* ════════════════════ AI PHILOSOPHY ════════════════════ */
+/* ════════════════════ AI PHILOSOPHY & VALUES GRID ════════════════════ */
 .about-center-header {
     text-align: center;
     margin-bottom: 3.5rem;
@@ -262,7 +455,7 @@
 
 .about-grid-cols-3 {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.75rem;
 }
 
 @media (min-width: 768px) {
@@ -277,69 +470,10 @@
     }
 }
 
-.about-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 1rem;
-    padding: 1.75rem;
-    height: 100%;
-}
-
-.about-card-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.75rem;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.25rem;
-}
-
-.about-card-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--c-text);
-    margin-bottom: 0.5rem;
-    font-family: var(--f-heading);
-}
-
-.about-card-desc {
-    color: var(--c-text-sec);
-    font-size: 0.875rem;
-    line-height: 1.625;
-}
-
-/* ════════════════════ VALUES ════════════════════ */
-.bg-grad-1 {
-    background: linear-gradient(to right, #fbbf24, #f97316);
-}
-
-.bg-grad-2 {
-    background: linear-gradient(to right, #fb923c, #ef4444);
-}
-
-.bg-grad-3 {
-    background: linear-gradient(to right, #facc15, #f59e0b);
-}
-
-.bg-grad-4 {
-    background: linear-gradient(to right, #f59e0b, #ea580c);
-}
-
-.bg-grad-5 {
-    background: linear-gradient(to right, #f97316, #dc2626);
-}
-
-.bg-grad-6 {
-    background: linear-gradient(to right, #eab308, #f97316);
-}
-
 /* ════════════════════ ROADMAP ════════════════════ */
 .about-roadmap-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.75rem;
 }
 
 @media (min-width: 768px) {
@@ -354,47 +488,41 @@
     }
 }
 
-.about-roadmap-card {
-    position: relative;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 1rem;
-    padding: 1.75rem;
+.neon-roadmap--current {
+    box-shadow: 0 0 0 2px var(--neon-accent, #f97316) !important;
 }
 
-.about-roadmap-card.current {
-    box-shadow: 0 0 0 2px #fb923c;
-}
-
-.about-roadmap-badge {
+.neon-roadmap-badge {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 0.25rem 0.75rem;
+    padding: 0.25rem 0.875rem;
+    background: linear-gradient(135deg, #fbbf24, #f97316);
     color: #fff;
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 700;
     border-bottom-left-radius: 0.75rem;
+    letter-spacing: 0.05em;
+    z-index: 2;
 }
 
-.about-roadmap-phase {
+.neon-roadmap-phase {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--c-brand);
     margin-bottom: 0.25rem;
 }
 
-.about-roadmap-title {
+.neon-roadmap-title {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 650;
     color: var(--c-text);
     margin-bottom: 1rem;
     font-family: var(--f-heading);
+    letter-spacing: -0.02em;
 }
 
-.about-roadmap-list {
+.neon-roadmap-list {
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
@@ -403,7 +531,7 @@
     margin: 0;
 }
 
-.about-roadmap-item {
+.neon-roadmap-item {
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
@@ -411,7 +539,7 @@
     color: var(--c-text-sec);
 }
 
-.about-roadmap-icon {
+.neon-roadmap-icon {
     margin-top: 0.125rem;
     flex-shrink: 0;
 }

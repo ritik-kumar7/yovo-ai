@@ -1,30 +1,79 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-    ArrowRight, Zap, Users, TrendingUp, BarChart3, Target, Sparkles,
-    CheckCircle, Video, Shield, Clock, Globe, DollarSign, Award,
-    PieChart, Megaphone, Rocket, LineChart
+    ArrowRight, Zap, Target, Sparkles, UserMinus, SearchX,
+    CheckCircle, Video, ShieldCheck, Clock, TrendingDown, Hourglass,
+    Cpu, UserCheck, Rocket, BarChart4, Network, Library, PieChart, Share2, Award
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './ForBrands.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* ─── Elite Prism Card Component (Brands-specific) ─── */
+function PrismCard({ children, accent = '#f97316', index = 0, className = '' }) {
+    const cardRef = useRef(null)
+    const [isHovered, setIsHovered] = useState(false)
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: '-40px' })
+
+    const handleMouseMove = useCallback((e) => {
+        const card = cardRef.current
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        card.style.setProperty('--px', `${x}px`)
+        card.style.setProperty('--py', `${y}px`)
+    }, [])
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 50, rotateX: 5 }}
+            animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="prism-card-wrapper"
+        >
+            <div
+                ref={cardRef}
+                className={`prism-card ${isHovered ? 'prism-card--lit' : ''} ${className}`}
+                style={{ '--prism-accent': accent }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onMouseMove={handleMouseMove}
+            >
+                {/* Rotating gradient border */}
+                <div className="prism-card__border" />
+                {/* Inner glass layer */}
+                <div className="prism-card__glass">
+                    <div className="prism-card__glare" />
+                    <div className="prism-card__glow" />
+                </div>
+                {/* Content in document flow to provide height */}
+                <div className="prism-card__content">
+                    {children}
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
 const brandProblems = [
-    { icon: <DollarSign size={24} />, problem: 'High ad spend, low ROI', desc: 'Traditional advertising costs are skyrocketing while effectiveness plummets. Audiences scroll past polished ads.' },
-    { icon: <Clock size={24} />, problem: 'Slow content turnaround', desc: 'Agency-created content takes weeks. By the time it launches, the moment has passed.' },
-    { icon: <Users size={24} />, problem: 'Low audience trust', desc: 'Consumers trust recommendations from real people 3x more than branded content.' },
-    { icon: <Target size={24} />, problem: 'Finding the right creators', desc: 'Manually searching for creators is time-consuming and often results in poor brand-fit matches.' },
+    { icon: <TrendingDown size={24} />, problem: 'High ad spend, low ROI', desc: 'Traditional advertising costs are skyrocketing while effectiveness plummets. Audiences scroll past polished ads.' },
+    { icon: <Hourglass size={24} />, problem: 'Slow content turnaround', desc: 'Agency-created content takes weeks. By the time it launches, the moment has passed.' },
+    { icon: <UserMinus size={24} />, problem: 'Low audience trust', desc: 'Consumers trust recommendations from real people 3x more than branded content.' },
+    { icon: <SearchX size={24} />, problem: 'Finding the right creators', desc: 'Manually searching for creators is time-consuming and often results in poor brand-fit matches.' },
 ]
 
 const solutions = [
-    { icon: <Sparkles size={28} />, title: 'AI Campaign Engine', desc: 'Launch UGC campaigns in minutes, not weeks. Our AI handles everything from brief creation to content curation.', metrics: '85% faster launch' },
-    { icon: <Users size={28} />, title: 'Smart Creator Matching', desc: 'AI-powered matching connects you with creators who genuinely align with your brand. The right voices, every time.', metrics: '10,000+ vetted creators' },
-    { icon: <Megaphone size={28} />, title: 'Automated Distribution', desc: 'One-click distribution across 40+ platforms with format-specific optimization.', metrics: '40+ platform integrations' },
-    { icon: <LineChart size={28} />, title: 'Real-Time ROI Tracking', desc: 'See exactly how every dollar performs. Track conversions, engagement, and brand lift in real-time.', metrics: 'Complete attribution' },
+    { icon: <Cpu size={28} />, title: 'AI Campaign Engine', desc: 'Launch UGC campaigns in minutes, not weeks. Our AI handles everything from brief creation to content curation.', metrics: '85% faster launch' },
+    { icon: <UserCheck size={28} />, title: 'Smart Creator Matching', desc: 'AI-powered matching connects you with creators who genuinely align with your brand. The right voices, every time.', metrics: '10,000+ vetted creators' },
+    { icon: <Rocket size={28} />, title: 'Automated Distribution', desc: 'One-click distribution across 40+ platforms with format-specific optimization.', metrics: '40+ platform integrations' },
+    { icon: <BarChart4 size={28} />, title: 'Real-Time ROI Tracking', desc: 'See exactly how every dollar performs. Track conversions, engagement, and brand lift in real-time.', metrics: 'Complete attribution' },
 ]
 
 const caseStudies = [
@@ -45,26 +94,20 @@ const caseStudies = [
 ]
 
 const brandDashboardFeatures = [
-    { icon: <BarChart3 size={18} />, label: 'Campaign Analytics', desc: 'Real-time performance metrics' },
-    { icon: <Users size={18} />, label: 'Creator Network', desc: '10,000+ vetted creators' },
-    { icon: <Video size={18} />, label: 'Content Library', desc: 'AI-organized UGC repository' },
-    { icon: <Shield size={18} />, label: 'Brand Safety', desc: 'Real-time content moderation' },
+    { icon: <BarChart4 size={18} />, label: 'Campaign Analytics', desc: 'Real-time performance metrics' },
+    { icon: <Network size={18} />, label: 'Creator Network', desc: '10,000+ vetted creators' },
+    { icon: <Library size={18} />, label: 'Content Library', desc: 'AI-organized UGC repository' },
+    { icon: <ShieldCheck size={18} />, label: 'Brand Safety', desc: 'Real-time content moderation' },
     { icon: <PieChart size={18} />, label: 'ROI Dashboard', desc: 'End-to-end attribution' },
-    { icon: <Globe size={18} />, label: 'Multi-Platform', desc: 'Unified distribution hub' },
+    { icon: <Share2 size={18} />, label: 'Multi-Platform', desc: 'Unified distribution hub' },
 ]
 
 export default function ForBrands() {
     const solutionsRef = useRef(null)
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo('.solution-card', { x: -40, opacity: 0 }, {
-                x: 0, opacity: 1, stagger: 0.15, duration: 0.7,
-                scrollTrigger: { trigger: solutionsRef.current, start: 'top 75%' },
-            })
-        })
-        return () => ctx.revert()
-    }, [])
+    const problemAccents = ['#ef4444', '#f97316', '#fbbf24', '#f59e0b']
+    const solutionAccents = ['#f94b6e', '#ff8902', '#fb923c', '#facc15']
+    const caseAccents = ['#f97316', '#ef4444']
 
     return (
         <main className="fb-main">
@@ -114,11 +157,16 @@ export default function ForBrands() {
                     <div className="fb-grid-2">
                         {brandProblems.map((p, i) => (
                             <SectionReveal key={p.problem} delay={i * 0.08}>
-                                <div className="fb-problem-card glass-card hover-depth">
-                                    <div className="fb-problem-icon">{p.icon}</div>
-                                    <h3 className="fb-problem-title">{p.problem}</h3>
-                                    <p className="fb-problem-desc">{p.desc}</p>
-                                </div>
+                                <PrismCard accent={problemAccents[i]} index={i} className="fb-problem-card">
+                                    <div className="premium-icon-orb" style={{ '--orb-color': problemAccents[i] }}>
+                                        <div className="premium-icon-orb__inner">
+                                            {p.icon}
+                                        </div>
+                                        <div className="premium-icon-orb__pulse" />
+                                    </div>
+                                    <h3 className="prism-card-title">{p.problem}</h3>
+                                    <p className="prism-card-desc">{p.desc}</p>
+                                </PrismCard>
                             </SectionReveal>
                         ))}
                     </div>
@@ -135,22 +183,27 @@ export default function ForBrands() {
                     </SectionReveal>
 
                     <div className="fb-solutions-list">
-                        {solutions.map((s) => (
-                            <div key={s.title} className="solution-card glass-card fb-solution-card hover-depth">
+                        {solutions.map((s, i) => (
+                            <PrismCard key={s.title} accent={solutionAccents[i]} index={i} className="fb-solution-card">
                                 <div className="fb-solution-grid">
                                     <div className="fb-solution-content">
-                                        <div className="fb-solution-icon gradient-brand">{s.icon}</div>
-                                        <h3 className="fb-solution-title">{s.title}</h3>
-                                        <p className="fb-solution-desc">{s.desc}</p>
+                                        <div className="premium-icon-orb" style={{ '--orb-color': solutionAccents[i] }}>
+                                            <div className="premium-icon-orb__inner">
+                                                {s.icon}
+                                            </div>
+                                            <div className="premium-icon-orb__pulse" />
+                                        </div>
+                                        <h3 className="prism-card-title prism-card-title--lg">{s.title}</h3>
+                                        <p className="prism-card-desc prism-card-desc--lg">{s.desc}</p>
                                     </div>
                                     <div className="fb-solution-metric-wrap">
-                                        <div className="glass-card-subtle fb-solution-metric">
-                                            <div className="fb-solution-metric-value gradient-text">{s.metrics}</div>
-                                            <div className="fb-solution-metric-label">Key Metric</div>
+                                        <div className="prism-metric-box">
+                                            <div className="prism-metric-value">{s.metrics}</div>
+                                            <div className="prism-metric-label">Key Metric</div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </PrismCard>
                         ))}
                     </div>
                 </div>
@@ -161,7 +214,7 @@ export default function ForBrands() {
                 <div className="container-lg fb-px">
                     <div className="fb-dashboard-grid">
                         <SectionReveal>
-                            <span className="section-label"><BarChart3 size={14} /> Dashboard</span>
+                            <span className="section-label"><BarChart4 size={14} /> Dashboard</span>
                             <h2 className="section-heading fb-heading-tight">Your <span className="gradient-text">command center</span> for growth</h2>
                             <p className="fb-dashboard-desc">
                                 Monitor campaigns, manage creators, track ROI, and optimize in real-time — all from one premium interface.
@@ -195,39 +248,37 @@ export default function ForBrands() {
 
                     <div className="fb-cases-list">
                         {caseStudies.map((cs, i) => (
-                            <SectionReveal key={cs.brand} delay={i * 0.12}>
-                                <div className="glass-card fb-case-card hover-depth">
-                                    <div className="fb-case-tags">
-                                        <span className="fb-case-brand-tag">{cs.brand}</span>
-                                        <span className="fb-case-industry-tag">{cs.industry}</span>
+                            <PrismCard key={cs.brand} accent={caseAccents[i]} index={i} className="fb-case-card">
+                                <div className="fb-case-tags">
+                                    <span className="fb-case-brand-tag" style={{ color: caseAccents[i], borderColor: 'currentColor', background: `color-mix(in srgb, ${caseAccents[i]} 10%, transparent)` }}>{cs.brand}</span>
+                                    <span className="fb-case-industry-tag">{cs.industry}</span>
+                                </div>
+                                <div className="fb-case-grid">
+                                    <div>
+                                        <h4 className="fb-case-section-title">Challenge</h4>
+                                        <p className="prism-card-desc">{cs.challenge}</p>
                                     </div>
-                                    <div className="fb-case-grid">
-                                        <div>
-                                            <h4 className="fb-case-section-title fb-text-red">Challenge</h4>
-                                            <p className="fb-case-section-desc">{cs.challenge}</p>
-                                        </div>
-                                        <div>
-                                            <h4 className="fb-case-section-title fb-text-orange">Solution</h4>
-                                            <p className="fb-case-section-desc">{cs.solution}</p>
-                                        </div>
-                                        <div>
-                                            <h4 className="fb-case-section-title fb-text-green">Results</h4>
-                                            <div className="fb-case-results">
-                                                {cs.results.map((r) => (
-                                                    <div key={r.label} className="fb-case-result-item">
-                                                        <span className="fb-case-result-metric gradient-text">{r.metric}</span>
-                                                        <span className="fb-case-result-label">{r.label}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
+                                    <div>
+                                        <h4 className="fb-case-section-title" style={{ color: caseAccents[i] }}>Solution</h4>
+                                        <p className="prism-card-desc">{cs.solution}</p>
                                     </div>
-                                    <div className="fb-case-quote-section">
-                                        <p className="fb-case-quote">"{cs.quote}"</p>
-                                        <p className="fb-case-author">— {cs.author}</p>
+                                    <div>
+                                        <h4 className="fb-case-section-title" style={{ color: '#22c55e' }}>Results</h4>
+                                        <div className="fb-case-results">
+                                            {cs.results.map((r) => (
+                                                <div key={r.label} className="fb-case-result-item">
+                                                    <span className="fb-case-result-metric" style={{ background: `linear-gradient(135deg, ${caseAccents[i]}, #000)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{r.metric}</span>
+                                                    <span className="fb-case-result-label">{r.label}</span>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </SectionReveal>
+                                <div className="fb-case-quote-section">
+                                    <p className="fb-case-quote">"{cs.quote}"</p>
+                                    <p className="fb-case-author">— {cs.author}</p>
+                                </div>
+                            </PrismCard>
                         ))}
                     </div>
                 </div>
@@ -237,9 +288,9 @@ export default function ForBrands() {
             <section className="section-padding">
                 <div className="container-lg fb-px fb-text-center">
                     <SectionReveal>
-                        <div className="glass-card fb-cta-card">
+                        <PrismCard accent="#fbbf24" className="fb-cta-card">
                             <div className="fb-cta-badge">
-                                <Award size={24} className="fb-text-orange" />
+                                <Award size={28} style={{ color: '#f97316' }} />
                                 <span className="fb-cta-badge-text gradient-text">Trusted by 150+ Brands</span>
                             </div>
                             <h2 className="section-heading fb-mb-6">Powered by voices that <span className="gradient-text">matter.</span></h2>
@@ -250,7 +301,7 @@ export default function ForBrands() {
                                 <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="magnetic-btn btn-primary"><Rocket size={16} /> Start Your Campaign</a>
                                 <Link to="/for-creators" className="magnetic-btn btn-outline">Or Become a Creator <ArrowRight size={16} /></Link>
                             </div>
-                        </div>
+                        </PrismCard>
                     </SectionReveal>
                 </div>
             </section>

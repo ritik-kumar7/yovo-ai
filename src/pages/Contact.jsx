@@ -77,7 +77,12 @@ export default function Contact() {
                         {contactInfo.map((info, i) => (
                             <SectionReveal key={info.label} delay={i * 0.08}>
                                 <div className="glass-card ct-info-card hover-depth">
-                                    <div className="ct-info-icon gradient-brand">{info.icon}</div>
+                                    <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': '#f97316', margin: '0 auto 1.5rem auto' }}>
+                                        <div className="premium-icon-orb__inner">
+                                            {info.icon}
+                                        </div>
+                                        <div className="premium-icon-orb__pulse" />
+                                    </div>
                                     <h3 className="ct-info-label">{info.label}</h3>
                                     {info.href ? (
                                         <a href={info.href} className="ct-info-value ct-info-link">{info.value}</a>

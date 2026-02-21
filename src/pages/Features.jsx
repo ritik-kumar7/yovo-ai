@@ -1,22 +1,66 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-    ArrowRight, Video, Mic, BarChart3, Globe, Shield, Target, Zap, Brain,
-    Sparkles, Layers, Cpu, Eye, Clock, TrendingUp, CheckCircle, Star,
-    Sliders, Database, LineChart, Workflow, Cable
+    ArrowRight, Video, Mic, BarChart3, Globe, ShieldCheck, Target, Zap, BrainCircuit,
+    Wand2, Layers, Cpu, Eye, Clock, TrendingUp, CheckCircle, Star,
+    Sliders, Database, LineChart, Workflow, Cable, AudioWaveform, LayoutTemplate,
+    Settings2, HardDrive, Puzzle, Sparkles
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './Features.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* ─── Aurora Glass Card Component (Features-specific) ─── */
+function AuroraCard({ children, accent = '#f97316', index = 0, className = '' }) {
+    const cardRef = useRef(null)
+    const [isHovered, setIsHovered] = useState(false)
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: '-40px' })
+
+    const handleMouseMove = useCallback((e) => {
+        const card = cardRef.current
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        card.style.setProperty('--ax', `${x}px`)
+        card.style.setProperty('--ay', `${y}px`)
+    }, [])
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 45, scale: 0.97 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.65, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
+        >
+            <div
+                ref={cardRef}
+                className={`aurora-card ${isHovered ? 'aurora-card--lit' : ''} ${className}`}
+                style={{ '--aurora-accent': accent }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onMouseMove={handleMouseMove}
+            >
+                <div className="aurora-card__stripe" />
+                <div className="aurora-card__glow" />
+                <div className="aurora-card__shine" />
+                <div className="aurora-card__body">
+                    {children}
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
 const coreFeatures = [
     { icon: <Video size={28} />, title: 'AI Video Engine', desc: 'Transform raw footage into polished, brand-aligned content. Our AI understands composition, pacing, and storytelling to create scroll-stopping videos.', capabilities: ['Auto-editing & transitions', 'Brand overlay injection', 'Multi-format export', 'Trend-aware styling'], gradient: 'from-amber-400 to-orange-500', img: '/src/assets/images/visualDashbord.jpg' },
-    { icon: <Mic size={28} />, title: 'Voice Intelligence', desc: 'Advanced voice analysis that identifies authentic creator voices and amplifies their impact across audiences.', capabilities: ['Voice tone analysis', 'Audience resonance scoring', 'Multi-language support', 'Sentiment detection'], gradient: 'from-orange-400 to-red-500', img: '/src/assets/images/usingTech.jpg' },
-    { icon: <Brain size={28} />, title: 'AI Processing Engine', desc: 'The neural backbone of YovoAI. Our proprietary models process, optimize, and enhance content in real-time.', capabilities: ['Deep learning models', 'Real-time processing', 'Content quality scoring', 'Trend prediction'], gradient: 'from-yellow-400 to-amber-500', img: '/src/assets/images/techStyleDash.jpg' },
+    { icon: <AudioWaveform size={28} />, title: 'Voice Intelligence', desc: 'Advanced voice analysis that identifies authentic creator voices and amplifies their impact across audiences.', capabilities: ['Voice tone analysis', 'Audience resonance scoring', 'Multi-language support', 'Sentiment detection'], gradient: 'from-orange-400 to-red-500', img: '/src/assets/images/usingTech.jpg' },
+    { icon: <BrainCircuit size={28} />, title: 'AI Processing Engine', desc: 'The neural backbone of YovoAI. Our proprietary models process, optimize, and enhance content in real-time.', capabilities: ['Deep learning models', 'Real-time processing', 'Content quality scoring', 'Trend prediction'], gradient: 'from-yellow-400 to-amber-500', img: '/src/assets/images/techStyleDash.jpg' },
 ]
 
 const comparisonData = [
@@ -31,12 +75,12 @@ const comparisonData = [
 ]
 
 const ugcFeatures = [
-    { icon: <Layers size={22} />, title: 'Campaign Templates', desc: 'Launch UGC campaigns in minutes with pre-built, customizable templates for any industry.' },
-    { icon: <Sparkles size={22} />, title: 'AI Content Enhancement', desc: 'Automatically enhance creator content with brand elements, subtitles, and visual effects.' },
-    { icon: <Shield size={22} />, title: 'Content Moderation', desc: 'Real-time AI moderation ensures every piece of UGC aligns with your brand guidelines.' },
-    { icon: <Workflow size={22} />, title: 'Automated Workflows', desc: 'Set up approval flows, auto-publishing, and performance-based creator rewards.' },
-    { icon: <Database size={22} />, title: 'Content Library', desc: 'AI-organized content repository with smart tagging, search, and rights management.' },
-    { icon: <Cable size={22} />, title: 'API & Integrations', desc: 'Connect YovoAI to your existing marketing stack with our robust API and 40+ integrations.' },
+    { icon: <LayoutTemplate size={22} />, title: 'Campaign Templates', desc: 'Launch UGC campaigns in minutes with pre-built, customizable templates for any industry.', accent: '#f94b6e' },
+    { icon: <Wand2 size={22} />, title: 'AI Content Enhancement', desc: 'Automatically enhance creator content with brand elements, subtitles, and visual effects.', accent: '#ff8902' },
+    { icon: <ShieldCheck size={22} />, title: 'Content Moderation', desc: 'Real-time AI moderation ensures every piece of UGC aligns with your brand guidelines.', accent: '#fbbf24' },
+    { icon: <Settings2 size={22} />, title: 'Automated Workflows', desc: 'Set up approval flows, auto-publishing, and performance-based creator rewards.', accent: '#f97316' },
+    { icon: <HardDrive size={22} />, title: 'Content Library', desc: 'AI-organized content repository with smart tagging, search, and rights management.', accent: '#ea580c' },
+    { icon: <Puzzle size={22} />, title: 'API & Integrations', desc: 'Connect YovoAI to your existing marketing stack with our robust API and 40+ integrations.', accent: '#e01111' },
 ]
 
 const performanceMetrics = [
@@ -49,15 +93,7 @@ const performanceMetrics = [
 export default function Features() {
     const featuresRef = useRef(null)
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo('.feature-deep-card', { y: 60, opacity: 0, scale: 0.97 }, {
-                y: 0, opacity: 1, scale: 1, stagger: 0.18, duration: 0.7,
-                scrollTrigger: { trigger: featuresRef.current, start: 'top 75%' },
-            })
-        })
-        return () => ctx.revert()
-    }, [])
+    const coreAccents = ['#f94b6e', '#ff8902', '#fbbf24']
 
     return (
         <main className="relative z-10">
@@ -111,14 +147,17 @@ export default function Features() {
 
                     <div className="features-list">
                         {coreFeatures.map((f, i) => (
-                            <div key={f.title} className="feature-deep-card features-card">
+                            <AuroraCard key={f.title} accent={coreAccents[i]} index={i} className="aurora-card--large">
                                 <div className="features-card-grid">
                                     <div className={`features-card-content ${i % 2 !== 0 ? 'features-card-order-lg-2' : ''}`}>
-                                        <div className={`features-card-icon features-gradient-${(i % 5) + 1}`}>
-                                            {f.icon}
+                                        <div className="premium-icon-orb" style={{ '--orb-color': coreAccents[i] }}>
+                                            <div className="premium-icon-orb__inner">
+                                                {f.icon}
+                                            </div>
+                                            <div className="premium-icon-orb__pulse" />
                                         </div>
-                                        <h3 className="features-card-title">{f.title}</h3>
-                                        <p className="features-card-desc">{f.desc}</p>
+                                        <h3 className="aurora-card-title aurora-card-title--lg">{f.title}</h3>
+                                        <p className="aurora-card-desc">{f.desc}</p>
                                         <div className="features-card-capabilities">
                                             {f.capabilities.map((cap) => (
                                                 <div key={cap} className="features-capability-item">
@@ -132,7 +171,7 @@ export default function Features() {
                                         <img src={f.img} alt={f.title} className="features-card-image" />
                                     </div>
                                 </div>
-                            </div>
+                            </AuroraCard>
                         ))}
                     </div>
                 </div>
@@ -149,15 +188,16 @@ export default function Features() {
 
                     <div className="features-grid-3">
                         {ugcFeatures.map((item, i) => (
-                            <SectionReveal key={item.title} delay={i * 0.08}>
-                                <div className="features-small-card">
-                                    <div className="features-small-card-icon">
+                            <AuroraCard key={item.title} accent={item.accent} index={i}>
+                                <div className="premium-icon-orb" style={{ '--orb-color': item.accent }}>
+                                    <div className="premium-icon-orb__inner">
                                         {item.icon}
                                     </div>
-                                    <h3 className="features-small-card-title">{item.title}</h3>
-                                    <p className="features-small-card-desc">{item.desc}</p>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                            </SectionReveal>
+                                <h3 className="aurora-card-title">{item.title}</h3>
+                                <p className="aurora-card-desc">{item.desc}</p>
+                            </AuroraCard>
                         ))}
                     </div>
                 </div>
@@ -199,18 +239,21 @@ export default function Features() {
                         <SectionReveal delay={0.15}>
                             <div className="features-grid-2x2">
                                 {[
-                                    { icon: <Eye size={22} />, title: 'Smart Preview', desc: 'See how your content will perform before publishing' },
-                                    { icon: <Clock size={22} />, title: 'Optimal Timing', desc: 'AI determines the perfect moment to publish' },
-                                    { icon: <TrendingUp size={22} />, title: 'Growth Insights', desc: 'Actionable recommendations for continuous improvement' },
-                                    { icon: <Sliders size={22} />, title: 'A/B Testing', desc: 'Automated content variants for maximum impact' },
-                                ].map((item) => (
-                                    <div key={item.title} className="features-tiny-card">
-                                        <div className="features-tiny-card-icon">
-                                            {item.icon}
+                                    { icon: <Eye size={22} />, title: 'Smart Preview', desc: 'See how your content will perform before publishing', accent: '#f94b6e' },
+                                    { icon: <Clock size={22} />, title: 'Optimal Timing', desc: 'AI determines the perfect moment to publish', accent: '#ff8902' },
+                                    { icon: <TrendingUp size={22} />, title: 'Growth Insights', desc: 'Actionable recommendations for continuous improvement', accent: '#fbbf24' },
+                                    { icon: <Sliders size={22} />, title: 'A/B Testing', desc: 'Automated content variants for maximum impact', accent: '#ea580c' },
+                                ].map((item, i) => (
+                                    <AuroraCard key={item.title} accent={item.accent} index={i} className="aurora-card--compact">
+                                        <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': item.accent }}>
+                                            <div className="premium-icon-orb__inner">
+                                                {item.icon}
+                                            </div>
+                                            <div className="premium-icon-orb__pulse" />
                                         </div>
-                                        <h4 className="features-tiny-card-title">{item.title}</h4>
-                                        <p className="features-tiny-card-desc">{item.desc}</p>
-                                    </div>
+                                        <h4 className="aurora-card-title aurora-card-title--sm">{item.title}</h4>
+                                        <p className="aurora-card-desc aurora-card-desc--sm">{item.desc}</p>
+                                    </AuroraCard>
                                 ))}
                             </div>
                         </SectionReveal>

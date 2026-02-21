@@ -1,33 +1,81 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-    ArrowRight, Sparkles, Video, Mic, TrendingUp, DollarSign,
-    Users, Target, Zap, Award, Globe, Heart,
-    Star, CheckCircle, Wallet, Camera, PenTool,
-    Layers, Share2, Crown
+    ArrowRight, Wand2, Video, AudioWaveform, LineChart, HandCoins,
+    Network, Target, Zap, Trophy, Globe2, MessageCircle,
+    Star, CheckCircle, Wallet, Camera, Scissors,
+    LayoutTemplate, Languages, Rocket, Crown, GraduationCap, Medal, Sparkles
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './ForCreators.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* ─── Nova Glass Card Component (Creators-specific) ─── */
+function NovaCard({ children, accent = '#ea580c', index = 0, className = '' }) {
+    const cardRef = useRef(null)
+    const [isHovered, setIsHovered] = useState(false)
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: '-40px' })
+
+    const handleMouseMove = useCallback((e) => {
+        const card = cardRef.current
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        card.style.setProperty('--nx', `${x}px`)
+        card.style.setProperty('--ny', `${y}px`)
+    }, [])
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ type: 'spring', damping: 20, stiffness: 100, delay: index * 0.1 }}
+            className={`nova-card-wrap ${className}`}
+        >
+            <div
+                ref={cardRef}
+                className={`nova-card ${isHovered ? 'nova-card--lit' : ''}`}
+                style={{ '--nova-accent': accent }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onMouseMove={handleMouseMove}
+            >
+                {/* Fluid Background Layer */}
+                <div className="nova-card__fluid" />
+                {/* Interactive Spotlight Layer */}
+                <div className="nova-card__spotlight" />
+                {/* Border Glow */}
+                <div className="nova-card__border" />
+                {/* Content */}
+                <div className="nova-card__content">
+                    {children}
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
 const creatorBenefits = [
-    { icon: <DollarSign size={28} />, title: 'Earn While You Create', desc: 'Get paid for doing what you love. Transparent payments ensure creators earn fairly.', highlight: 'Avg. ₹15K/month' },
-    { icon: <Sparkles size={28} />, title: 'AI-Powered Content Tools', desc: 'Access cutting-edge AI tools — better editing, smarter captions, and trend-aware styling.', highlight: 'Professional-grade AI' },
-    { icon: <TrendingUp size={28} />, title: 'Growth Analytics', desc: 'Deep analytics to understand what works. Track performance and audience growth in real-time.', highlight: 'Real-time insights' },
-    { icon: <Users size={28} />, title: 'Community & Network', desc: 'Join 10,000+ creators. Collaborate, learn, and grow together in a creator-first ecosystem.', highlight: '10K+ creators' },
+    { icon: <HandCoins size={28} />, title: 'Earn While You Create', desc: 'Get paid for doing what you love. Transparent payments ensure creators earn fairly.', highlight: 'Avg. ₹15K/month' },
+    { icon: <Wand2 size={28} />, title: 'AI-Powered Content Tools', desc: 'Access cutting-edge AI tools — better editing, smarter captions, and trend-aware styling.', highlight: 'Professional-grade AI' },
+    { icon: <LineChart size={28} />, title: 'Growth Analytics', desc: 'Deep analytics to understand what works. Track performance and audience growth in real-time.', highlight: 'Real-time insights' },
+    { icon: <Network size={28} />, title: 'Community & Network', desc: 'Join 10,000+ creators. Collaborate, learn, and grow together in a creator-first ecosystem.', highlight: '10K+ creators' },
 ]
 
 const creatorTools = [
-    { icon: <Camera size={22} />, title: 'Smart Capture', desc: 'AI-assisted recording that helps frame, light, and compose your shots.' },
-    { icon: <PenTool size={22} />, title: 'Auto-Edit Suite', desc: 'One-tap editing — raw footage to polished content with transitions and effects.' },
-    { icon: <Mic size={22} />, title: 'Voice Enhancement', desc: 'Clean audio, add background music, and enhance voice quality automatically.' },
-    { icon: <Layers size={22} />, title: 'Template Library', desc: 'Hundreds of trending templates for every platform and niche.' },
-    { icon: <Globe size={22} />, title: 'Multi-Language Subtitles', desc: 'AI generates accurate subtitles in 20+ languages for global reach.' },
-    { icon: <Share2 size={22} />, title: 'Smart Distribution', desc: 'Optimized publishing across all platforms with format-specific adaptation.' },
+    { icon: <Video size={22} />, title: 'Smart Capture', desc: 'AI-assisted recording that helps frame, light, and compose your shots.' },
+    { icon: <Scissors size={22} />, title: 'Auto-Edit Suite', desc: 'One-tap editing — raw footage to polished content with transitions and effects.' },
+    { icon: <AudioWaveform size={22} />, title: 'Voice Enhancement', desc: 'Clean audio, add background music, and enhance voice quality automatically.' },
+    { icon: <LayoutTemplate size={22} />, title: 'Template Library', desc: 'Hundreds of trending templates for every platform and niche.' },
+    { icon: <Languages size={22} />, title: 'Multi-Language Subtitles', desc: 'AI generates accurate subtitles in 20+ languages for global reach.' },
+    { icon: <Rocket size={22} />, title: 'Smart Distribution', desc: 'Optimized publishing across all platforms with format-specific adaptation.' },
 ]
 
 const earningTiers = [
@@ -38,10 +86,10 @@ const earningTiers = [
 ]
 
 const communityFeatures = [
-    { icon: <Heart size={22} />, title: 'Creator Forums', desc: 'Connect and share insights with fellow creators in our exclusive community.' },
-    { icon: <Award size={22} />, title: 'Monthly Challenges', desc: 'Themed challenges with cash prizes, brand exposure, and recognition.' },
-    { icon: <Crown size={22} />, title: 'Creator Academy', desc: 'Free courses on content creation, brand strategy, and audience growth.' },
-    { icon: <Star size={22} />, title: 'Leaderboards', desc: 'Compete with peers and climb ranks to unlock exclusive perks and brand deals.' },
+    { icon: <MessageCircle size={22} />, title: 'Creator Forums', desc: 'Connect and share insights with fellow creators in our exclusive community.' },
+    { icon: <Trophy size={22} />, title: 'Monthly Challenges', desc: 'Themed challenges with cash prizes, brand exposure, and recognition.' },
+    { icon: <GraduationCap size={22} />, title: 'Creator Academy', desc: 'Free courses on content creation, brand strategy, and audience growth.' },
+    { icon: <Medal size={22} />, title: 'Leaderboards', desc: 'Compete with peers and climb ranks to unlock exclusive perks and brand deals.' },
 ]
 
 const successStories = [
@@ -52,16 +100,10 @@ const successStories = [
 
 export default function ForCreators() {
     const benefitsRef = useRef(null)
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo('.benefit-card', { y: 50, opacity: 0, scale: 0.95 }, {
-                y: 0, opacity: 1, scale: 1, stagger: 0.15, duration: 0.7,
-                scrollTrigger: { trigger: benefitsRef.current, start: 'top 75%' },
-            })
-        })
-        return () => ctx.revert()
-    }, [])
+    const benefitAccents = ['#22c55e', '#f94b6e', '#ff8902', '#3b82f6']
+    const toolAccents = ['#8b5cf6', '#ec4899', '#f97316', '#14b8a6', '#facc15', '#f43f5e']
+    const tierAccents = ['#94a3b8', '#38bdf8', '#f59e0b', '#ef4444']
+    const communityAccents = ['#f43f5e', '#fbbf24', '#eab308', '#2dd4bf']
 
     return (
         <main className="fc-main">
@@ -93,7 +135,7 @@ export default function ForCreators() {
                         </motion.p>
                         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="fc-hero-cta">
                             <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="magnetic-btn btn-primary">
-                                <Sparkles size={18} /> Join as Creator
+                                <Wand2 size={18} /> Join as Creator
                             </a>
                             <Link to="/features" className="magnetic-btn btn-outline">See Creator Tools <ArrowRight size={18} /></Link>
                         </motion.div>
@@ -111,13 +153,18 @@ export default function ForCreators() {
                     </SectionReveal>
 
                     <div className="fc-grid-2">
-                        {creatorBenefits.map((b) => (
-                            <div key={b.title} className="benefit-card glass-card fc-benefit-card hover-depth">
-                                <div className="fc-benefit-icon gradient-brand">{b.icon}</div>
-                                <h3 className="fc-benefit-title">{b.title}</h3>
-                                <p className="fc-benefit-desc">{b.desc}</p>
+                        {creatorBenefits.map((b, i) => (
+                            <NovaCard key={b.title} accent={benefitAccents[i]} index={i} className="fc-benefit-card">
+                                <div className="premium-icon-orb" style={{ '--orb-color': benefitAccents[i] }}>
+                                    <div className="premium-icon-orb__inner">
+                                        {b.icon}
+                                    </div>
+                                    <div className="premium-icon-orb__pulse" />
+                                </div>
+                                <h3 className="nova-card-title">{b.title}</h3>
+                                <p className="nova-card-desc">{b.desc}</p>
                                 <span className="fc-benefit-highlight gradient-text">{b.highlight}</span>
-                            </div>
+                            </NovaCard>
                         ))}
                     </div>
                 </div>
@@ -134,13 +181,16 @@ export default function ForCreators() {
 
                     <div className="fc-grid-3">
                         {creatorTools.map((tool, i) => (
-                            <SectionReveal key={tool.title} delay={i * 0.08}>
-                                <div className="glass-card fc-tool-card hover-depth">
-                                    <div className="fc-tool-icon gradient-brand">{tool.icon}</div>
-                                    <h3 className="fc-tool-title">{tool.title}</h3>
-                                    <p className="fc-tool-desc">{tool.desc}</p>
+                            <NovaCard key={tool.title} accent={toolAccents[i]} index={i} className="fc-tool-card">
+                                <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': toolAccents[i] }}>
+                                    <div className="premium-icon-orb__inner">
+                                        {tool.icon}
+                                    </div>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                            </SectionReveal>
+                                <h3 className="nova-card-title nova-card-title--sm">{tool.title}</h3>
+                                <p className="nova-card-desc nova-card-desc--sm">{tool.desc}</p>
+                            </NovaCard>
                         ))}
                     </div>
                 </div>
@@ -157,22 +207,20 @@ export default function ForCreators() {
 
                     <div className="fc-grid-4">
                         {earningTiers.map((tier, i) => (
-                            <SectionReveal key={tier.tier} delay={i * 0.08}>
-                                <div className={`glass-card fc-tier-card hover-depth ${i === 3 ? 'fc-tier-top' : ''}`}>
-                                    {i === 3 && <div className="fc-tier-badge gradient-brand">TOP TIER</div>}
-                                    <h3 className="fc-tier-name">{tier.tier}</h3>
-                                    <p className="fc-tier-range">{tier.range}</p>
-                                    <div className="fc-tier-earnings gradient-text">{tier.earnings}</div>
-                                    <ul className="fc-tier-perks">
-                                        {tier.perks.map((perk) => (
-                                            <li key={perk} className="fc-tier-perk">
-                                                <CheckCircle size={14} className="fc-tier-perk-icon" />
-                                                {perk}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </SectionReveal>
+                            <NovaCard key={tier.tier} accent={tierAccents[i]} index={i} className={`fc-tier-card ${i === 3 ? 'fc-tier-top' : ''}`}>
+                                {i === 3 && <div className="fc-tier-badge" style={{ background: `linear-gradient(135deg, ${tierAccents[i]}, #000)` }}>TOP TIER</div>}
+                                <h3 className="nova-card-title">{tier.tier}</h3>
+                                <p className="fc-tier-range" style={{ color: tierAccents[i] }}>{tier.range}</p>
+                                <div className="fc-tier-earnings gradient-text">{tier.earnings}</div>
+                                <ul className="fc-tier-perks">
+                                    {tier.perks.map((perk) => (
+                                        <li key={perk} className="fc-tier-perk nova-card-desc nova-card-desc--sm">
+                                            <CheckCircle size={14} className="fc-tier-perk-icon" style={{ color: tierAccents[i] }} />
+                                            {perk}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </NovaCard>
                         ))}
                     </div>
                 </div>
@@ -183,7 +231,7 @@ export default function ForCreators() {
                 <div className="container-lg fc-px">
                     <div className="fc-community-grid">
                         <SectionReveal>
-                            <span className="section-label"><Heart size={14} /> Community</span>
+                            <span className="section-label"><Network size={14} /> Community</span>
                             <h2 className="section-heading fc-heading-tight">
                                 Build your <span className="gradient-text">tribe.</span>
                                 <br />Grow <span className="gradient-text">together.</span>
@@ -223,37 +271,35 @@ export default function ForCreators() {
 
                     <div className="fc-grid-3">
                         {successStories.map((story, i) => (
-                            <SectionReveal key={story.name} delay={i * 0.12}>
-                                <div className="glass-card fc-story-card hover-depth">
-                                    <div className="fc-story-header">
-                                        <div className="fc-story-avatar gradient-brand">
-                                            {story.name.split(' ').map(n => n[0]).join('')}
-                                        </div>
-                                        <div>
-                                            <div className="fc-story-name">{story.name}</div>
-                                            <div className="fc-story-niche">{story.niche} Creator</div>
-                                        </div>
+                            <NovaCard key={story.name} accent="#fbbf24" index={i} className="fc-story-card">
+                                <div className="fc-story-header">
+                                    <div className="nova-icon-box nova-icon-box--sm" style={{ '--nova-accent': '#fbbf24', borderRadius: '50%' }}>
+                                        {story.name.split(' ').map(n => n[0]).join('')}
                                     </div>
-                                    <div className="fc-story-stats">
-                                        <div className="fc-story-stat">
-                                            <div className="fc-story-stat-value gradient-text">{story.followers}</div>
-                                            <div className="fc-story-stat-label">Followers</div>
-                                        </div>
-                                        <div className="fc-story-stat">
-                                            <div className="fc-story-stat-value gradient-text">{story.earnings}</div>
-                                            <div className="fc-story-stat-label">Earnings</div>
-                                        </div>
-                                        <div className="fc-story-stat">
-                                            <div className="fc-story-stat-value fc-text-green">{story.growth}</div>
-                                            <div className="fc-story-stat-label">Growth</div>
-                                        </div>
-                                    </div>
-                                    <p className="fc-story-quote">"{story.quote}"</p>
-                                    <div className="fc-story-stars">
-                                        {[...Array(5)].map((_, j) => <Star key={j} size={14} className="fc-star-icon" />)}
+                                    <div>
+                                        <div className="nova-card-title nova-card-title--sm">{story.name}</div>
+                                        <div className="nova-card-desc nova-card-desc--sm">{story.niche} Creator</div>
                                     </div>
                                 </div>
-                            </SectionReveal>
+                                <div className="fc-story-stats">
+                                    <div className="fc-story-stat">
+                                        <div className="fc-story-stat-value gradient-text">{story.followers}</div>
+                                        <div className="fc-story-stat-label">Followers</div>
+                                    </div>
+                                    <div className="fc-story-stat">
+                                        <div className="fc-story-stat-value gradient-text">{story.earnings}</div>
+                                        <div className="fc-story-stat-label">Earnings</div>
+                                    </div>
+                                    <div className="fc-story-stat">
+                                        <div className="fc-story-stat-value fc-text-green">{story.growth}</div>
+                                        <div className="fc-story-stat-label">Growth</div>
+                                    </div>
+                                </div>
+                                <p className="fc-story-quote">"{story.quote}"</p>
+                                <div className="fc-story-stars">
+                                    {[...Array(5)].map((_, j) => <Star key={j} size={14} className="fc-star-icon" />)}
+                                </div>
+                            </NovaCard>
                         ))}
                     </div>
                 </div>
@@ -263,7 +309,7 @@ export default function ForCreators() {
             <section className="section-padding gradient-subtle">
                 <div className="container-lg fc-px fc-text-center">
                     <SectionReveal>
-                        <div className="glass-card fc-cta-card">
+                        <NovaCard accent="#f43f5e" className="fc-cta-card">
                             <h2 className="section-heading fc-mb-4">You create. We <span className="gradient-text">amplify.</span></h2>
                             <p className="fc-cta-highlight gradient-text">The world listens.</p>
                             <p className="fc-cta-desc">
@@ -271,11 +317,11 @@ export default function ForCreators() {
                             </p>
                             <div className="fc-cta-buttons">
                                 <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="magnetic-btn btn-primary">
-                                    <Sparkles size={18} /> Start Creating Today
+                                    <Wand2 size={18} /> Start Creating Today
                                 </a>
                                 <Link to="/for-brands" className="magnetic-btn btn-outline">Or Explore for Brands <ArrowRight size={18} /></Link>
                             </div>
-                        </div>
+                        </NovaCard>
                     </SectionReveal>
                 </div>
             </section>

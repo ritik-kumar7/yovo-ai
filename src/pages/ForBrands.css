@@ -106,6 +106,10 @@
 }
 
 .fb-hero-title .gradient-text {
+    background: linear-gradient(135deg, #404040 0%, #0A0A0A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     text-shadow: none;
 }
 
@@ -142,6 +146,215 @@
     gap: 1rem;
 }
 
+/* ════════════════════ ELITE PRISM CARD SYSTEM (FOR BRANDS) ════════════════════ */
+.prism-card-wrapper {
+    height: 100%;
+    perspective: 1200px;
+}
+
+.prism-card {
+    position: relative;
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.4);
+    /* highly transparent for maximum glass */
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    height: 100%;
+    box-shadow:
+        0 4px 24px -6px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+    z-index: 1;
+}
+
+.prism-card:hover {
+    transform: translateY(-12px) scale(1.02) rotateX(3deg);
+    box-shadow:
+        0 30px 60px -15px rgba(0, 0, 0, 0.15),
+        0 8px 30px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 0 40px rgba(255, 255, 255, 0.5);
+    z-index: 10;
+}
+
+/* Rotating gradient border via pseudoelement underneath */
+.prism-card__border {
+    position: absolute;
+    inset: -2px;
+    z-index: 0;
+    background: conic-gradient(from 0deg,
+            transparent 0%,
+            transparent 40%,
+            var(--prism-accent, #f97316) 50%,
+            color-mix(in srgb, var(--prism-accent) 40%, #fff) 55%,
+            var(--prism-accent, #f97316) 60%,
+            transparent 70%,
+            transparent 100%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: prismSpin 4s linear infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    padding: 2px;
+}
+
+.prism-card--lit .prism-card__border {
+    opacity: 1;
+}
+
+@keyframes prismSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Inner glass layer bounds content so border can be outside */
+.prism-card__glass {
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(1.5rem - 1px);
+    background: inherit;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Soft holographic glow tracking cursor */
+.prism-card__glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(500px circle at var(--px, 50%) var(--py, 50%),
+            color-mix(in srgb, var(--prism-accent, #f97316) 15%, transparent),
+            transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.prism-card--lit .prism-card__glow {
+    opacity: 1;
+}
+
+/* Diagonal reflection glare tracking cursor inverted */
+.prism-card__glare {
+    position: absolute;
+    inset: -100%;
+    pointer-events: none;
+    background: linear-gradient(60deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.1) 45%,
+            rgba(255, 255, 255, 0.4) 50%,
+            rgba(255, 255, 255, 0.1) 55%,
+            transparent 70%);
+    transform: translate(calc(var(--px, 0px) * -0.5), calc(var(--py, 0px) * -0.5));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.prism-card--lit .prism-card__glare {
+    opacity: 1;
+}
+
+.prism-card__content {
+    position: relative;
+    z-index: 2;
+    padding: 1.75rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .prism-card__content {
+        padding: 2.25rem;
+    }
+}
+
+/* --- Prism Typography & Elements --- */
+.prism-icon-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: linear-gradient(135deg,
+            var(--prism-accent),
+            color-mix(in srgb, var(--prism-accent) 60%, #000));
+    box-shadow:
+        0 8px 20px color-mix(in srgb, var(--prism-accent) 40%, transparent),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    margin-bottom: 1.5rem;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.prism-card--lit .prism-icon-box {
+    transform: scale(1.15) translateY(-4px);
+    box-shadow:
+        0 15px 30px color-mix(in srgb, var(--prism-accent) 50%, transparent),
+        inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.prism-icon-box--lg {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 1.25rem;
+}
+
+.prism-card-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--c-text);
+    margin-bottom: 0.75rem;
+    font-family: var(--f-heading);
+    letter-spacing: -0.02em;
+    position: relative;
+    display: inline-block;
+}
+
+.prism-card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--prism-accent, #f97316), transparent);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.prism-card--lit .prism-card-title::after {
+    width: 100%;
+}
+
+.prism-card-title--lg {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.prism-card-desc {
+    color: var(--c-text-sec);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+.prism-card-desc--lg {
+    font-size: 1.125rem;
+}
+
 /* ════════════════════ BRAND PROBLEMS ════════════════════ */
 .fb-center-header {
     text-align: center;
@@ -166,56 +379,15 @@
     color: #ef4444;
 }
 
-.fb-text-orange {
-    color: #f97316;
-}
-
-.fb-text-green {
-    color: #22c55e;
-}
-
 .fb-grid-2 {
     display: grid;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 @media (min-width: 768px) {
     .fb-grid-2 {
         grid-template-columns: repeat(2, 1fr);
     }
-}
-
-.fb-problem-card {
-    border-radius: 1rem;
-    padding: 1.75rem;
-    border-left: 4px solid rgba(252, 165, 165, 0.5);
-    height: 100%;
-}
-
-.fb-problem-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.75rem;
-    background: #fef2f2;
-    color: #f87171;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.25rem;
-}
-
-.fb-problem-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #0f0f1a;
-    margin-bottom: 0.5rem;
-    font-family: var(--f-heading);
-}
-
-.fb-problem-desc {
-    color: #5a5a7a;
-    font-size: 0.875rem;
-    line-height: 1.625;
 }
 
 /* ════════════════════ SOLUTIONS ════════════════════ */
@@ -236,23 +408,12 @@
 .fb-solutions-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-}
-
-.fb-solution-card {
-    border-radius: 1.5rem;
-    padding: 2rem;
-}
-
-@media (min-width: 768px) {
-    .fb-solution-card {
-        padding: 2.5rem;
-    }
+    gap: 2rem;
 }
 
 .fb-solution-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 2rem;
     align-items: center;
 }
 
@@ -260,30 +421,6 @@
     .fb-solution-grid {
         grid-template-columns: 2fr 1fr;
     }
-}
-
-.fb-solution-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1rem;
-    color: #fff;
-    margin-bottom: 1.25rem;
-}
-
-.fb-solution-title {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #0f0f1a;
-    margin-bottom: 0.75rem;
-    font-family: var(--f-heading);
-}
-
-.fb-solution-desc {
-    color: #4a4a68;
-    line-height: 1.625;
 }
 
 .fb-solution-metric-wrap {
@@ -297,21 +434,39 @@
     }
 }
 
-.fb-solution-metric {
-    border-radius: 1rem;
-    padding: 1rem 1.5rem;
+.prism-metric-box {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 1.25rem;
+    padding: 1.5rem 2.5rem;
     text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s ease;
 }
 
-.fb-solution-metric-value {
-    font-size: 1.5rem;
-    font-weight: 800;
+.prism-card--lit .prism-metric-box {
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transform: scale(1.05);
+}
+
+.prism-metric-value {
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--prism-accent), #000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
 }
 
-.fb-solution-metric-label {
-    font-size: 0.75rem;
-    color: #7a7a9a;
+.prism-metric-label {
+    font-size: 0.875rem;
+    color: var(--c-text-sec);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
 }
 
 /* ════════════════════ BRAND DASHBOARD ════════════════════ */

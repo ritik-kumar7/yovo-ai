@@ -1,24 +1,35 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-    ArrowRight, Eye, Lightbulb, Rocket, Heart, Globe, Zap,
-    CheckCircle, Target, Users, Brain, Sparkles
+    ArrowRight, Eye, Lightbulb, Rocket, Heart, Globe2, Zap,
+    CheckCircle, Target, Brain, Sparkles, UserCog,
+    Activity, ShieldCheck, Crown, BadgeCheck, HeartHandshake,
+    LineChart
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './About.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const aiPhilosophy = [
+    { icon: <Brain size={24} />, title: 'Contextual Intelligence', desc: 'Our AI understands cultural context, brand nuance, and audience psychology — not just keywords.', accent: '#f94b6e' },
+    { icon: <UserCog size={24} />, title: 'Human-in-the-Loop', desc: 'Every AI suggestion is a starting point. Creators always have the final say on their content.', accent: '#e01111' },
+    { icon: <Activity size={24} />, title: 'Real-Time Adaptation', desc: 'Our models learn continuously from engagement patterns to make each piece of content better.', accent: '#ff8902' },
+    { icon: <ShieldCheck size={24} />, title: 'Ethical AI', desc: 'Transparent algorithms, fair creator compensation, and zero exploitation. Our AI has principles.', accent: '#f97316' },
+    { icon: <Globe2 size={24} />, title: 'Cultural Sensitivity', desc: 'Built-in understanding of regional nuances, languages, and cultural contexts for global reach.', accent: '#fbbf24' },
+    { icon: <Crown size={24} />, title: 'Creator Empowerment', desc: 'AI tools designed to make creators better — not dependencies, but superpowers.', accent: '#ea580c' },
+]
+
 const values = [
-    { icon: <Eye size={26} />, title: 'Authenticity First', desc: 'We believe in the power of real voices. Every piece of content should feel genuine, not manufactured.', color: 'bg-grad-1' },
-    { icon: <Lightbulb size={26} />, title: 'Innovation Always', desc: 'We push boundaries with AI that understands culture, context, and the nuances of human communication.', color: 'bg-grad-2' },
-    { icon: <Heart size={26} />, title: 'Community Centered', desc: 'We build for communities, not just companies. When creators thrive, brands follow.', color: 'bg-grad-3' },
-    { icon: <Globe size={26} />, title: 'Global Vision', desc: "Every voice matters, everywhere. We're building a platform that transcends borders and languages.", color: 'bg-grad-4' },
-    { icon: <Zap size={26} />, title: 'Speed of Culture', desc: 'Content moves fast. Our AI moves faster — adapting in real time to trends and conversations.', color: 'bg-grad-5' },
-    { icon: <Target size={26} />, title: 'Results Driven', desc: 'Beautiful content means nothing without results. Every feature drives measurable impact.', color: 'bg-grad-6' },
+    { icon: <BadgeCheck size={24} />, title: 'Authenticity First', desc: 'We believe in the power of real voices. Every piece of content should feel genuine, not manufactured.', accent: '#f94b6e' },
+    { icon: <Lightbulb size={24} />, title: 'Innovation Always', desc: 'We push boundaries with AI that understands culture, context, and the nuances of human communication.', accent: '#ff8902' },
+    { icon: <HeartHandshake size={24} />, title: 'Community Centered', desc: 'We build for communities, not just companies. When creators thrive, brands follow.', accent: '#fbbf24' },
+    { icon: <Globe2 size={24} />, title: 'Global Vision', desc: "Every voice matters, everywhere. We're building a platform that transcends borders and languages.", accent: '#f97316' },
+    { icon: <Zap size={24} />, title: 'Speed of Culture', desc: 'Content moves fast. Our AI moves faster — adapting in real time to trends and conversations.', accent: '#e01111' },
+    { icon: <LineChart size={24} />, title: 'Results Driven', desc: 'Beautiful content means nothing without results. Every feature drives measurable impact.', accent: '#ea580c' },
 ]
 
 const roadmap = [
@@ -27,6 +38,48 @@ const roadmap = [
     { phase: 'Phase 3', title: 'Scale', status: 'upcoming', items: ['Multi-language AI', 'Enterprise API', 'Global creator network', 'Advanced AI models'] },
     { phase: 'Phase 4', title: 'Next Frontier', status: 'upcoming', items: ['Voice-first creation', 'AR/VR content', 'AI brand agents', 'Decentralized UGC'] },
 ]
+
+/* ─── Neon Edge Card Component (About-specific) ─── */
+function NeonEdgeCard({ children, accent = '#f97316', index = 0, className = '' }) {
+    const cardRef = useRef(null)
+    const [isHovered, setIsHovered] = useState(false)
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: '-50px' })
+
+    const handleMouseMove = useCallback((e) => {
+        const card = cardRef.current
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        card.style.setProperty('--mouse-x', `${x}px`)
+        card.style.setProperty('--mouse-y', `${y}px`)
+    }, [])
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+        >
+            <div
+                ref={cardRef}
+                className={`neon-card ${isHovered ? 'neon-card--active' : ''} ${className}`}
+                style={{ '--neon-accent': accent }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onMouseMove={handleMouseMove}
+            >
+                <div className="neon-card__edge" />
+                <div className="neon-card__spotlight" />
+                <div className="neon-card__content">
+                    {children}
+                </div>
+            </div>
+        </motion.div>
+    )
+}
 
 export default function About() {
     const timelineRef = useRef(null)
@@ -79,34 +132,36 @@ export default function About() {
             <section className="section-padding">
                 <div className="container-lg">
                     <div className="about-split-grid">
-                        <SectionReveal>
-                            <div className="about-vision-card hover-depth">
-                                <div className="about-vision-icon-1">
+                        <NeonEdgeCard accent="#f97316" index={0} className="neon-card--vision">
+                            <div className="premium-icon-orb" style={{ '--orb-color': '#f97316' }}>
+                                <div className="premium-icon-orb__inner">
                                     <Eye size={28} />
                                 </div>
-                                <h2 className="about-vision-title">Our Vision</h2>
-                                <p className="about-vision-desc">
-                                    A world where every authentic voice has the power to shape culture, drive commerce, and build communities — powered by AI that elevates human creativity.
-                                </p>
-                                <p className="about-vision-subdesc">
-                                    We envision a future where brands don't broadcast messages — they inspire movements. Where AI doesn't create content — it amplifies the brilliance that's already there.
-                                </p>
+                                <div className="premium-icon-orb__pulse" />
                             </div>
-                        </SectionReveal>
-                        <SectionReveal delay={0.15}>
-                            <div className="about-vision-card hover-depth">
-                                <div className="about-vision-icon-2">
+                            <h2 className="neon-vision-title">Our Vision</h2>
+                            <p className="neon-vision-desc">
+                                A world where every authentic voice has the power to shape culture, drive commerce, and build communities — powered by AI that elevates human creativity.
+                            </p>
+                            <p className="neon-vision-subdesc">
+                                We envision a future where brands don't broadcast messages — they inspire movements. Where AI doesn't create content — it amplifies the brilliance that's already there.
+                            </p>
+                        </NeonEdgeCard>
+                        <NeonEdgeCard accent="#ea580c" index={1} className="neon-card--vision">
+                            <div className="premium-icon-orb" style={{ '--orb-color': '#ea580c' }}>
+                                <div className="premium-icon-orb__inner">
                                     <Rocket size={28} />
                                 </div>
-                                <h2 className="about-vision-title">Our Mission</h2>
-                                <p className="about-vision-desc">
-                                    To democratize content creation by building the most powerful AI-powered UGC platform — one that makes every brand story irresistible and every creator unstoppable.
-                                </p>
-                                <p className="about-vision-subdesc">
-                                    We're creating an ecosystem where creators earn, brands grow, and communities flourish. Every day, we make content creation simpler, smarter, and more impactful.
-                                </p>
+                                <div className="premium-icon-orb__pulse" />
                             </div>
-                        </SectionReveal>
+                            <h2 className="neon-vision-title">Our Mission</h2>
+                            <p className="neon-vision-desc">
+                                To democratize content creation by building the most powerful AI-powered UGC platform — one that makes every brand story irresistible and every creator unstoppable.
+                            </p>
+                            <p className="neon-vision-subdesc">
+                                We're creating an ecosystem where creators earn, brands grow, and communities flourish. Every day, we make content creation simpler, smarter, and more impactful.
+                            </p>
+                        </NeonEdgeCard>
                     </div>
                 </div>
             </section>
@@ -150,23 +205,17 @@ export default function About() {
                     </SectionReveal>
 
                     <div className="about-grid-cols-3">
-                        {[
-                            { icon: <Brain size={24} />, title: 'Contextual Intelligence', desc: 'Our AI understands cultural context, brand nuance, and audience psychology — not just keywords.' },
-                            { icon: <Users size={24} />, title: 'Human-in-the-Loop', desc: 'Every AI suggestion is a starting point. Creators always have the final say on their content.' },
-                            { icon: <Zap size={24} />, title: 'Real-Time Adaptation', desc: 'Our models learn continuously from engagement patterns to make each piece of content better.' },
-                            { icon: <Target size={24} />, title: 'Ethical AI', desc: 'Transparent algorithms, fair creator compensation, and zero exploitation. Our AI has principles.' },
-                            { icon: <Globe size={24} />, title: 'Cultural Sensitivity', desc: 'Built-in understanding of regional nuances, languages, and cultural contexts for global reach.' },
-                            { icon: <Heart size={24} />, title: 'Creator Empowerment', desc: 'AI tools designed to make creators better — not dependencies, but superpowers.' },
-                        ].map((item, i) => (
-                            <SectionReveal key={item.title} delay={i * 0.08}>
-                                <div className="about-card hover-depth">
-                                    <div className="about-card-icon gradient-brand">
+                        {aiPhilosophy.map((item, i) => (
+                            <NeonEdgeCard key={item.title} accent={item.accent} index={i}>
+                                <div className="premium-icon-orb" style={{ '--orb-color': item.accent }}>
+                                    <div className="premium-icon-orb__inner">
                                         {item.icon}
                                     </div>
-                                    <h3 className="about-card-title">{item.title}</h3>
-                                    <p className="about-card-desc">{item.desc}</p>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                            </SectionReveal>
+                                <h3 className="neon-card-title">{item.title}</h3>
+                                <p className="neon-card-desc">{item.desc}</p>
+                            </NeonEdgeCard>
                         ))}
                     </div>
                 </div>
@@ -182,15 +231,16 @@ export default function About() {
 
                     <div className="about-grid-cols-3">
                         {values.map((v, i) => (
-                            <SectionReveal key={v.title} delay={i * 0.08}>
-                                <div className="about-card hover-depth">
-                                    <div className={`about-card-icon ${v.color}`}>
+                            <NeonEdgeCard key={v.title} accent={v.accent} index={i}>
+                                <div className="premium-icon-orb" style={{ '--orb-color': v.accent }}>
+                                    <div className="premium-icon-orb__inner">
                                         {v.icon}
                                     </div>
-                                    <h3 className="about-card-title">{v.title}</h3>
-                                    <p className="about-card-desc">{v.desc}</p>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                            </SectionReveal>
+                                <h3 className="neon-card-title">{v.title}</h3>
+                                <p className="neon-card-desc">{v.desc}</p>
+                            </NeonEdgeCard>
                         ))}
                     </div>
                 </div>
@@ -206,23 +256,26 @@ export default function About() {
                     </SectionReveal>
 
                     <div className="about-roadmap-grid">
-                        {roadmap.map((phase) => (
-                            <div key={phase.phase} className={`about-roadmap-card hover-depth ${phase.status === 'current' ? 'current' : ''}`}>
-                                {phase.status === 'current' && (
-                                    <div className="about-roadmap-badge gradient-brand">CURRENT</div>
-                                )}
-                                <div className="about-roadmap-phase">{phase.phase}</div>
-                                <h3 className="about-roadmap-title">{phase.title}</h3>
-                                <ul className="about-roadmap-list">
-                                    {phase.items.map((item) => (
-                                        <li key={item} className="about-roadmap-item">
-                                            <CheckCircle size={14} className={`about-roadmap-icon ${phase.status === 'completed' ? 'text-completed' : phase.status === 'current' ? 'text-current' : 'text-upcoming'}`} />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
+                        {roadmap.map((phase, i) => {
+                            const statusAccent = phase.status === 'completed' ? '#22c55e' : phase.status === 'current' ? '#f97316' : '#94a3b8'
+                            return (
+                                <NeonEdgeCard key={phase.phase} accent={statusAccent} index={i} className={`neon-roadmap ${phase.status === 'current' ? 'neon-roadmap--current' : ''}`}>
+                                    {phase.status === 'current' && (
+                                        <div className="neon-roadmap-badge">CURRENT</div>
+                                    )}
+                                    <div className="neon-roadmap-phase">{phase.phase}</div>
+                                    <h3 className="neon-roadmap-title">{phase.title}</h3>
+                                    <ul className="neon-roadmap-list">
+                                        {phase.items.map((item) => (
+                                            <li key={item} className="neon-roadmap-item">
+                                                <CheckCircle size={14} className={`neon-roadmap-icon ${phase.status === 'completed' ? 'text-completed' : phase.status === 'current' ? 'text-current' : 'text-upcoming'}`} />
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </NeonEdgeCard>
+                            )
+                        })}
                     </div>
                 </div>
             </section>

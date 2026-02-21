@@ -63,7 +63,7 @@ export default function Navbar() {
                             />
                         </div>
                         <span className="navbar-logo-text">
-                            <span className="gradient-text">Yovo</span>
+                            <span style={{ color: 'var(--c-text)' }}>Yovo</span>
                             <span style={{ color: 'var(--c-text)' }}>AI</span>
                         </span>
                     </Link>

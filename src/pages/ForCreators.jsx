@@ -146,7 +146,7 @@ export default function ForCreators() {
             {/* ════════════ CREATOR BENEFITS ════════════ */}
             <section ref={benefitsRef} className="section-padding">
                 <div className="container-lg fc-px">
-                    <SectionReveal className="fc-center-header">
+                    <SectionReveal className="fc-center-header" variant="flipY" duration={1.1}>
                         <span className="section-label"><Zap size={14} /> Why YovoAI</span>
                         <h2 className="section-heading">Your <span className="gradient-text">superpower</span> toolkit</h2>
                         <p className="section-subtext">Everything you need to monetize your creativity and build your personal brand</p>
@@ -173,7 +173,7 @@ export default function ForCreators() {
             {/* ════════════ CREATOR TOOLS ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg fc-px">
-                    <SectionReveal className="fc-center-header">
+                    <SectionReveal className="fc-center-header" variant="scaleDown" duration={1}>
                         <span className="section-label"><Sparkles size={14} /> AI Tools</span>
                         <h2 className="section-heading">AI-Powered <span className="gradient-text">Creator Studio</span></h2>
                         <p className="section-subtext">Professional-grade tools powered by AI, accessible to every creator</p>
@@ -199,7 +199,7 @@ export default function ForCreators() {
             {/* ════════════ EARNINGS ENGINE ════════════ */}
             <section className="section-padding">
                 <div className="container-lg fc-px">
-                    <SectionReveal className="fc-center-header">
+                    <SectionReveal className="fc-center-header" variant="rotateIn" duration={1.1}>
                         <span className="section-label"><Wallet size={14} /> Earnings</span>
                         <h2 className="section-heading">The Creator <span className="gradient-text">Earnings Engine</span></h2>
                         <p className="section-subtext">Transparent, fair, and growing. See what you can earn at every level.</p>
@@ -230,7 +230,7 @@ export default function ForCreators() {
             <section className="section-padding gradient-subtle">
                 <div className="container-lg fc-px">
                     <div className="fc-community-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="fadeLeft" duration={1.1}>
                             <span className="section-label"><Network size={14} /> Community</span>
                             <h2 className="section-heading fc-heading-tight">
                                 Build your <span className="gradient-text">tribe.</span>
@@ -251,7 +251,7 @@ export default function ForCreators() {
                                 ))}
                             </div>
                         </SectionReveal>
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.1}>
                             <div className="fc-community-img-wrap">
                                 <img src="/src/assets/images/usingTech.jpg" alt="Creator Using Technology" className="fc-community-img" />
                                 <div className="fc-community-img-glow" />
@@ -264,7 +264,7 @@ export default function ForCreators() {
             {/* ════════════ SUCCESS STORIES ════════════ */}
             <section className="section-padding">
                 <div className="container-lg fc-px">
-                    <SectionReveal className="fc-center-header">
+                    <SectionReveal className="fc-center-header" variant="blur" duration={1.1}>
                         <span className="section-label"><Star size={14} /> Creator Stories</span>
                         <h2 className="section-heading">Creators <span className="gradient-text">thriving</span> on YovoAI</h2>
                     </SectionReveal>
@@ -308,7 +308,7 @@ export default function ForCreators() {
             {/* ════════════ CTA ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg fc-px fc-text-center">
-                    <SectionReveal>
+                    <SectionReveal variant="elastic" duration={1.3}>
                         <NovaCard accent="#f43f5e" className="fc-cta-card">
                             <h2 className="section-heading fc-mb-4">You create. We <span className="gradient-text">amplify.</span></h2>
                             <p className="fc-cta-highlight gradient-text">The world listens.</p>

@@ -353,7 +353,7 @@ export default function Home() {
             <section className="section-padding gradient-subtle">
                 <div className="home-section-container">
                     <div className="home-split-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="slideRotate" duration={1}>
                             <span className="section-label"><Video size={13} /> See it in Action</span>
                             <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
                                 From <span className="gradient-text">voice to viral</span> in seconds
@@ -375,7 +375,7 @@ export default function Home() {
                                 Explore All Features <ArrowRight size={15} />
                             </Link>
                         </SectionReveal>
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="scaleUp" duration={1.2}>
                             <div className="home-video-wrapper">
                                 <div className="home-video-container">
                                     <div className="home-video-device">
@@ -405,7 +405,7 @@ export default function Home() {
                     <ParticleField />
                 </div>
                 <div className="home-section-container">
-                    <SectionReveal className="home-center-header">
+                    <SectionReveal className="home-center-header" variant="blur" duration={1}>
                         <span className="section-label section-label--glow"><Zap size={13} /> Why Choose Us</span>
                         <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
                             Why <span className="gradient-text-premium">YovoAI</span>?
@@ -439,7 +439,7 @@ export default function Home() {
                     <ParticleField />
                 </div>
                 <div className="home-section-container">
-                    <SectionReveal className="home-center-header">
+                    <SectionReveal className="home-center-header" variant="scaleUp" duration={1}>
                         <span className="section-label section-label--glow"><Sparkles size={13} /> Product</span>
                         <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
                             The <span className="gradient-text-premium">AI Engine</span> Behind Your Growth
@@ -470,7 +470,7 @@ export default function Home() {
             {/* ════════════════════ HOW IT WORKS ════════════════════ */}
             <section className="section-padding">
                 <div className="home-section-container">
-                    <SectionReveal className="home-center-header">
+                    <SectionReveal className="home-center-header" variant="flipY" duration={1}>
                         <span className="section-label"><Focus size={13} /> Process</span>
                         <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
                             How It <span className="gradient-text">Works</span>
@@ -481,7 +481,7 @@ export default function Home() {
                         <div className="home-process-line" />
                         <div className="home-process-grid">
                             {howItWorks.map((step, i) => (
-                                <SectionReveal key={step.step} delay={i * 0.15}>
+                                <SectionReveal key={step.step} delay={i * 0.15} variant="bounce" duration={0.9}>
                                     <div className="home-process-step">
                                         <div className="home-process-number">
                                             {step.step}
@@ -495,7 +495,7 @@ export default function Home() {
                             ))}
                         </div>
 
-                        <SectionReveal delay={0.4} className="home-process-stat">
+                        <SectionReveal delay={0.4} className="home-process-stat" variant="elastic" duration={1.2}>
                             <div className="home-process-stat-inner">
                                 <div className="home-process-stat-header">
                                     <LineChart size={18} />
@@ -513,13 +513,13 @@ export default function Home() {
             <section className="section-padding gradient-subtle">
                 <div className="home-section-container">
                     <div className="home-split-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="fadeLeft" duration={1.1}>
                             <div className="home-image-wrapper">
                                 <img src="/src/assets/images/futurasticAi.jpg" alt="AI-Powered Future" className="home-image" />
                                 <div className="home-image-shadow" />
                             </div>
                         </SectionReveal>
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.1}>
                             <span className="section-label"><Sparkles size={13} /> Our Promise</span>
                             <h2 className="section-heading home-section-header-tight">
                                 Not another <span className="gradient-text">AI tool.</span>
@@ -550,7 +550,7 @@ export default function Home() {
             {/* ════════════════════ TESTIMONIALS ════════════════════ */}
             <section className="section-padding">
                 <div className="home-section-container">
-                    <SectionReveal className="home-center-header">
+                    <SectionReveal className="home-center-header" variant="scaleDown" duration={1}>
                         <span className="section-label"><Star size={13} /> Testimonials</span>
                         <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
                             What Our <span className="gradient-text">Users Say</span>
@@ -559,7 +559,7 @@ export default function Home() {
 
                     <div className="home-testimonials-grid">
                         {testimonials.map((t, i) => (
-                            <SectionReveal key={t.author} delay={i * 0.1}>
+                            <SectionReveal key={t.author} delay={i * 0.1} variant="rotateIn" duration={0.9}>
                                 <div className="home-testimonial-card">
                                     <div className="home-testimonial-stars">
                                         {[...Array(5)].map((_, j) => <Star key={j} size={14} />)}
@@ -584,7 +584,7 @@ export default function Home() {
             <section className="section-padding gradient-subtle">
                 <div className="home-section-container">
                     <div className="home-split-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="glitch" duration={1}>
                             <span className="section-label"><Zap size={13} /> Next-Gen AI</span>
                             <h2 className="section-heading home-section-header-tight">
                                 Content that <span className="gradient-text">converts.</span>
@@ -607,7 +607,7 @@ export default function Home() {
                                 ))}
                             </div>
                         </SectionReveal>
-                        <SectionReveal delay={0.2}>
+                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.2}>
                             <div className="home-image-wrapper">
                                 <img src="/src/assets/images/techStyleDash.jpg" alt="AI Dashboard" className="home-image" />
                                 <div className="home-image-shadow-alt" />

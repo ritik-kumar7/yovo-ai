@@ -12,13 +12,10 @@ import ForBrands from './pages/ForBrands'
 import ForCreators from './pages/ForCreators'
 import Contact from './pages/Contact'
 
-function ScrollToTop() {
-  const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
-  return null
-}
+
 
 function SmoothScroll({ children }) {
+  const location = useLocation()
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -36,6 +33,11 @@ function SmoothScroll({ children }) {
     requestAnimationFrame(raf)
     return () => lenis.destroy()
   }, [])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
   return children
 }
 
@@ -67,7 +69,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <SmoothScroll>
-        <ScrollToTop />
         <FloatingParticles />
         <Navbar />
         <AnimatedRoutes />

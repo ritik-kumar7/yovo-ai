@@ -132,36 +132,40 @@ export default function About() {
             <section className="section-padding">
                 <div className="container-lg">
                     <div className="about-split-grid">
-                        <NeonEdgeCard accent="#f97316" index={0} className="neon-card--vision">
-                            <div className="premium-icon-orb" style={{ '--orb-color': '#f97316' }}>
-                                <div className="premium-icon-orb__inner">
-                                    <Eye size={28} />
+                        <SectionReveal variant="flipX" duration={1.1}>
+                            <NeonEdgeCard accent="#f97316" index={0} className="neon-card--vision">
+                                <div className="premium-icon-orb" style={{ '--orb-color': '#f97316' }}>
+                                    <div className="premium-icon-orb__inner">
+                                        <Eye size={28} />
+                                    </div>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                                <div className="premium-icon-orb__pulse" />
-                            </div>
-                            <h2 className="neon-vision-title">Our Vision</h2>
-                            <p className="neon-vision-desc">
-                                A world where every authentic voice has the power to shape culture, drive commerce, and build communities — powered by AI that elevates human creativity.
-                            </p>
-                            <p className="neon-vision-subdesc">
-                                We envision a future where brands don't broadcast messages — they inspire movements. Where AI doesn't create content — it amplifies the brilliance that's already there.
-                            </p>
-                        </NeonEdgeCard>
-                        <NeonEdgeCard accent="#ea580c" index={1} className="neon-card--vision">
-                            <div className="premium-icon-orb" style={{ '--orb-color': '#ea580c' }}>
-                                <div className="premium-icon-orb__inner">
-                                    <Rocket size={28} />
+                                <h2 className="neon-vision-title">Our Vision</h2>
+                                <p className="neon-vision-desc">
+                                    A world where every authentic voice has the power to shape culture, drive commerce, and build communities — powered by AI that elevates human creativity.
+                                </p>
+                                <p className="neon-vision-subdesc">
+                                    We envision a future where brands don't broadcast messages — they inspire movements. Where AI doesn't create content — it amplifies the brilliance that's already there.
+                                </p>
+                            </NeonEdgeCard>
+                        </SectionReveal>
+                        <SectionReveal delay={0.2} variant="flipX" duration={1.1}>
+                            <NeonEdgeCard accent="#ea580c" index={1} className="neon-card--vision">
+                                <div className="premium-icon-orb" style={{ '--orb-color': '#ea580c' }}>
+                                    <div className="premium-icon-orb__inner">
+                                        <Rocket size={28} />
+                                    </div>
+                                    <div className="premium-icon-orb__pulse" />
                                 </div>
-                                <div className="premium-icon-orb__pulse" />
-                            </div>
-                            <h2 className="neon-vision-title">Our Mission</h2>
-                            <p className="neon-vision-desc">
-                                To democratize content creation by building the most powerful AI-powered UGC platform — one that makes every brand story irresistible and every creator unstoppable.
-                            </p>
-                            <p className="neon-vision-subdesc">
-                                We're creating an ecosystem where creators earn, brands grow, and communities flourish. Every day, we make content creation simpler, smarter, and more impactful.
-                            </p>
-                        </NeonEdgeCard>
+                                <h2 className="neon-vision-title">Our Mission</h2>
+                                <p className="neon-vision-desc">
+                                    To democratize content creation by building the most powerful AI-powered UGC platform — one that makes every brand story irresistible and every creator unstoppable.
+                                </p>
+                                <p className="neon-vision-subdesc">
+                                    We're creating an ecosystem where creators earn, brands grow, and communities flourish. Every day, we make content creation simpler, smarter, and more impactful.
+                                </p>
+                            </NeonEdgeCard>
+                        </SectionReveal>
                     </div>
                 </div>
             </section>
@@ -170,10 +174,10 @@ export default function About() {
             <section className="section-padding gradient-subtle">
                 <div className="container-lg">
                     <div className="about-founder-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="scaleUp" duration={1.2}>
                             <img src="/src/assets/images/contentReading.jpg" alt="Content Strategy" className="about-founder-img" />
                         </SectionReveal>
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="slideRotate" duration={1.1}>
                             <span className="section-label"><Lightbulb size={14} /> Founder's Perspective</span>
                             <h2 className="section-heading about-heading-tight">
                                 "We saw the <span className="gradient-text">gap.</span>
@@ -196,7 +200,7 @@ export default function About() {
             {/* ════════════ AI PHILOSOPHY ════════════ */}
             <section className="section-padding">
                 <div className="container-lg">
-                    <SectionReveal className="about-center-header">
+                    <SectionReveal className="about-center-header" variant="blur" duration={1.1}>
                         <span className="section-label"><Brain size={14} /> AI Philosophy</span>
                         <h2 className="section-heading">
                             AI that <span className="gradient-text">amplifies,</span> not replaces
@@ -224,7 +228,7 @@ export default function About() {
             {/* ════════════ VALUES ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg">
-                    <SectionReveal className="about-center-header">
+                    <SectionReveal className="about-center-header" variant="scaleDown" duration={1}>
                         <span className="section-label"><Heart size={14} /> Our DNA</span>
                         <h2 className="section-heading">What <span className="gradient-text">drives</span> us</h2>
                     </SectionReveal>
@@ -249,7 +253,7 @@ export default function About() {
             {/* ════════════ ROADMAP ════════════ */}
             <section ref={timelineRef} className="section-padding">
                 <div className="container-lg">
-                    <SectionReveal className="about-center-header">
+                    <SectionReveal className="about-center-header" variant="elastic" duration={1.2}>
                         <span className="section-label"><Rocket size={14} /> Roadmap</span>
                         <h2 className="section-heading">Where we're <span className="gradient-text">headed</span></h2>
                         <p className="section-subtext">Our journey to redefine content creation and brand-creator collaboration</p>
@@ -284,7 +288,7 @@ export default function About() {
             <section className="section-padding gradient-subtle">
                 <div className="container-lg">
                     <div className="about-founder-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="fadeLeft" duration={1.2}>
                             <span className="section-label"><Sparkles size={14} /> The Future</span>
                             <h2 className="section-heading">
                                 Tomorrow's <span className="gradient-text">content,</span> today.
@@ -301,7 +305,7 @@ export default function About() {
                                 </Link>
                             </div>
                         </SectionReveal>
-                        <SectionReveal delay={0.2}>
+                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.2}>
                             <img src="/src/assets/images/stillLife.png" alt="Future Innovation" className="about-founder-img" />
                         </SectionReveal>
                     </div>

@@ -75,7 +75,7 @@ export default function Contact() {
                 <div className="container-lg ct-px">
                     <div className="ct-info-grid">
                         {contactInfo.map((info, i) => (
-                            <SectionReveal key={info.label} delay={i * 0.08}>
+                            <SectionReveal key={info.label} delay={i * 0.08} variant="bounce" duration={0.9}>
                                 <div className="glass-card ct-info-card hover-depth">
                                     <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': '#f97316', margin: '0 auto 1.5rem auto' }}>
                                         <div className="premium-icon-orb__inner">
@@ -101,7 +101,7 @@ export default function Contact() {
                 <div className="container-lg ct-px">
                     <div className="ct-form-grid">
                         {/* Form */}
-                        <SectionReveal>
+                        <SectionReveal variant="fadeLeft" duration={1.1}>
                             <div className="glass-card ct-form-card">
                                 <div className="ct-form-header">
                                     <Send size={20} className="ct-form-header-icon" />
@@ -144,7 +144,7 @@ export default function Contact() {
                         </SectionReveal>
 
                         {/* Map + Quick Links */}
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.1}>
                             <div className="ct-sidebar">
                                 <div className="glass-card ct-map-card">
                                     <iframe
@@ -179,7 +179,7 @@ export default function Contact() {
             {/* ════════════ FAQ ════════════ */}
             <section className="section-padding">
                 <div className="container-lg ct-px">
-                    <SectionReveal className="ct-center-header">
+                    <SectionReveal className="ct-center-header" variant="scaleUp" duration={1}>
                         <span className="section-label"><MessageSquare size={14} /> FAQ</span>
                         <h2 className="section-heading">Frequently <span className="gradient-text">asked</span> questions</h2>
                         <p className="section-subtext">Quick answers to common questions about YovoAI</p>
@@ -187,7 +187,7 @@ export default function Contact() {
 
                     <div className="ct-faq-list">
                         {faqs.map((faq, i) => (
-                            <SectionReveal key={faq.q} delay={i * 0.06}>
+                            <SectionReveal key={faq.q} delay={i * 0.06} variant="slideRotate" duration={0.8}>
                                 <div
                                     className={`glass-card ct-faq-item ${openFaq === i ? 'ct-faq-open' : ''}`}
                                     onClick={() => setOpenFaq(openFaq === i ? null : i)}

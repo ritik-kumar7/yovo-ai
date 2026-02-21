@@ -148,7 +148,7 @@ export default function ForBrands() {
             {/* ════════════ BRAND PROBLEMS ════════════ */}
             <section className="section-padding">
                 <div className="container-lg fb-px">
-                    <SectionReveal className="fb-center-header">
+                    <SectionReveal className="fb-center-header" variant="rotateIn" duration={1}>
                         <span className="fb-problem-label">The Problem</span>
                         <h2 className="section-heading">Why traditional marketing is <span className="fb-text-red">broken</span></h2>
                         <p className="section-subtext">Brands are spending more and getting less. Here's what you're up against.</p>
@@ -156,7 +156,7 @@ export default function ForBrands() {
 
                     <div className="fb-grid-2">
                         {brandProblems.map((p, i) => (
-                            <SectionReveal key={p.problem} delay={i * 0.08}>
+                            <SectionReveal key={p.problem} delay={i * 0.08} variant="glitch" duration={0.9}>
                                 <PrismCard accent={problemAccents[i]} index={i} className="fb-problem-card">
                                     <div className="premium-icon-orb" style={{ '--orb-color': problemAccents[i] }}>
                                         <div className="premium-icon-orb__inner">
@@ -176,7 +176,7 @@ export default function ForBrands() {
             {/* ════════════ SOLUTIONS ════════════ */}
             <section ref={solutionsRef} className="section-padding gradient-subtle">
                 <div className="container-lg fb-px">
-                    <SectionReveal className="fb-center-header">
+                    <SectionReveal className="fb-center-header" variant="flipX" duration={1.1}>
                         <span className="fb-solution-label">The Solution</span>
                         <h2 className="section-heading">How YovoAI <span className="gradient-text">solves</span> it</h2>
                         <p className="section-subtext">A complete ecosystem built to make your brand unstoppable</p>
@@ -213,7 +213,7 @@ export default function ForBrands() {
             <section className="section-padding">
                 <div className="container-lg fb-px">
                     <div className="fb-dashboard-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="slideRotate" duration={1.1}>
                             <span className="section-label"><BarChart4 size={14} /> Dashboard</span>
                             <h2 className="section-heading fb-heading-tight">Your <span className="gradient-text">command center</span> for growth</h2>
                             <p className="fb-dashboard-desc">
@@ -231,7 +231,7 @@ export default function ForBrands() {
                                 ))}
                             </div>
                         </SectionReveal>
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="scaleUp" duration={1.2}>
                             <img src="/src/assets/images/visualDashbord.jpg" alt="Brand Dashboard" className="fb-dashboard-img" />
                         </SectionReveal>
                     </div>
@@ -241,7 +241,7 @@ export default function ForBrands() {
             {/* ════════════ CASE STUDIES ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg fb-px">
-                    <SectionReveal className="fb-center-header">
+                    <SectionReveal className="fb-center-header" variant="blur" duration={1.1}>
                         <span className="section-label"><Award size={14} /> Success Stories</span>
                         <h2 className="section-heading">Brands winning with <span className="gradient-text">YovoAI</span></h2>
                     </SectionReveal>
@@ -287,7 +287,7 @@ export default function ForBrands() {
             {/* ════════════ TRUSTED CTA ════════════ */}
             <section className="section-padding">
                 <div className="container-lg fb-px fb-text-center">
-                    <SectionReveal>
+                    <SectionReveal variant="elastic" duration={1.3}>
                         <PrismCard accent="#fbbf24" className="fb-cta-card">
                             <div className="fb-cta-badge">
                                 <Award size={28} style={{ color: '#f97316' }} />

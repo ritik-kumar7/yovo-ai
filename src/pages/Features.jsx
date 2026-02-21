@@ -139,7 +139,7 @@ export default function Features() {
             {/* ════════════ CORE FEATURES (with images) ════════════ */}
             <section ref={featuresRef} className="section-padding">
                 <div className="container-lg">
-                    <SectionReveal className="features-center-header">
+                    <SectionReveal className="features-center-header" variant="rotateIn" duration={1.1}>
                         <span className="section-label"><Zap size={14} /> Core Features</span>
                         <h2 className="section-heading">The <span className="gradient-text">AI Arsenal</span></h2>
                         <p className="section-subtext">Each feature is meticulously engineered to maximize content impact</p>
@@ -180,7 +180,7 @@ export default function Features() {
             {/* ════════════ UGC CREATION ENGINE ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg">
-                    <SectionReveal className="features-center-header">
+                    <SectionReveal className="features-center-header" variant="glitch" duration={1}>
                         <span className="section-label"><Sparkles size={14} /> UGC Engine</span>
                         <h2 className="section-heading">The <span className="gradient-text">UGC Creation</span> Engine</h2>
                         <p className="section-subtext">Everything you need to launch, manage, and scale UGC campaigns</p>
@@ -207,7 +207,7 @@ export default function Features() {
             <section className="section-padding">
                 <div className="container-lg">
                     <div className="features-split-grid">
-                        <SectionReveal>
+                        <SectionReveal variant="slideRotate" duration={1.1}>
                             <span className="section-label"><BarChart3 size={14} /> Performance</span>
                             <h2 className="section-heading" style={{ lineHeight: 1.1 }}>
                                 AI-Powered <span className="gradient-text">Performance</span> Optimization
@@ -236,7 +236,7 @@ export default function Features() {
                                 ))}
                             </div>
                         </SectionReveal>
-                        <SectionReveal delay={0.15}>
+                        <SectionReveal delay={0.2} variant="scaleUp" duration={1.2}>
                             <div className="features-grid-2x2">
                                 {[
                                     { icon: <Eye size={22} />, title: 'Smart Preview', desc: 'See how your content will perform before publishing', accent: '#f94b6e' },
@@ -264,13 +264,13 @@ export default function Features() {
             {/* ════════════ COMPARISON TABLE ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg">
-                    <SectionReveal className="features-center-header">
+                    <SectionReveal className="features-center-header" variant="flipY" duration={1.1}>
                         <span className="section-label"><Target size={14} /> Compare</span>
                         <h2 className="section-heading">How We <span className="gradient-text">Stack Up</span></h2>
                         <p className="section-subtext">See why leading brands choose YovoAI over traditional methods</p>
                     </SectionReveal>
 
-                    <SectionReveal>
+                    <SectionReveal variant="blur" duration={1.2}>
                         <div className="features-table-wrapper">
                             <table className="features-table">
                                 <thead>
@@ -304,7 +304,7 @@ export default function Features() {
             {/* ════════════ CTA ════════════ */}
             <section className="section-padding">
                 <div className="container-lg text-center">
-                    <SectionReveal>
+                    <SectionReveal variant="elastic" duration={1.3}>
                         <h2 className="section-heading mb-6">Ready to <span className="gradient-text">unleash</span> these features?</h2>
                         <p className="features-cta-desc">
                             Start your journey with YovoAI and experience the power of AI-driven content creation.

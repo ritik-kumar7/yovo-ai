@@ -49,6 +49,67 @@ const productShowcase = [
     { icon: <Focus size={22} />, title: 'Precision Matching', desc: 'Match with ideal creators and audiences intelligently.', color: '#960018' },
 ]
 
+/* ─── Top Brands Data ─── */
+const marqueeBrands = [
+    {
+        id: 'cleanfox',
+        node: <div className="mock-logo" style={{ fontWeight: 800, letterSpacing: '-0.03em' }}>Cleanfox</div>,
+    },
+    {
+        id: 'bending-spoons',
+        node: (
+            <div className="mock-logo" style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em', gap: '0.2rem' }}>
+                BENDING SP
+                <svg width="0.85em" height="0.85em" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.17 6c-1.85 0-3.56.96-4.52 2.53L12 11.26 10.35 8.53C9.39 6.96 7.68 6 5.83 6 2.61 6 0 8.68 0 12s2.61 6 5.83 6c1.85 0 3.56-.96 4.52-2.53L12 12.74l1.65 2.73c.96 1.57 2.67 2.53 4.52 2.53 3.22 0 5.83-2.68 5.83-6s-2.61-6-5.83-6zm0 9c-1.07 0-2.07-.56-2.62-1.47L13.8 11h.01l-1.01-1.68L14.54 6.4c.06-.09.11-.18.18-.26.85 1.09 1.15 2.57.8 4.02-.37 1.54-1.57 2.78-3.11 3.14-1.42.33-2.88.02-3.95-.81l1.89 3.03C11.3 17.06 12.33 18 13.5 18H18.17z" />
+                </svg>
+                NS
+            </div>
+        ),
+    },
+    {
+        id: 'asana',
+        node: (
+            <div className="mock-logo" style={{ fontWeight: 600, letterSpacing: '-0.05em' }}>
+                <svg width="1.1em" height="1.1em" viewBox="0 0 32 32" fill="currentColor">
+                    <circle cx="16" cy="10" r="4.5" />
+                    <circle cx="9" cy="22" r="4.5" />
+                    <circle cx="23" cy="22" r="4.5" />
+                </svg>
+                asana
+            </div>
+        ),
+    },
+    {
+        id: 'headway',
+        node: (
+            <div className="mock-logo" style={{ fontWeight: 700 }}>
+                <svg width="1.1em" height="1.1em" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+                    <path d="M8 7h2v10H8zm6 0h2v10h-2zm-4 4h4v2h-4z" fill="#fff" />
+                </svg>
+                Headway
+            </div>
+        ),
+    },
+    {
+        id: 'clickfunnels',
+        node: (
+            <div className="mock-logo" style={{ fontWeight: 500, letterSpacing: '-0.02em', alignItems: 'center' }}>
+                <svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4 4h16v3L14 14v6l-4 3v-9L4 7z" />
+                </svg>
+                click funnels
+            </div>
+        ),
+    },
+    {
+        id: 'stripe',
+        node: <div className="mock-logo" style={{ fontWeight: 800, letterSpacing: '-0.05em' }}>stripe</div>,
+    },
+
+];
+
 
 /* ─── Premium 3D Tilt Card Component ─── */
 function PremiumCard({ children, className = '', index = 0, color = '#6366f1' }) {
@@ -195,6 +256,7 @@ const fadeUp = { hidden: { opacity: 0, y: 32 }, show: { opacity: 1, y: 0, transi
 export default function Home() {
     const heroRef = useRef(null)
     const showcaseRef = useRef(null)
+    const [activeFeature, setActiveFeature] = useState(0)
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -434,11 +496,10 @@ export default function Home() {
             </section>
 
 
-            {/* ════════════════════ PRODUCT SHOWCASE — PREMIUM ════════════════════ */}
-            <section ref={showcaseRef} className="section-padding premium-section premium-section--alt">
-                <div className="premium-section__bg">
-                    <div className="premium-section__radial premium-section__radial--3" />
-                    <div className="premium-section__radial premium-section__radial--4" />
+            {/* ════════════════════ PRODUCT SHOWCASE — INTERACTIVE AI CORE ════════════════════ */}
+            <section ref={showcaseRef} className="section-padding engine-master-section">
+                <div className="engine-master-bg">
+                    <div className="engine-master-glow" style={{ background: productShowcase[activeFeature]?.color || '#DC143C' }} />
                     <ParticleField />
                 </div>
                 <div className="home-section-container">
@@ -450,21 +511,78 @@ export default function Home() {
                         <p className="section-subtext premium-subtext">A complete ecosystem of intelligent tools designed to maximize your content impact</p>
                     </SectionReveal>
 
-                    <div className="premium-showcase-grid">
-                        {productShowcase.map((item, i) => (
-                            <PremiumCard key={item.title} index={i} color={item.color} className="premium-showcase-item">
-                                <div className="premium-showcase-top">
-                                    <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': item.color }}>
-                                        <div className="premium-icon-orb__inner">
-                                            {item.icon}
+                    <div className="engine-hub-layout">
+                        {/* Left Column */}
+                        <div className="engine-hub-column left-column">
+                            {productShowcase.slice(0, 3).map((item, i) => {
+                                const index = i;
+                                return (
+                                    <div
+                                        key={item.title}
+                                        className={`engine-hub-card ${activeFeature === index ? 'is-active' : ''}`}
+                                        onMouseEnter={() => setActiveFeature(index)}
+                                        style={{ '--item-color': item.color }}
+                                    >
+                                        <div className="engine-hub-card-header">
+                                            <div className="engine-hub-icon">
+                                                {item.icon}
+                                            </div>
+                                            <h3 className="engine-hub-title">{item.title}</h3>
                                         </div>
-                                        <div className="premium-icon-orb__pulse" />
+                                        <p className="engine-hub-desc">{item.desc}</p>
                                     </div>
-                                    <h3 className="premium-showcase-title">{item.title}</h3>
+                                )
+                            })}
+                        </div>
+
+                        {/* Center Column */}
+                        <div className="engine-hub-center">
+                            <div className="engine-core">
+                                <div className="engine-core-rings">
+                                    <div className="engine-ring engine-ring-1" />
+                                    <div className="engine-ring engine-ring-2" style={{ borderColor: `color-mix(in srgb, ${productShowcase[activeFeature]?.color} 30%, transparent)` }} />
+                                    <div className="engine-ring engine-ring-3" style={{ borderColor: `color-mix(in srgb, ${productShowcase[activeFeature]?.color} 40%, transparent)` }} />
                                 </div>
-                                <p className="premium-card-desc premium-card-desc--sm">{item.desc}</p>
-                            </PremiumCard>
-                        ))}
+
+                                <div className="engine-core-center" style={{ '--core-color': productShowcase[activeFeature]?.color || '#DC143C' }}>
+                                    <div className="engine-core-icon-wrap" key={activeFeature}>
+                                        {productShowcase[activeFeature]?.icon}
+                                    </div>
+                                    <div className="engine-core-sparkles">
+                                        <Sparkles size={24} />
+                                        <Zap size={20} />
+                                        <Star size={16} />
+                                    </div>
+                                </div>
+
+                                <div className="engine-data-stream" style={{ color: productShowcase[activeFeature]?.color }}>
+                                    {productShowcase[activeFeature]?.title.toUpperCase()} // ACTIVE
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Column */}
+                        <div className="engine-hub-column right-column">
+                            {productShowcase.slice(3, 6).map((item, i) => {
+                                const index = i + 3;
+                                return (
+                                    <div
+                                        key={item.title}
+                                        className={`engine-hub-card ${activeFeature === index ? 'is-active' : ''}`}
+                                        onMouseEnter={() => setActiveFeature(index)}
+                                        style={{ '--item-color': item.color }}
+                                    >
+                                        <div className="engine-hub-card-header">
+                                            <div className="engine-hub-icon">
+                                                {item.icon}
+                                            </div>
+                                            <h3 className="engine-hub-title">{item.title}</h3>
+                                        </div>
+                                        <p className="engine-hub-desc">{item.desc}</p>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -616,6 +734,35 @@ export default function Home() {
                                 <div className="home-image-shadow-alt" />
                             </div>
                         </SectionReveal>
+                    </div>
+                </div>
+            </section>
+
+            {/* ════════════════════ TOP BRANDS MARQUEE ════════════════════ */}
+            <section className="section-padding top-brands-section">
+                <div className="home-section-container">
+                    <SectionReveal className="home-center-header" variant="fadeUp" duration={1}>
+                        <span className="section-label section-label--glow"><Star size={13} /> Trusted By</span>
+                        <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
+                            Top <span className="gradient-text-premium">Brands</span>
+                        </h2>
+                    </SectionReveal>
+
+                    <div className="marquee-container">
+                        <div className="marquee-content">
+                            {marqueeBrands.map((brand, i) => (
+                                <div key={`brand1-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id}`}>
+                                    {brand.node}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="marquee-content" aria-hidden="true">
+                            {marqueeBrands.map((brand, i) => (
+                                <div key={`brand2-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id}`}>
+                                    {brand.node}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>

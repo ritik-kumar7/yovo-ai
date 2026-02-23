@@ -475,26 +475,372 @@
     padding-left: 1rem;
 }
 
-/* ════════════════════ AI PHILOSOPHY & VALUES GRID ════════════════════ */
+/* ════════════════════ AI PHILOSOPHY TIMELINE ════════════════════ */
+.ai-philosophy-timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.ai-timeline-line {
+    position: absolute;
+    left: 2rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, rgba(200, 200, 200, 0.3) 10%, rgba(200, 200, 200, 0.3) 90%, transparent);
+}
+
+@media (min-width: 768px) {
+    .ai-timeline-line {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.ai-timeline-row {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4rem;
+    padding-left: 4.5rem;
+}
+
+@media (min-width: 768px) {
+    .ai-timeline-row {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 0;
+    }
+
+    .ai-timeline-row--left {
+        flex-direction: row-reverse;
+    }
+
+    .ai-timeline-row--left .ai-timeline-content-wrapper {
+        text-align: right;
+    }
+
+    .ai-timeline-row--left .ai-timeline-content {
+        align-items: flex-end;
+    }
+}
+
+.ai-timeline-marker {
+    position: absolute;
+    left: 1rem;
+    top: 2rem;
+    width: 2rem;
+    height: 2rem;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8), 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+@media (min-width: 768px) {
+    .ai-timeline-marker {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+        margin-top: -1rem;
+    }
+}
+
+.ai-timeline-orb {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--orb-color);
+    box-shadow: 0 0 10px var(--orb-color);
+    transition: transform 0.3s ease;
+}
+
+.ai-timeline-row:hover .ai-timeline-orb {
+    transform: scale(1.5);
+}
+
+.ai-timeline-content-wrapper {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .ai-timeline-content-wrapper {
+        width: 45%;
+    }
+}
+
+.ai-timeline-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+.ai-timeline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.ai-timeline-num {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    font-size: 8rem;
+    font-weight: 900;
+    font-family: var(--f-heading);
+    opacity: 0.08;
+    line-height: 1;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.ai-timeline-row--left .ai-timeline-num {
+    right: auto;
+    left: 10px;
+}
+
+.ai-timeline-card:hover .ai-timeline-num {
+    opacity: 0.15;
+}
+
+.ai-timeline-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-timeline-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ai-timeline-card:hover .ai-timeline-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.ai-timeline-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--c-text);
+    font-family: var(--f-heading);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.ai-timeline-desc {
+    color: var(--c-text-sec);
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* ════════════════════ BENTO GRID (DNA/VALUES) ════════════════════ */
 .about-center-header {
     text-align: center;
     margin-bottom: 3.5rem;
 }
 
-.about-grid-cols-3 {
+.bento-values-grid {
     display: grid;
-    gap: 1.75rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    grid-auto-flow: dense;
 }
 
 @media (min-width: 768px) {
-    .about-grid-cols-3 {
+    .bento-values-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (min-width: 1024px) {
-    .about-grid-cols-3 {
-        grid-template-columns: repeat(3, 1fr);
+    .bento-values-grid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, minmax(200px, auto));
+    }
+}
+
+.bento-box {
+    position: relative;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.bento-box:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+.bento-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, color-mix(in srgb, var(--b-color, #f97316) 15%, transparent), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 0;
+}
+
+.bento-box:hover .bento-bg {
+    opacity: 1;
+}
+
+.bento-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.bento-content--row {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.bento-content--center {
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.bento-content--split {
+    @media (min-width: 640px) {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+}
+
+.bento-icon-wrapper {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bento-box:hover .bento-icon-wrapper {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.bento-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-family: var(--f-heading);
+    color: var(--c-text);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.bento-title--sm {
+    font-size: 1.15rem;
+}
+
+.bento-desc {
+    color: var(--c-text-sec);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.bento-icon-float {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon-color);
+}
+
+.bento-icon-float svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+.bento-box:hover .bento-icon-float svg {
+    transform: scale(1.2);
+}
+
+.bento-icon-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px dashed color-mix(in srgb, var(--icon-color) 40%, transparent);
+    animation: spin 10s linear infinite;
+    z-index: 1;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Specific Grid Alignments */
+@media (min-width: 1024px) {
+    .bento-large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .bento-col-stack {
+        grid-column: span 1;
+        grid-row: span 2;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .bento-tall {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+
+    .bento-row-span {
+        grid-column: span 2;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
     }
 }
 

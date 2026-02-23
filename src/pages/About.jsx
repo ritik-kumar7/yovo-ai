@@ -200,7 +200,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* ════════════ AI PHILOSOPHY ════════════ */}
+            {/* ════════════ AI PHILOSOPHY (ELEVATED) ════════════ */}
             <section className="section-padding">
                 <div className="container-lg">
                     <SectionReveal className="about-center-header" variant="blur" duration={1.1}>
@@ -211,44 +211,120 @@ export default function About() {
                         <p className="section-subtext">We believe AI should make human creativity more powerful, not substitute it</p>
                     </SectionReveal>
 
-                    <div className="about-grid-cols-3">
-                        {aiPhilosophy.map((item, i) => (
-                            <NeonEdgeCard key={item.title} accent={item.accent} index={i}>
-                                <div className="premium-icon-orb" style={{ '--orb-color': item.accent }}>
-                                    <div className="premium-icon-orb__inner">
-                                        {item.icon}
+                    <div className="ai-philosophy-timeline">
+                        <div className="ai-timeline-line"></div>
+                        {aiPhilosophy.map((item, i) => {
+                            const isEven = i % 2 === 0;
+                            return (
+                                <div key={item.title} className={`ai-timeline-row ${isEven ? 'ai-timeline-row--left' : 'ai-timeline-row--right'}`}>
+                                    <div className="ai-timeline-marker">
+                                        <div className="ai-timeline-orb" style={{ '--orb-color': item.accent }} />
                                     </div>
-                                    <div className="premium-icon-orb__pulse" />
+                                    <SectionReveal
+                                        variant={isEven ? "fadeRight" : "fadeLeft"}
+                                        duration={1.2}
+                                        className="ai-timeline-content-wrapper"
+                                    >
+                                        <div className="ai-timeline-card">
+                                            <div className="ai-timeline-num" style={{ color: item.accent }}>
+                                                0{i + 1}
+                                            </div>
+                                            <div className="ai-timeline-content">
+                                                <div className="ai-timeline-icon" style={{ background: `color-mix(in srgb, ${item.accent} 15%, transparent)`, color: item.accent }}>
+                                                    {item.icon}
+                                                </div>
+                                                <h3 className="ai-timeline-title">{item.title}</h3>
+                                                <p className="ai-timeline-desc">{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    </SectionReveal>
                                 </div>
-                                <h3 className="neon-card-title">{item.title}</h3>
-                                <p className="neon-card-desc">{item.desc}</p>
-                            </NeonEdgeCard>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
 
-            {/* ════════════ VALUES ════════════ */}
+            {/* ════════════ VALUES (BENTO GRID) ════════════ */}
             <section className="section-padding gradient-subtle">
                 <div className="container-lg">
                     <SectionReveal className="about-center-header" variant="scaleDown" duration={1}>
                         <span className="section-label"><Heart size={14} /> Our DNA</span>
                         <h2 className="section-heading">What <span className="gradient-text">drives</span> us</h2>
+                        <p className="section-subtext">The core principles shaping every algorithm we build</p>
                     </SectionReveal>
 
-                    <div className="about-grid-cols-3">
-                        {values.map((v, i) => (
-                            <NeonEdgeCard key={v.title} accent={v.accent} index={i}>
-                                <div className="premium-icon-orb" style={{ '--orb-color': v.accent }}>
-                                    <div className="premium-icon-orb__inner">
-                                        {v.icon}
-                                    </div>
-                                    <div className="premium-icon-orb__pulse" />
+                    <div className="bento-values-grid">
+                        <SectionReveal variant="slideRotate" duration={1} className="bento-box bento-large">
+                            <div className="bento-bg" style={{ '--b-color': values[0].accent }} />
+                            <div className="bento-content">
+                                <div className="bento-icon-wrapper" style={{ color: values[0].accent }}>
+                                    {values[0].icon}
                                 </div>
-                                <h3 className="neon-card-title">{v.title}</h3>
-                                <p className="neon-card-desc">{v.desc}</p>
-                            </NeonEdgeCard>
-                        ))}
+                                <div>
+                                    <h3 className="bento-title">{values[0].title}</h3>
+                                    <p className="bento-desc">{values[0].desc}</p>
+                                </div>
+                            </div>
+                        </SectionReveal>
+
+                        <div className="bento-col-stack">
+                            <SectionReveal delay={0.1} variant="fadeUp" duration={1} className="bento-box bento-medium">
+                                <div className="bento-bg" style={{ '--b-color': values[1].accent }} />
+                                <div className="bento-content bento-content--row">
+                                    <div className="bento-icon-wrapper" style={{ color: values[1].accent }}>{values[1].icon}</div>
+                                    <div>
+                                        <h3 className="bento-title bento-title--sm">{values[1].title}</h3>
+                                        <p className="bento-desc">{values[1].desc}</p>
+                                    </div>
+                                </div>
+                            </SectionReveal>
+                            <SectionReveal delay={0.2} variant="fadeUp" duration={1} className="bento-box bento-medium">
+                                <div className="bento-bg" style={{ '--b-color': values[2].accent }} />
+                                <div className="bento-content bento-content--row">
+                                    <div className="bento-icon-wrapper" style={{ color: values[2].accent }}>{values[2].icon}</div>
+                                    <div>
+                                        <h3 className="bento-title bento-title--sm">{values[2].title}</h3>
+                                        <p className="bento-desc">{values[2].desc}</p>
+                                    </div>
+                                </div>
+                            </SectionReveal>
+                        </div>
+
+                        <SectionReveal delay={0.3} variant="bounce" duration={1} className="bento-box bento-tall">
+                            <div className="bento-bg" style={{ '--b-color': values[3].accent }} />
+                            <div className="bento-content bento-content--center">
+                                <div className="bento-icon-float" style={{ '--icon-color': values[3].accent }}>
+                                    {values[3].icon}
+                                    <div className="bento-icon-ring" />
+                                </div>
+                                <h3 className="bento-title">{values[3].title}</h3>
+                                <p className="bento-desc text-center">{values[3].desc}</p>
+                            </div>
+                        </SectionReveal>
+
+                        <div className="bento-row-span">
+                            <SectionReveal delay={0.4} variant="flipX" duration={1} className="bento-box bento-wide">
+                                <div className="bento-bg" style={{ '--b-color': values[4].accent }} />
+                                <div className="bento-content bento-content--split">
+                                    <div>
+                                        <div className="bento-icon-wrapper" style={{ color: values[4].accent }}>{values[4].icon}</div>
+                                        <h3 className="bento-title">{values[4].title}</h3>
+                                    </div>
+                                    <p className="bento-desc">{values[4].desc}</p>
+                                </div>
+                            </SectionReveal>
+                            <SectionReveal delay={0.5} variant="fadeRight" duration={1} className="bento-box bento-wide">
+                                <div className="bento-bg" style={{ '--b-color': values[5].accent }} />
+                                <div className="bento-content bento-content--split">
+                                    <div>
+                                        <div className="bento-icon-wrapper" style={{ color: values[5].accent }}>{values[5].icon}</div>
+                                        <h3 className="bento-title">{values[5].title}</h3>
+                                    </div>
+                                    <p className="bento-desc">{values[5].desc}</p>
+                                </div>
+                            </SectionReveal>
+                        </div>
                     </div>
                 </div>
             </section>

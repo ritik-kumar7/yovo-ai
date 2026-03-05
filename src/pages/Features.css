@@ -1,743 +1,958 @@
-/* Features.css */
+/* ═══════════════════════════════════════════════════════════════
+   Features.css — Complete fix for dark-themed Features page
+   
+   ROOT CAUSE ISSUES:
+   1. index.css sets h1-h6 { color: #0A0A0A } → headings invisible on dark bg
+   2. index.css sets p { color: #525252 } → paragraphs barely visible
+   3. HomeLux.css .lux-btn-primary/white have wrong colors for Features
+   4. HomeLux.css .lux-section { padding: 8rem 1.5rem } overrides Tailwind
+   5. HomeLux.css .lux-desc restricts font-size and max-width
+   6. HomeLux.css .lux-dark { background: var(--c-brand) } overrides Tailwind bg
+   7. HomeLux.css redefines plain CSS utility classes (.flex, .text-center, etc.)
+      which collide with Tailwind's generated classes causing layout breaks
+   8. The overlapping glass card layout (feature 2) needs min-height to work
+   9. UGC and Comparison sections need proper containment
+   
+   SOLUTION: .features-main scoped overrides with !important where needed
+   to guarantee Tailwind utilities work correctly on this page.
+   ═══════════════════════════════════════════════════════════════ */
 
+
+/* ═════════ 0. ANIMATION PERFORMANCE & 3D CONTEXT ═════════ */
+
+/* 3D perspective container — required for rotateX/rotateY GSAP animations */
 .features-main {
-    position: relative;
-    z-index: 10;
+    perspective: 1200px;
 }
 
-/* ════════════════════ HERO SECTION ════════════════════ */
-.features-hero {
-    min-height: 75vh;
+/* GPU acceleration for animated elements */
+.features-main .arsenal-anim,
+.features-main .feat-text-elem,
+.features-main .feat-bg-zoom,
+.features-main .feat-parallax-group,
+.features-main .ugc-row,
+.features-main .comp-row,
+.features-main .feat-card-img-1,
+.features-main .feat-voice-bg {
+    will-change: transform, opacity, clip-path, filter;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Smooth clip-path transitions for curtain wipe */
+.features-main .ugc-row,
+.features-main .arsenal-anim {
+    transform-style: preserve-3d;
+}
+
+/* Comparison rows need 3D for fold animation */
+.features-main .comp-row {
+    transform-style: preserve-3d;
+    perspective: 800px;
+}
+
+
+/* ═════════ 1. FORCE ALL TEXT WHITE ON DARK BG ═════════ */
+
+.features-main h1,
+.features-main h2,
+.features-main h3,
+.features-main h4,
+.features-main h5,
+.features-main h6 {
+    color: #ffffff !important;
+}
+
+.features-main p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.features-main span {
+    color: inherit;
+}
+
+.features-main li {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* ═════════ 2. GRADIENT TEXT FIX ═════════ 
+   Tailwind's gradient text chain (bg-gradient-to-r + from-X + to-Y + bg-clip-text 
+   + text-transparent) uses CSS custom properties that break when other CSS interferes.
+   We use dedicated classes that directly apply ALL gradient properties. */
+
+/* Base gradient text class — handles the clipping and transparency */
+.features-main .feat-gradient-text {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    display: inline-block;
+}
+
+/* Variant: Orange to Amber (hero "One platform.") */
+.features-main .feat-gradient-text--amber {
+    background-image: linear-gradient(to right, #fbbf24, #f97316) !important;
+}
+
+/* Variant: Orange to Pink ("reimagined.") */
+.features-main .feat-gradient-text--pink {
+    background-image: linear-gradient(to right, #fb923c, #ec4899) !important;
+}
+
+/* Variant: Orange to Rose ("design.") */
+.features-main .feat-gradient-text--rose {
+    background-image: linear-gradient(to right, #fb923c, #f43f5e) !important;
+}
+
+/* Variant: Blue to Cyan ("Engine") */
+.features-main .feat-gradient-text--cyan {
+    background-image: linear-gradient(to right, #60a5fa, #22d3ee) !important;
+}
+
+/* Variant: Rose to Orange ("Backbone.") */
+.features-main .feat-gradient-text--rose-orange {
+    background-image: linear-gradient(to right, #fb7185, #fb923c) !important;
+}
+
+/* Variant: Orange to Rose ("Engine." in UGC) */
+.features-main .feat-gradient-text--orange-rose {
+    background-image: linear-gradient(to right, #f97316, #f43f5e) !important;
+}
+
+/* Fallback: Also fix any remaining Tailwind text-transparent + bg-clip-text combos */
+.features-main .text-transparent,
+.features-main h1 .text-transparent,
+.features-main h2 .text-transparent,
+.features-main h3 .text-transparent {
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+}
+
+
+/* ═════════ 3. SECTION PADDING — FULL RESET ═════════ 
+   HomeLux.css .lux-section sets padding that overrides Tailwind.
+   We fully reset and let each section define its own padding. */
+
+.features-main .lux-section {
+    padding: 0 !important;
+}
+
+.features-main .lux-dark {
+    background-color: transparent !important;
+    color: #ffffff;
+}
+
+
+/* ═════════ 4. HERO SECTION ═════════ */
+
+.features-main .feat-hero-section {
+    padding: 12rem 1.5rem 6rem !important;
+    min-height: 95vh;
     display: flex;
     align-items: center;
-    padding-top: 7rem;
-    padding-bottom: 4rem;
-    position: relative;
-    overflow: hidden;
-    background: transparent;
-}
-
-/* Keep hero gradient-text dark */
-.features-hero .gradient-text {
-    background: linear-gradient(135deg, #404040 0%, #0A0A0A 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-@media (min-width: 768px) {
-    .features-hero {
-        min-height: 80vh;
-        padding-top: 9rem;
-        padding-bottom: 6rem;
-    }
-}
-
-/* ── Background Image + Overlay (same pattern as About page) ── */
-.features-hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
-.fh-bg-img {
+    justify-content: center;
+    background: #000000 !important;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.85;
-    filter: saturate(1);
 }
 
-.fh-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(180deg,
-            rgba(250, 250, 249, 0.05) 0%,
-            rgba(250, 250, 249, 0.02) 30%,
-            rgba(250, 250, 249, 0.05) 70%,
-            rgba(250, 250, 249, 0.15) 100%),
-        radial-gradient(ellipse at 30% 20%, rgba(251, 191, 36, 0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at 70% 80%, rgba(249, 115, 22, 0.03) 0%, transparent 60%);
+@media (min-width: 768px) {
+    .features-main .feat-hero-section {
+        padding: 14rem 2rem 8rem !important;
+    }
 }
 
-/* ── Warm Ambient Glows (matching brand amber/orange palette) ── */
-.fh-glow {
-    position: absolute;
+
+/* ═════════ 5. PARADIGM SHIFT SECTION ═════════ */
+
+.features-main .feat-mask-sec {
+    padding: 8rem 1.5rem !important;
+    background: #050505 !important;
+}
+
+@media (min-width: 768px) {
+    .features-main .feat-mask-sec {
+        padding: 10rem 2rem !important;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+}
+
+
+/* ═════════ 6. AI ARSENAL SECTION (Redesigned) ═════════ */
+
+.features-main .feat-arsenal-sec {
+    padding: 10rem 1.5rem !important;
+    background: #070707 !important;
+}
+
+@media (min-width: 768px) {
+    .features-main .feat-arsenal-sec {
+        padding: 10rem 2rem !important;
+    }
+}
+
+/* Feature 1: Two-column grid on desktop */
+@media (min-width: 1024px) {
+    .features-main .feat-arsenal-sec .arsenal-anim:nth-child(1) {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .features-main .feat-card-img-1 {
+        order: 2 !important;
+    }
+}
+
+/* Feature 2: Hide floating stat badges on very small screens */
+@media (max-width: 640px) {
+    .features-main .feat-voice-stats {
+        display: none !important;
+    }
+}
+
+/* Feature 3: Stack metrics on small screens */
+@media (max-width: 640px) {
+    .features-main .feat-arsenal-sec .arsenal-anim:nth-child(3)>div:first-child>div:last-child {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+
+/* ═════════ 7. UGC ENGINE SECTION ═════════ */
+
+.features-main section:nth-child(4) {
+    padding: 10rem 1.5rem !important;
+    background: #050505 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+    .features-main section:nth-child(4) {
+        padding: 10rem 2rem !important;
+    }
+}
+
+
+/* ═════════ 8. COMPARISON & METRICS SECTION ═════════ */
+
+.features-main section:nth-child(5) {
+    padding: 10rem 1.5rem !important;
+    background: #050505 !important;
+}
+
+@media (min-width: 768px) {
+    .features-main section:nth-child(5) {
+        padding: 10rem 2rem !important;
+    }
+}
+
+
+/* ═════════ 9. BUTTON FIXES ═════════ */
+
+.features-main .lux-btn-primary {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 1.25rem 3rem;
+    font-size: 1rem;
+    font-weight: 500;
     border-radius: 9999px;
-    pointer-events: none;
-    z-index: 1;
+    transition: all 0.5s var(--ease-out-expo);
 }
 
-.fh-glow-1 {
-    top: 4rem;
-    right: 5%;
-    width: 22rem;
-    height: 22rem;
-    background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, rgba(249, 115, 22, 0.08) 50%, transparent 70%);
-    filter: blur(60px);
-    animation: glowPulse1 12s ease-in-out infinite alternate;
+.features-main .lux-btn-primary:hover {
+    background: #e5e7eb !important;
+    color: #000000 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
 }
 
-.fh-glow-2 {
-    bottom: 3rem;
-    left: 3%;
-    width: 18rem;
-    height: 18rem;
-    background: radial-gradient(circle, rgba(254, 215, 170, 0.2) 0%, rgba(254, 202, 202, 0.08) 50%, transparent 70%);
-    filter: blur(50px);
-    animation: glowPulse2 15s ease-in-out infinite alternate-reverse;
+.features-main .lux-btn-white {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding: 1.25rem 3rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    transition: all 0.5s var(--ease-out-expo);
 }
 
-.fh-glow-3 {
-    top: 50%;
-    left: 40%;
-    width: 28rem;
-    height: 28rem;
-    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, rgba(249, 115, 22, 0.06) 50%, transparent 70%);
-    filter: blur(80px);
-    transform: translate(-50%, -50%);
-    animation: glowPulse3 18s ease-in-out infinite alternate;
+.features-main .lux-btn-white:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    transform: scale(1.05);
 }
 
-@keyframes glowPulse1 {
-    0% {
-        opacity: 0.6;
-        transform: scale(1) translate(0, 0);
-    }
 
-    100% {
-        opacity: 1;
-        transform: scale(1.15) translate(-2rem, 1rem);
-    }
+/* ═════════ 10. LUX-DESC FIX ═════════ */
+
+.features-main .lux-desc {
+    font-size: inherit !important;
+    max-width: none !important;
+    opacity: 1 !important;
+    color: rgba(255, 255, 255, 0.8);
 }
 
-@keyframes glowPulse2 {
-    0% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
 
-    100% {
-        opacity: 0.9;
-        transform: scale(1.2) translate(1.5rem, -1rem);
-    }
+/* ═════════ 11. LUX-LABEL FIX ═════════ */
+
+.features-main .lux-label {
+    opacity: 1 !important;
+    color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
-@keyframes glowPulse3 {
-    0% {
-        opacity: 0.4;
-        transform: translate(-50%, -50%) scale(1);
-    }
 
-    100% {
-        opacity: 0.7;
-        transform: translate(-50%, -50%) scale(1.1);
-    }
-}
+/* ═════════ 12. LUX-CONTAINER FIX ═════════ */
 
-/* ── Hero Container ── */
-.features-hero-container {
-    max-width: 1280px;
+.features-main .lux-container {
+    max-width: 80rem;
     margin: 0 auto;
-    padding: 0 1.5rem;
     position: relative;
     z-index: 10;
 }
 
-/* ── Hero Content Card — Premium Glass (matching About page pattern) ── */
-.features-hero-content {
-    max-width: 64rem;
-    margin: 0 auto;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: 2.5rem;
-    padding: 4.5rem 2.5rem;
-    box-shadow:
-        0 25px 60px -15px rgba(0, 0, 0, 0.08),
-        0 0 0 1px rgba(255, 255, 255, 0.3) inset;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 10;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+.features-main .lux-heading {
+    color: #ffffff !important;
 }
 
-.features-hero-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-    transform: skewX(-25deg);
-    transition: left 0.7s ease-in-out;
-    pointer-events: none;
-    z-index: 0;
+
+/* ═════════ 13. TAILWIND UTILITY OVERRIDES ═════════ 
+   HomeLux.css defines plain CSS utility classes (.flex, .relative, etc.)
+   that collide with Tailwind-generated utilities. These overrides ensure
+   Tailwind classes win inside .features-main. */
+
+/* Display utilities */
+.features-main .flex {
+    display: flex !important;
 }
 
-.features-hero-content:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow:
-        0 35px 80px -20px rgba(0, 0, 0, 0.15),
-        0 0 0 2px rgba(255, 255, 255, 0.8) inset;
-    background: rgba(255, 255, 255, 0.45);
-    border-color: rgba(255, 255, 255, 0.9);
+.features-main .block {
+    display: block !important;
 }
 
-.features-hero-content:hover::before {
-    left: 200%;
+.features-main .inline-block {
+    display: inline-block !important;
 }
 
-@media (min-width: 768px) {
-    .features-hero-content {
-        padding: 5.5rem 4rem;
-    }
+.features-main .grid {
+    display: grid !important;
 }
 
-@media (max-width: 768px) {
-    .features-hero-content {
-        padding: 3.5rem 1.5rem;
-        border-radius: 1.5rem;
-    }
+.features-main .hidden {
+    display: none !important;
 }
 
-/* ── Title ── */
-.features-hero-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    font-family: var(--f-heading);
-    letter-spacing: -0.02em;
+/* Positioning */
+.features-main .relative {
+    position: relative !important;
 }
 
-@media (min-width: 768px) {
-    .features-hero-title {
-        font-size: 3.75rem;
-    }
+.features-main .absolute {
+    position: absolute !important;
 }
+
+.features-main .sticky {
+    position: sticky !important;
+}
+
+/* Flexbox alignment */
+.features-main .items-center {
+    align-items: center !important;
+}
+
+.features-main .items-start {
+    align-items: flex-start !important;
+}
+
+.features-main .items-end {
+    align-items: flex-end !important;
+}
+
+.features-main .justify-center {
+    justify-content: center !important;
+}
+
+.features-main .justify-between {
+    justify-content: space-between !important;
+}
+
+.features-main .justify-end {
+    justify-content: flex-end !important;
+}
+
+/* Flex direction */
+.features-main .flex-col {
+    flex-direction: column !important;
+}
+
+.features-main .flex-row {
+    flex-direction: row !important;
+}
+
+.features-main .flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+/* Flex grow/shrink */
+.features-main .flex-1 {
+    flex: 1 1 0% !important;
+}
+
+.features-main .flex-\[1\.2\] {
+    flex: 1.2 !important;
+}
+
+.features-main .flex-\[1\.5\] {
+    flex: 1.5 !important;
+}
+
+/* Text alignment */
+.features-main .text-center {
+    text-align: center !important;
+}
+
+.features-main .text-left {
+    text-align: left !important;
+}
+
+.features-main .text-right {
+    text-align: right !important;
+}
+
+/* Z-index */
+.features-main .z-0 {
+    z-index: 0 !important;
+}
+
+.features-main .z-10 {
+    z-index: 10 !important;
+}
+
+.features-main .z-20 {
+    z-index: 20 !important;
+}
+
+/* Width & Height */
+.features-main .w-full {
+    width: 100% !important;
+}
+
+.features-main .h-full {
+    height: 100% !important;
+}
+
+/* Margin utilities */
+.features-main .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Overflow */
+.features-main .overflow-hidden {
+    overflow: hidden !important;
+}
+
+/* Transition */
+.features-main .transition-all {
+    transition-property: all !important;
+}
+
+.features-main .transition-transform {
+    transition-property: transform !important;
+}
+
+.features-main .transition-colors {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
+}
+
+/* Duration */
+.features-main .duration-500 {
+    transition-duration: 500ms !important;
+}
+
+.features-main .duration-700 {
+    transition-duration: 700ms !important;
+}
+
+/* Group hover scale */
+.features-main .group:hover .group-hover\:scale-110 {
+    transform: scale(1.1) !important;
+}
+
+/* Inset */
+.features-main .inset-0 {
+    inset: 0 !important;
+}
+
+.features-main .inset-x-0 {
+    left: 0 !important;
+    right: 0 !important;
+}
+
+
+/* ═════════ 14. RESPONSIVE FLEX-DIRECTION FIXES ═════════ 
+   Ensure lg:flex-row actually applies at 1024px+ */
 
 @media (min-width: 1024px) {
-    .features-hero-title {
-        font-size: 4.5rem;
+    .features-main .lg\:flex-row {
+        flex-direction: row !important;
     }
-}
 
-/* ── Description ── */
-.features-hero-desc {
-    font-size: 1.125rem;
-    color: #4a4a68;
-    line-height: 1.625;
-    max-width: 42rem;
-    margin: 0 auto 2rem;
+    .features-main .lg\:order-1 {
+        order: 1 !important;
+    }
+
+    .features-main .lg\:order-2 {
+        order: 2 !important;
+    }
+
+    .features-main .lg\:items-center {
+        align-items: center !important;
+    }
+
+    .features-main .lg\:items-end {
+        align-items: flex-end !important;
+    }
+
+    .features-main .lg\:gap-24 {
+        gap: 6rem !important;
+    }
+
+    .features-main .lg\:gap-56 {
+        gap: 14rem !important;
+    }
+
+    .features-main .lg\:gap-16 {
+        gap: 4rem !important;
+    }
+
+    .features-main .lg\:w-\[60\%\] {
+        width: 60% !important;
+    }
+
+    .features-main .lg\:w-\[50\%\] {
+        width: 50% !important;
+    }
+
+    .features-main .lg\:absolute {
+        position: absolute !important;
+    }
+
+    .features-main .lg\:right-0 {
+        right: 0 !important;
+    }
+
+    .features-main .lg\:left-0 {
+        left: 0 !important;
+    }
+
+    .features-main .lg\:text-right {
+        text-align: right !important;
+    }
+
+    .features-main .lg\:w-auto {
+        width: auto !important;
+    }
+
+    .features-main .lg\:mt-32 {
+        margin-top: 8rem !important;
+    }
+
+    .features-main .lg\:mb-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .features-main .lg\:py-16 {
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    .features-main .lg\:text-5xl {
+        font-size: 3rem !important;
+        line-height: 1 !important;
+    }
+
+    .features-main .lg\:text-2xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+    }
+
+    .features-main .lg\:text-3xl {
+        font-size: 1.875rem !important;
+        line-height: 2.25rem !important;
+    }
+
+    .features-main .lg\:text-4xl {
+        font-size: 2.25rem !important;
+        line-height: 2.5rem !important;
+    }
+
+    .features-main .lg\:text-\[6\.5rem\] {
+        font-size: 6.5rem !important;
+    }
+
+    .features-main .lg\:text-\[7rem\] {
+        font-size: 7rem !important;
+    }
+
+    .features-main .lg\:text-\[8rem\] {
+        font-size: 8rem !important;
+    }
+
+    .features-main .lg\:text-\[9rem\] {
+        font-size: 9rem !important;
+    }
+
+    .features-main .lg\:p-16 {
+        padding: 4rem !important;
+    }
+
+    .features-main .lg\:aspect-\[16\/10\] {
+        aspect-ratio: 16/10 !important;
+    }
+
+    .features-main .lg\:aspect-\[21\/9\] {
+        aspect-ratio: 21/9 !important;
+    }
+
+    .features-main .lg\:mb-48 {
+        margin-bottom: 12rem !important;
+    }
 }
 
 @media (min-width: 768px) {
-    .features-hero-desc {
-        font-size: 1.25rem;
+    .features-main .md\:flex-row {
+        flex-direction: row !important;
+    }
+
+    .features-main .md\:items-center {
+        align-items: center !important;
+    }
+
+    .features-main .md\:items-end {
+        align-items: flex-end !important;
+    }
+
+    .features-main .md\:block {
+        display: block !important;
+    }
+
+    .features-main .md\:mb-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .features-main .md\:p-16 {
+        padding: 4rem !important;
+    }
+
+    .features-main .md\:py-12 {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    .features-main .md\:text-6xl {
+        font-size: 3.75rem !important;
+        line-height: 1 !important;
+    }
+
+    .features-main .md\:text-7xl {
+        font-size: 4.5rem !important;
+        line-height: 1 !important;
+    }
+
+    .features-main .md\:text-8xl {
+        font-size: 6rem !important;
+        line-height: 1 !important;
+    }
+
+    .features-main .md\:text-2xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+    }
+
+    .features-main .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .features-main .md\:min-h-screen {
+        min-height: 100vh !important;
     }
 }
 
-/* ── CTA Buttons Row ── */
-.fh-cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+/* XL breakpoint */
+@media (min-width: 1280px) {
+    .features-main .xl\:text-\[9rem\] {
+        font-size: 9rem !important;
+    }
 }
 
-/* ════════════════════ AURORA GLASS CARD SYSTEM ════════════════════ */
-.aurora-card {
+
+/* ═════════ 15. GAP UTILITIES ═════════ */
+
+.features-main .gap-4 {
+    gap: 1rem !important;
+}
+
+.features-main .gap-5 {
+    gap: 1.25rem !important;
+}
+
+.features-main .gap-6 {
+    gap: 1.5rem !important;
+}
+
+.features-main .gap-10 {
+    gap: 2.5rem !important;
+}
+
+.features-main .gap-16 {
+    gap: 4rem !important;
+}
+
+.features-main .gap-40 {
+    gap: 10rem !important;
+}
+
+
+/* ═════════ 16. PERFORMANCE BARS ANIMATION ═════════ */
+
+.features-main .h-\[2px\] {
+    height: 2px !important;
+}
+
+
+/* ═════════ 17. UGC ROW HOVER LINE ═════════ */
+
+.features-main .ugc-row {
     position: relative;
-    border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    height: 100%;
-    box-shadow:
-        0 4px 20px -4px rgba(0, 0, 0, 0.06),
-        0 1px 4px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-.aurora-card:hover {
-    transform: translateY(-8px) scale(1.015);
-    box-shadow:
-        0 20px 50px -10px rgba(0, 0, 0, 0.12),
-        0 8px 20px rgba(0, 0, 0, 0.05);
-}
-
-/* Left accent stripe */
-.aurora-card__stripe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg,
-            transparent 0%,
-            var(--aurora-accent, #f97316) 30%,
-            color-mix(in srgb, var(--aurora-accent) 80%, #fff) 60%,
-            var(--aurora-accent, #f97316) 80%,
-            transparent 100%);
-    opacity: 0.35;
-    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    z-index: 2;
-}
-
-.aurora-card--lit .aurora-card__stripe {
-    opacity: 1;
-    width: 4px;
-    box-shadow:
-        0 0 12px color-mix(in srgb, var(--aurora-accent) 50%, transparent),
-        0 0 30px color-mix(in srgb, var(--aurora-accent) 20%, transparent);
-}
-
-/* Cursor-tracking glow */
-.aurora-card__glow {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(450px circle at var(--ax, 50%) var(--ay, 50%),
-            color-mix(in srgb, var(--aurora-accent, #f97316) 10%, transparent),
-            transparent 45%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-}
-
-.aurora-card--lit .aurora-card__glow {
-    opacity: 1;
-}
-
-/* Shimmer sweep */
-.aurora-card__shine {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 55%;
-    height: 100%;
-    background: linear-gradient(105deg,
-            transparent 25%,
-            rgba(255, 255, 255, 0.35) 45%,
-            rgba(255, 255, 255, 0.55) 50%,
-            rgba(255, 255, 255, 0.35) 55%,
-            transparent 75%);
-    transform: skewX(-18deg);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.aurora-card--lit .aurora-card__shine {
-    animation: aurora-shimmer 0.85s ease forwards;
-}
-
-@keyframes aurora-shimmer {
-    0% {
-        left: -100%;
-    }
-
-    100% {
-        left: 160%;
-    }
-}
-
-/* Inner accent glow */
-.aurora-card::after {
+.features-main .ugc-row::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60%;
-    height: 45%;
-    background: radial-gradient(ellipse at bottom left,
-            color-mix(in srgb, var(--aurora-accent, #f97316) 5%, transparent),
-            transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    width: 0%;
+    height: 1px;
+    background: linear-gradient(90deg, #f97316, #ec4899);
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.aurora-card--lit::after {
-    opacity: 1;
-}
-
-.aurora-card__body {
-    position: relative;
-    z-index: 2;
-    padding: 2rem;
-}
-
-/* ─── Aurora Icon Box ─── */
-.aurora-icon-box {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    background: linear-gradient(135deg,
-            var(--aurora-accent, #f97316),
-            color-mix(in srgb, var(--aurora-accent) 60%, #1a1a1a));
-    margin-bottom: 1.5rem;
-    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow:
-        0 4px 16px color-mix(in srgb, var(--aurora-accent) 35%, transparent),
-        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-}
-
-.aurora-card--lit .aurora-icon-box {
-    transform: scale(1.12) rotate(-5deg);
-    box-shadow:
-        0 8px 28px color-mix(in srgb, var(--aurora-accent) 45%, transparent),
-        0 0 0 1px rgba(255, 255, 255, 0.3) inset;
-}
-
-.aurora-icon-box--sm {
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-/* ─── Aurora Card Title ─── */
-.aurora-card-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--c-text);
-    font-family: var(--f-heading);
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
-    position: relative;
-    display: inline-block;
-}
-
-.aurora-card-title::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 2.5px;
-    background: linear-gradient(90deg, var(--aurora-accent, #f97316), transparent);
-    border-radius: 2px;
-    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.aurora-card--lit .aurora-card-title::after {
+.features-main .ugc-row:hover::after {
     width: 100%;
 }
 
-.aurora-card-title--lg {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
+
+/* ═════════ 18. COMPARISON ROW ENHANCEMENT ═════════ */
+
+.features-main .comp-row {
+    transition: all 0.5s ease;
+}
+
+
+/* ═════════ 19. PERFORMANCE CARD POLISH ═════════ */
+
+.features-main .bg-\[\#0a0a0a\] {
+    background-color: #0a0a0a !important;
+}
+
+
+/* ═════════ 20. BORDER UTILITIES ═════════ */
+
+.features-main .border-t {
+    border-top-width: 1px !important;
+    border-top-style: solid !important;
+}
+
+.features-main .border-b {
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
+}
+
+.features-main .border {
+    border-width: 1px !important;
+    border-style: solid !important;
+}
+
+.features-main .border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.features-main .border-white\/5 {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.features-main .border-white\/30 {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+
+/* ═════════ 21. ROUNDED UTILITIES ═════════ */
+
+.features-main .rounded-full {
+    border-radius: 9999px !important;
+}
+
+.features-main .rounded-xl {
+    border-radius: 0.75rem !important;
+}
+
+.features-main .rounded-\[3rem\] {
+    border-radius: 3rem !important;
+}
+
+
+/* ═════════ 22. BACKDROP BLUR ═════════ */
+
+.features-main .backdrop-blur-2xl {
+    backdrop-filter: blur(40px) !important;
+    -webkit-backdrop-filter: blur(40px) !important;
+}
+
+.features-main .backdrop-blur-md {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+
+/* ═════════ 23. HIDE ON MOBILE, SHOW ON MD ═════════ */
+
+.features-main .hidden.md\:block {
+    display: none !important;
 }
 
 @media (min-width: 768px) {
-    .aurora-card-title--lg {
-        font-size: 1.875rem;
+    .features-main .hidden.md\:block {
+        display: block !important;
     }
 }
 
-.aurora-card-title--sm {
-    font-size: 0.9375rem;
-    margin-bottom: 0.25rem;
+
+/* ═════════ 24. FEATURE IMAGE HOVER EFFECTS ═════════ */
+
+.features-main img {
+    max-width: 100%;
 }
 
-.aurora-card-desc {
-    font-size: 0.9rem;
-    color: var(--c-text-sec);
-    line-height: 1.75;
-    margin-bottom: 1.5rem;
+.features-main .scale-105 {
+    transform: scale(1.05);
 }
 
-.aurora-card-desc--sm {
-    font-size: 0.8125rem;
-    margin-bottom: 0;
+.features-main .hover\:scale-100:hover {
+    transform: scale(1) !important;
 }
 
-/* ─── Large card override ─── */
-.aurora-card--large .aurora-card__body {
-    padding: 2.5rem;
+
+/* ═════════ 25. GROUP HOVER INTERACTIONS ═════════ */
+
+.features-main .group:hover .group-hover\:translate-x-4 {
+    transform: translateX(1rem) !important;
 }
 
-@media (min-width: 768px) {
-    .aurora-card--large .aurora-card__body {
-        padding: 2.75rem;
-    }
+.features-main .group:hover .group-hover\:text-orange-500 {
+    color: #f97316 !important;
 }
 
-/* ─── Compact card override ─── */
-.aurora-card--compact .aurora-card__body {
-    padding: 1.5rem;
+.features-main .group:hover .group-hover\:text-white\/80 {
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* ════════════════════ CORE FEATURES LAYOUT ════════════════════ */
-.features-center-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
+.features-main .group:hover .group-hover\:bg-white\/\[0\.02\] {
+    background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
-.features-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.features-main .group:hover .group-hover\:saturate-125 {
+    filter: saturate(1.25) !important;
 }
 
-.features-card-grid {
-    display: grid;
-    gap: 2rem;
-    align-items: center;
+.features-main .group:hover .group-hover\:grayscale-0 {
+    filter: grayscale(0) !important;
 }
 
-@media (min-width: 1024px) {
-    .features-card-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.features-main .group:hover .group-hover\:opacity-100 {
+    opacity: 1 !important;
 }
 
-.features-card-order-1 {
-    order: 1;
+.features-main .group:hover .group-hover\:scale-150 {
+    transform: scale(1.5) !important;
 }
 
-.features-card-order-2 {
-    order: 2;
+.features-main .group:hover .group-hover\:bg-orange-500\/10 {
+    background-color: rgba(249, 115, 22, 0.1) !important;
 }
 
-@media (min-width: 1024px) {
-    .features-card-order-lg-1 {
-        order: 1;
-    }
 
-    .features-card-order-lg-2 {
-        order: 2;
-    }
+/* ═════════ 26. LAST CHILD BORDER REMOVAL ═════════ */
+
+.features-main .last\:border-0:last-child {
+    border-width: 0 !important;
 }
 
-.features-card-capabilities {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+.features-main .last\:pb-0:last-child {
+    padding-bottom: 0 !important;
 }
 
-.features-capability-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--c-text-sec);
+
+/* ═════════ 27. BACKGROUND GRADIENT FIX ═════════ */
+
+.features-main .bg-gradient-to-b {
+    background-image: linear-gradient(to bottom, var(--tw-gradient-stops)) !important;
 }
 
-.features-capability-icon {
-    color: #22c55e;
-    flex-shrink: 0;
+.features-main .bg-gradient-to-t {
+    background-image: linear-gradient(to top, var(--tw-gradient-stops)) !important;
 }
 
-.features-card-image {
-    border-radius: 1rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    width: 100%;
-    height: 16rem;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+.features-main .bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-stops)) !important;
 }
 
-.aurora-card--lit .features-card-image {
-    transform: scale(1.02);
+
+/* ═════════ 28. FILTER UTILITIES ═════════ */
+
+.features-main .grayscale {
+    filter: grayscale(100%) !important;
 }
 
-@media (min-width: 768px) {
-    .features-card-image {
-        height: 20rem;
-    }
+.features-main .opacity-60 {
+    opacity: 0.6 !important;
 }
 
-/* ════════════════════ UGC CREATION ENGINE GRID ════════════════════ */
-.features-grid-3 {
-    display: grid;
-    gap: 1.75rem;
+.features-main .saturate-50 {
+    filter: saturate(0.5) !important;
 }
 
-@media (min-width: 768px) {
-    .features-grid-3 {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
+/* ═════════ 29. POINTER EVENTS ═════════ */
+
+.features-main .pointer-events-none {
+    pointer-events: none !important;
 }
 
-@media (min-width: 1024px) {
-    .features-grid-3 {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.features-main .mix-blend-screen {
+    mix-blend-mode: screen !important;
 }
 
-/* ════════════════════ PERFORMANCE OPTIMIZATION ════════════════════ */
-.features-split-grid {
-    display: grid;
-    gap: 3rem;
-    align-items: center;
+
+/* ═════════ 30. MIN-HEIGHT UTILITIES ═════════ */
+
+.features-main .min-h-\[95vh\] {
+    min-height: 95vh !important;
 }
 
-@media (min-width: 1024px) {
-    .features-split-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.features-main .min-h-\[70vh\] {
+    min-height: 70vh !important;
 }
 
-.features-metrics-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+
+/* ═════════ 31. SCROLLBAR FOR DARK THEME ═════════ */
+
+.features-main::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.features-metric-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-.features-metric-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #3a3a5c;
-}
-
-.features-metric-value {
-    font-size: 0.875rem;
-    font-weight: 700;
-}
-
-.features-metric-bar-bg {
-    height: 0.625rem;
-    background-color: #f1f5f9;
-    border-radius: 9999px;
-    overflow: hidden;
-}
-
-.features-metric-bar-fill {
-    height: 100%;
-    border-radius: 9999px;
-}
-
-.features-grid-2x2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-/* (tiny cards now use .aurora-card--compact) */
-
-/* ════════════════════ COMPARISON TABLE ════════════════════ */
-.features-table-wrapper {
-    overflow-x: auto;
-}
-
-.features-table {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 1rem;
-    border-collapse: separate;
-    border-spacing: 0;
-    overflow: hidden;
-}
-
-.features-table th {
-    padding: 1rem 1.25rem;
-    font-size: 0.875rem;
-    font-weight: 700;
-    border-bottom: 1px solid #ffedd5;
-    background: linear-gradient(180deg, #FAFAF9 0%, #F5F5F4 50%, #FAFAF9 100%);
-}
-
-@media (min-width: 768px) {
-    .features-table th {
-        padding: 1.25rem;
-    }
-}
-
-.features-table-th-feature {
-    text-align: left;
-    color: #3a3a5c;
-}
-
-.features-table-yovo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-}
-
-.features-table-th-other {
-    color: #7a7a9a;
-}
-
-.features-table td {
-    padding: 1rem 1.25rem;
-    font-size: 0.875rem;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-@media (min-width: 768px) {
-    .features-table td {
-        padding: 1.25rem;
-    }
-}
-
-.features-table-tr-even {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-.features-table-tr-odd {
-    background-color: rgba(248, 250, 252, 0.3);
-}
-
-.features-table-td-feature {
-    font-weight: 500;
-    color: #3a3a5c;
-}
-
-.features-table-td-yovo {
-    text-align: center;
-    font-weight: 600;
-    color: #ea580c;
-}
-
-.features-table-td-traditional {
-    text-align: center;
-    color: #a0a0b4;
-}
-
-.features-table-td-competitor {
-    text-align: center;
-    color: #7a7a9a;
-}
-
-/* ════════════════════ CTA ════════════════════ */
-.features-cta-desc {
-    font-size: 1.125rem;
-    color: #4a4a68;
-    max-width: 42rem;
-    margin: 0 auto;
-    margin-bottom: 2.5rem;
-}
-
-.features-cta-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+.features-main::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
 }

@@ -1,312 +1,433 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-    ArrowRight, Zap, Target, Sparkles, UserMinus, SearchX,
-    CheckCircle, Video, ShieldCheck, Clock, TrendingDown, Hourglass,
-    Cpu, UserCheck, Rocket, BarChart4, Network, Library, PieChart, Share2, Award
+    ArrowRight, Target, UserMinus, SearchX,
+    TrendingDown, Hourglass, Cpu, UserCheck,
+    Rocket, BarChart4, Network, Library,
+    PieChart, Share2, Award, ShieldCheck,
+    Globe2, Layers, ChevronRight, Sparkles, Eye, Play
 } from 'lucide-react'
-import SectionReveal from '../components/SectionReveal'
 import './ForBrands.css'
+
 import workplace from '../assets/images/workplace.jpg'
-import visualDashbord from '../assets/images/visualDashbord.jpg'
+import forBrandAd from '../assets/images/forBrandAd.png'
+import forBrandSection from '../assets/images/forBrandSection.jpg'
+import forBrandSectionImages from '../assets/images/forBrandSectionImages.png'
+import forBrandWin from '../assets/images/forBrandWin.png'
+import forBrandCam from '../assets/images/ForBranadCam.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/* ─── Elite Prism Card Component (Brands-specific) ─── */
-function PrismCard({ children, accent = '#f97316', index = 0, className = '' }) {
-    const cardRef = useRef(null)
-    const [isHovered, setIsHovered] = useState(false)
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, margin: '-40px' })
-
-    const handleMouseMove = useCallback((e) => {
-        const card = cardRef.current
-        if (!card) return
-        const rect = card.getBoundingClientRect()
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
-        card.style.setProperty('--px', `${x}px`)
-        card.style.setProperty('--py', `${y}px`)
-    }, [])
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 50, rotateX: 5 }}
-            animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="prism-card-wrapper"
-        >
-            <div
-                ref={cardRef}
-                className={`prism-card ${isHovered ? 'prism-card--lit' : ''} ${className}`}
-                style={{ '--prism-accent': accent }}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                onMouseMove={handleMouseMove}
-            >
-                {/* Rotating gradient border */}
-                <div className="prism-card__border" />
-                {/* Inner glass layer */}
-                <div className="prism-card__glass">
-                    <div className="prism-card__glare" />
-                    <div className="prism-card__glow" />
-                </div>
-                {/* Content in document flow to provide height */}
-                <div className="prism-card__content">
-                    {children}
-                </div>
-            </div>
-        </motion.div>
-    )
-}
-
+/* ─── Data ─── */
 const brandProblems = [
-    { icon: <TrendingDown size={24} />, problem: 'High ad spend, low ROI', desc: 'Traditional advertising costs are skyrocketing while effectiveness plummets. Audiences scroll past polished ads.' },
-    { icon: <Hourglass size={24} />, problem: 'Slow content turnaround', desc: 'Agency-created content takes weeks. By the time it launches, the moment has passed.' },
-    { icon: <UserMinus size={24} />, problem: 'Low audience trust', desc: 'Consumers trust recommendations from real people 3x more than branded content.' },
-    { icon: <SearchX size={24} />, problem: 'Finding the right creators', desc: 'Manually searching for creators is time-consuming and often results in poor brand-fit matches.' },
+    { icon: <TrendingDown size={28} />, problem: 'High ad spend, low ROI', desc: 'Advertising costs are skyrocketing while effectiveness plummets. Audiences instinctively scroll past polished ads.' },
+    { icon: <Hourglass size={28} />, problem: 'Slow turnaround', desc: 'Agency-created content takes weeks. By the time it launches, the cultural moment has entirely passed.' },
+    { icon: <UserMinus size={28} />, problem: 'Zero audience trust', desc: 'Consumers trust recommendations from real people 3x more than branded content. Authenticity cannot be forged.' },
 ]
 
 const solutions = [
-    { icon: <Cpu size={28} />, title: 'AI Campaign Engine', desc: 'Launch UGC campaigns in minutes, not weeks. Our AI handles everything from brief creation to content curation.', metrics: '85% faster launch' },
-    { icon: <UserCheck size={28} />, title: 'Smart Creator Matching', desc: 'AI-powered matching connects you with creators who genuinely align with your brand. The right voices, every time.', metrics: '10,000+ vetted creators' },
-    { icon: <Rocket size={28} />, title: 'Automated Distribution', desc: 'One-click distribution across 40+ platforms with format-specific optimization.', metrics: '40+ platform integrations' },
-    { icon: <BarChart4 size={28} />, title: 'Real-Time ROI Tracking', desc: 'See exactly how every dollar performs. Track conversions, engagement, and brand lift in real-time.', metrics: 'Complete attribution' },
+    { icon: <Cpu size={26} />, title: 'AI Campaign Engine', desc: 'Launch UGC campaigns in minutes, not weeks. Our AI handles everything from brief creation to content curation.', metric: '85% faster launch' },
+    { icon: <UserCheck size={26} />, title: 'Smart Creator Matching', desc: 'AI-powered matching connects you with creators who genuinely align with your brand. The right voices, every time.', metric: '10,000+ vetted creators' },
+    { icon: <Rocket size={26} />, title: 'Automated Distribution', desc: 'One-click distribution across 40+ platforms with format-specific optimization.', metric: '40+ platforms' },
+    { icon: <BarChart4 size={26} />, title: 'Real-Time Track', desc: 'See exactly how every dollar performs. Track conversions, engagement, and brand lift in real-time.', metric: 'Complete attribution' },
+]
+
+const processSteps = [
+    { num: '01', title: 'Define', desc: 'Set your campaign goals, target audience, and brand guidelines through our intelligent brief builder. AI suggests the optimal parameters.' },
+    { num: '02', title: 'Match', desc: 'Our algorithm scans 10,000+ creators, filtering for brand affinity, past performance, and audience demographic overlap.' },
+    { num: '03', title: 'Create', desc: 'Creators produce authentic content using our Studio app, with AI enforcing brand safety and quality guidelines before submission.' },
+    { num: '04', title: 'Amplify', desc: 'Approved content is syndicated across TikTok, Reels, Shorts, and ad networks with one click, tracked via our unified dashboard.' },
 ]
 
 const caseStudies = [
-    {
-        brand: 'Organix Foods', industry: 'FMCG',
-        challenge: 'Low organic reach and declining engagement despite high ad spend.',
-        solution: 'Launched 50+ creator-driven UGC campaigns with AI enhancement.',
-        results: [{ metric: '5x', label: 'Organic Reach' }, { metric: '312%', label: 'Engagement Growth' }, { metric: '68%', label: 'Cost Reduction' }],
-        quote: "YovoAI turned our customers into creators. 5x organic reach within weeks!", author: 'Amit Sharma, Brand Manager',
-    },
-    {
-        brand: 'Bloomwear', industry: 'Fashion',
-        challenge: 'Struggling to build authentic connections with Gen-Z audience.',
-        solution: 'Partnered with 200+ micro-creators through YovoAI\'s matching algorithm.',
-        results: [{ metric: '4.2x', label: 'ROAS Improvement' }, { metric: '250%', label: 'UGC Volume' }, { metric: '89%', label: 'Brand Sentiment' }],
-        quote: "Our brand engagement skyrocketed. UGC + AI is a game-changer!", author: 'Rahul Mehta, CMO',
-    },
-]
-
-const brandDashboardFeatures = [
-    { icon: <BarChart4 size={18} />, label: 'Campaign Analytics', desc: 'Real-time performance metrics' },
-    { icon: <Network size={18} />, label: 'Creator Network', desc: '10,000+ vetted creators' },
-    { icon: <Library size={18} />, label: 'Content Library', desc: 'AI-organized UGC repository' },
-    { icon: <ShieldCheck size={18} />, label: 'Brand Safety', desc: 'Real-time content moderation' },
-    { icon: <PieChart size={18} />, label: 'ROI Dashboard', desc: 'End-to-end attribution' },
-    { icon: <Share2 size={18} />, label: 'Multi-Platform', desc: 'Unified distribution hub' },
+    { brand: 'Organix Foods', metric: '5x', label: 'Organic Reach', desc: 'Launched 50+ creator-driven UGC campaigns with AI enhancement, reducing CAC by 68%.' },
+    { brand: 'Bloomwear', metric: '4.2x', label: 'ROAS', desc: 'Partnered with 200+ micro-creators, boosting UGC volume by 250% and driving record sales.' },
 ]
 
 export default function ForBrands() {
-    const solutionsRef = useRef(null)
+    const mainRef = useRef(null)
+    const [activeSol, setActiveSol] = useState(0)
 
-    const problemAccents = ['#ef4444', '#f97316', '#fbbf24', '#f59e0b']
-    const solutionAccents = ['#f94b6e', '#ff8902', '#fb923c', '#facc15']
-    const caseAccents = ['#f97316', '#ef4444']
+    useEffect(() => {
+        const t = setInterval(() => setActiveSol(p => (p + 1) % solutions.length), 5000)
+        return () => clearInterval(t)
+    }, [])
+
+    /* ─── Ultra Premium Scroll Animations ─── */
+    useEffect(() => {
+        let ctx = gsap.context(() => {
+
+            // 1. Aurora Veil Reveal & Royal Stagger Cascade (Hero)
+            gsap.fromTo('.anim-aurora',
+                { opacity: 0, scale: 1.1, filter: 'blur(30px) brightness(1.5)' },
+                { opacity: 0.8, scale: 1, filter: 'blur(0px) brightness(1)', duration: 3, ease: 'power3.inOut' }
+            )
+            gsap.fromTo('.anim-royal',
+                { y: 60, opacity: 0, filter: 'blur(10px)' },
+                { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.5, stagger: 0.15, ease: 'expo.out', delay: 0.6 }
+            )
+
+            // 2. Horizon Split Transition (Dividers)
+            gsap.utils.toArray('.anim-horizon').forEach(el => {
+                gsap.fromTo(el,
+                    { scaleX: 0, transformOrigin: 'center' },
+                    { scaleX: 1, duration: 1.5, ease: 'power4.inOut', scrollTrigger: { trigger: el, start: 'top 90%' } }
+                )
+            })
+
+            // 3. Phantom Depth Rise
+            gsap.fromTo('.anim-phantom',
+                { z: -100, rotationX: 10, opacity: 0, filter: 'blur(10px)', y: 40 },
+                {
+                    z: 0, rotationX: 0, opacity: 1, filter: 'blur(0px)', y: 0, duration: 1.4, stagger: 0.2, ease: 'power3.out',
+                    scrollTrigger: { trigger: '.anim-phantom-trig', start: 'top 80%' }
+                }
+            )
+
+            // 4. Cinematic Mask Sweep
+            gsap.fromTo('.anim-mask-sweep',
+                { clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)' },
+                {
+                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', duration: 1.8, ease: 'power4.inOut',
+                    scrollTrigger: { trigger: '.anim-mask-sweep', start: 'top 80%' }
+                }
+            )
+
+            // 5. Liquid Silk Unfold
+            gsap.utils.toArray('.anim-silk').forEach(el => {
+                gsap.fromTo(el,
+                    { clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)', y: 40 },
+                    {
+                        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', y: 0, duration: 1.8, ease: 'power3.inOut',
+                        scrollTrigger: { trigger: el, start: 'top 85%' }
+                    }
+                )
+            })
+
+            // 6. Magnetic Pull In (Process Cards)
+            gsap.utils.toArray('.anim-magnetic').forEach(el => {
+                gsap.fromTo(el,
+                    { opacity: 0, scale: 0.9, y: 60 },
+                    {
+                        opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'back.out(1.2)',
+                        scrollTrigger: { trigger: el, start: 'top 85%' }
+                    }
+                )
+            })
+
+            // 7. 3D Perspective Tilt In
+            gsap.fromTo('.anim-tilt',
+                { rotationY: 20, rotationX: 10, z: -150, opacity: 0, filter: 'brightness(0.5)' },
+                {
+                    rotationY: 0, rotationX: 0, z: 0, opacity: 1, filter: 'brightness(1)', duration: 1.8, ease: 'expo.out',
+                    scrollTrigger: { trigger: '.anim-tilt-trig', start: 'top 75%' }
+                }
+            )
+
+            // 8. Dark-to-Light Exposure
+            gsap.fromTo('.anim-exposure',
+                { filter: 'brightness(0) contrast(2)', opacity: 0 },
+                {
+                    filter: 'brightness(1) contrast(1)', opacity: 1, duration: 2.5, ease: 'power2.inOut',
+                    scrollTrigger: { trigger: '.anim-exposure', start: 'top 60%' }
+                }
+            )
+
+            // 9. Nebula Glow Entrance
+            gsap.fromTo('.anim-nebula',
+                { opacity: 0, boxShadow: '0 0 0px rgba(249, 115, 22, 0)' },
+                {
+                    opacity: 1, boxShadow: '0 0 100px rgba(249, 115, 22, 0.25)', duration: 2,
+                    scrollTrigger: { trigger: '.anim-exposure', start: 'top 50%' }
+                }
+            )
+
+            // 10. Velvet Curtain Reveal (CTA)
+            gsap.fromTo('.anim-curtain-l', { xPercent: 0 }, { xPercent: -100, duration: 1.5, ease: 'power3.inOut', scrollTrigger: { trigger: '.anim-curtain-trig', start: 'top 60%' } })
+            gsap.fromTo('.anim-curtain-r', { xPercent: 0 }, { xPercent: 100, duration: 1.5, ease: 'power3.inOut', scrollTrigger: { trigger: '.anim-curtain-trig', start: 'top 60%' } })
+
+            // 11. Luxury Parallax Drift
+            gsap.utils.toArray('.anim-parallax').forEach(el => {
+                gsap.to(el, {
+                    yPercent: 15, ease: 'none',
+                    scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+                })
+            })
+
+        }, mainRef)
+        return () => ctx.revert()
+    }, [])
 
     return (
-        <main className="fb-main">
+        <main className="fbx-main" ref={mainRef}>
 
-            {/* ════════════ HERO ════════════ */}
-            <section className="fb-hero">
-                <div className="fb-hero-bg">
-                    <img src={workplace} alt="" className="fb-hero-bg-img" />
-                    <div className="fb-hero-overlay"></div>
+            {/* ════════════ 1. HERO — PREVIOUS FULL BLEED STYLE, DARK SEC ════════════ */}
+            <section className="fbx-hero fbx-sec-dark">
+                {/* Full Bleed Cinematic Background */}
+                <div className="fbx-hero__bg-wrap anim-aurora">
+                    <img src={workplace} alt="Brand" className="fbx-hero__bg anim-parallax" />
+                    <div className="fbx-hero__overlay"></div>
                 </div>
-                <div className="fb-hero-glow" />
-                <div className="fb-hero-glow fb-hero-glow-2" />
-                <div className="container-lg fb-px">
-                    <div className="fb-hero-inner">
-                        <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label">
-                            <Target size={14} /> For Brands
-                        </motion.span>
-                        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                            className="fb-hero-title"
-                        >
-                            Turn your audience into
-                            <br />
-                            <span >your marketing engine.</span>
-                        </motion.h1>
-                        <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                            className="fb-hero-desc"
-                        >
-                            Stop spending millions on ads nobody trusts. YovoAI empowers your customers to create content that drives real engagement and measurable results.
-                        </motion.p>
-                        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="fb-hero-cta">
-                            <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="magnetic-btn btn-primary"><Rocket size={18} /> Launch a Campaign</a>
-                            <Link to="/features" className="magnetic-btn btn-outline">See All Features <ArrowRight size={18} /></Link>
-                        </motion.div>
+
+                <div className="fbx-hero__content">
+                    <div className="fbx-hero__badge anim-royal">
+                        <span className="fbx-badge-dot"></span>
+                        <Target size={14} className="ml-1 mr-1" /> For Brands
                     </div>
+
+                    <h1 className="fbx-hero__title">
+                        <span className="fbx-hero__title-line anim-royal !text-white">Turn audience</span>
+                        <span className="fbx-hero__title-line anim-royal !text-white">into your</span>
+                        <span className="fbx-hero__title-glow anim-royal text-orange-500">Engine.</span>
+                    </h1>
+
+                    <p className="fbx-hero__sub anim-royal">
+                        Stop spending millions on ads nobody trusts. YovoAI empowers your customers to create content that drives real engagement and measurable results.
+                    </p>
+
+                    <div className="fbx-hero__actions anim-royal">
+                        <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="fbx-btn fbx-btn--primary anim-float">
+                            <Rocket size={18} /> Launch a Campaign
+                        </a>
+                        <Link to="/features" className="fbx-btn fbx-btn--secondary">
+                            See All Features <ArrowRight size={18} />
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Pulse Frame Highlight at bottom */}
+                <div className="fbx-hero__scroll-ind anim-pulse-frame">
+                    <div className="fbx-hero__scroll-line"></div>
                 </div>
             </section>
 
-            {/* ════════════ BRAND PROBLEMS ════════════ */}
-            <section className="section-padding">
-                <div className="container-lg fb-px">
-                    <SectionReveal className="fb-center-header" variant="rotateIn" duration={1}>
-                        <span className="fb-problem-label">The Problem</span>
-                        <h2 className="section-heading">Why traditional marketing is <span className="fb-text-red">broken</span></h2>
-                        <p className="section-subtext">Brands are spending more and getting less. Here's what you're up against.</p>
-                    </SectionReveal>
 
-                    <div className="fb-grid-2">
-                        {brandProblems.map((p, i) => (
-                            <SectionReveal key={p.problem} delay={i * 0.08} variant="glitch" duration={0.9}>
-                                <PrismCard accent={problemAccents[i]} index={i} className="fb-problem-card">
-                                    <div className="premium-icon-orb" style={{ '--orb-color': problemAccents[i] }}>
-                                        <div className="premium-icon-orb__inner">
-                                            {p.icon}
-                                        </div>
-                                        <div className="premium-icon-orb__pulse" />
-                                    </div>
-                                    <h3 className="prism-card-title">{p.problem}</h3>
-                                    <p className="prism-card-desc">{p.desc}</p>
-                                </PrismCard>
-                            </SectionReveal>
-                        ))}
+            {/* ════════════ 2. PROBLEM — LIGHT SECTION, PHANTOM DEPTH ════════════ */}
+            <section className="fbx-prob fbx-sec-light anim-phantom-trig">
+                <div className="fbx-container">
+                    <div className="fbx-prob__header anim-phantom">
+                        <span className="fbx-tag-light mb-4">The Problem</span>
+                        <h2 className="fbx-heading">
+                            Traditional marketing is <span className="fbx-text-gradient">broken.</span>
+                        </h2>
+                        <p className="fbx-subheading text-center mx-auto">Brands are spending more and getting less. Here's what you're up against.</p>
                     </div>
-                </div>
-            </section>
 
-            {/* ════════════ SOLUTIONS ════════════ */}
-            <section ref={solutionsRef} className="section-padding gradient-subtle">
-                <div className="container-lg fb-px">
-                    <SectionReveal className="fb-center-header" variant="flipX" duration={1.1}>
-                        <span className="fb-solution-label">The Solution</span>
-                        <h2 className="section-heading">How YovoAI <span className="gradient-text">solves</span> it</h2>
-                        <p className="section-subtext">A complete ecosystem built to make your brand unstoppable</p>
-                    </SectionReveal>
-
-                    <div className="fb-solutions-list">
-                        {solutions.map((s, i) => (
-                            <PrismCard key={s.title} accent={solutionAccents[i]} index={i} className="fb-solution-card">
-                                <div className="fb-solution-grid">
-                                    <div className="fb-solution-content">
-                                        <div className="premium-icon-orb" style={{ '--orb-color': solutionAccents[i] }}>
-                                            <div className="premium-icon-orb__inner">
-                                                {s.icon}
-                                            </div>
-                                            <div className="premium-icon-orb__pulse" />
-                                        </div>
-                                        <h3 className="prism-card-title prism-card-title--lg">{s.title}</h3>
-                                        <p className="prism-card-desc prism-card-desc--lg">{s.desc}</p>
+                    <div className="fbx-prob__grid">
+                        <div className="fbx-prob__list">
+                            {brandProblems.map((p, i) => (
+                                <div key={i} className="fbx-prob__item anim-phantom">
+                                    <div className="fbx-prob__icon-wrap">
+                                        {p.icon}
                                     </div>
-                                    <div className="fb-solution-metric-wrap">
-                                        <div className="prism-metric-box">
-                                            <div className="prism-metric-value">{s.metrics}</div>
-                                            <div className="prism-metric-label">Key Metric</div>
-                                        </div>
+                                    <div className="fbx-prob__text">
+                                        <h3>{p.problem}</h3>
+                                        <p>{p.desc}</p>
                                     </div>
                                 </div>
-                            </PrismCard>
-                        ))}
+                            ))}
+                        </div>
+
+                        <div className="fbx-prob__image-wrap anim-mask-sweep">
+                            <img src={forBrandAd} alt="Analytics" className="fbx-prob__img anim-parallax" />
+                            <div className="fbx-prob__img-glass">
+                                <div className="fbx-stat-blur">
+                                    <div className="fbx-stat-val">-42%</div>
+                                    <div className="fbx-stat-lbl">Average ROAS decline</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* ════════════ BRAND DASHBOARD ════════════ */}
-            <section className="section-padding">
-                <div className="container-lg fb-px">
-                    <div className="fb-dashboard-grid">
-                        <SectionReveal variant="slideRotate" duration={1.1}>
-                            <span className="section-label"><BarChart4 size={14} /> Dashboard</span>
-                            <h2 className="section-heading fb-heading-tight">Your <span className="gradient-text">command center</span> for growth</h2>
-                            <p className="fb-dashboard-desc">
-                                Monitor campaigns, manage creators, track ROI, and optimize in real-time — all from one premium interface.
+            {/* ════════════ HORIZON SPLIT ════════════ */}
+            <div className="fbx-horizon"><div className="fbx-horizon__line anim-horizon bg-gray-200"></div></div>
+
+
+            {/* ════════════ 3. SOLUTIONS — DARK SECTION, LIQUID SILK ════════════ */}
+            <section className="fbx-sol fbx-sec-dark">
+                <div className="fbx-container">
+                    <div className="fbx-sol__head anim-royal">
+                        <span className="fbx-tag-dark mb-4">The Solution</span>
+                        <h2 className="fbx-heading">
+                            How YovoAI <span className="fbx-text-gradient">solves</span> it.
+                        </h2>
+                        <p className="fbx-subheading text-center mx-auto">A complete ecosystem built to make your brand unstoppable.</p>
+                    </div>
+
+                    <div className="fbx-sol__layout">
+                        {/* Interactive Tabs */}
+                        <div className="fbx-sol__tabs">
+                            {solutions.map((s, i) => (
+                                <button
+                                    key={i}
+                                    className={`fbx-sol__tab ${activeSol === i ? 'fbx-sol__tab--active' : ''}`}
+                                    onClick={() => setActiveSol(i)}
+                                    onMouseEnter={() => setActiveSol(i)}
+                                >
+                                    <span className="fbx-sol__tab-num">0{i + 1}</span>
+                                    <span className="fbx-sol__tab-name">{s.title}</span>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Visual & Glass Morph Detail */}
+                        <div className="fbx-sol__visual">
+                            <div className="fbx-sol__img-box anim-silk">
+                                <img src={forBrandSectionImages} alt="Platform" className="fbx-sol__img" />
+                            </div>
+
+                            {/* Glass Morph Reveal Panel */}
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeSol}
+                                    initial={{ opacity: 0, y: 20, backdropFilter: 'blur(0px)' }}
+                                    animate={{ opacity: 1, y: 0, backdropFilter: 'blur(20px)' }}
+                                    exit={{ opacity: 0, y: -20, backdropFilter: 'blur(0px)' }}
+                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                    className="fbx-sol__glass-card"
+                                >
+                                    <div className="fbx-sol__glass-icon">{solutions[activeSol].icon}</div>
+                                    <h3 className="fbx-sol__glass-title text-white">{solutions[activeSol].title}</h3>
+                                    <p className="fbx-sol__glass-desc">{solutions[activeSol].desc}</p>
+                                    <div className="fbx-sol__glass-metric">
+                                        <strong>{solutions[activeSol].metric}</strong> expected result
+                                    </div>
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ════════════ 4. PROCESS — LIGHT SECTION, MAGNETIC STACK ════════════ */}
+            <section className="fbx-proc fbx-sec-light">
+                <div className="fbx-container">
+                    <div className="fbx-proc__layout">
+
+                        <div className="fbx-proc__sticky-side">
+                            <span className="fbx-tag-light mb-4">How It Works</span>
+                            <h2 className="fbx-heading fbx-proc__head">
+                                Four steps to <span className="fbx-text-gradient">live.</span>
+                            </h2>
+                            <p className="fbx-subheading fbx-proc__sub text-gray-600">Automated workflows replace weeks of agency back-and-forth.</p>
+                        </div>
+
+                        <div className="fbx-proc__cards">
+                            {processSteps.map((step, i) => (
+                                <div key={i} className="fbx-proc__card anim-magnetic" style={{ top: `calc(30vh + ${i * 40}px)` }}>
+                                    <div className="fbx-proc__card-inner border-gray-200 bg-white">
+                                        <div className="fbx-proc__card-num !text-gray-100">{step.num}</div>
+                                        <h3 className="fbx-proc__card-title text-black">{step.title}</h3>
+                                        <p className="fbx-proc__card-desc !text-gray-600">{step.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            {/* ════════════ 5. DASHBOARD — DARK SECTION, TILT ════════════ */}
+            <section className="fbx-dash fbx-sec-dark anim-tilt-trig">
+                <div className="fbx-container">
+                    <div className="fbx-dash__layout">
+                        <div className="fbx-dash__visual">
+                            {/* 3D Perspective Tilt In */}
+                            <div className="fbx-dash__img-wrap anim-tilt">
+                                <img src={forBrandSection} alt="Dashboard" className="fbx-dash__img" />
+                                <div className="fbx-dash__glow anim-nebula"></div>
+                            </div>
+                        </div>
+
+                        <div className="fbx-dash__text">
+                            <span className="fbx-tag-dark mb-4">Command Center</span>
+                            <h2 className="fbx-heading text-left">
+                                Radical <span className="fbx-text-gradient">transparency.</span>
+                            </h2>
+                            <p className="fbx-subheading text-left mb-12">
+                                Stop guessing. Our attribution engine traces every view, click, and conversion back to the exact creator.
                             </p>
-                            <div className="fb-dashboard-features">
-                                {brandDashboardFeatures.map((f) => (
-                                    <div key={f.label} className="fb-dashboard-item">
-                                        <div className="fb-dashboard-item-icon gradient-brand">{f.icon}</div>
+
+                            <div className="fbx-dash__features">
+                                {[
+                                    { t: 'Live ROI Tracking', d: 'Pixel-perfect conversion tracking.' },
+                                    { t: 'Brand Safety AI', d: 'Content is scanned before going live.' },
+                                    { t: 'Unified Treasury', d: 'Automated global creator payouts.' }
+                                ].map((f, i) => (
+                                    <div key={i} className="fbx-dash__feat anim-royal text-left">
+                                        <ShieldCheck size={20} className="fbx-dash__feat-icon" />
                                         <div>
-                                            <div className="fb-dashboard-item-label">{f.label}</div>
-                                            <div className="fb-dashboard-item-desc">{f.desc}</div>
+                                            <h4 className="text-white">{f.t}</h4>
+                                            <p className="text-gray-400">{f.d}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                        </SectionReveal>
-                        <SectionReveal delay={0.2} variant="scaleUp" duration={1.2}>
-                            <img src={visualDashbord} alt="Brand Dashboard" className="fb-dashboard-img" />
-                        </SectionReveal>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* ════════════ CASE STUDIES ════════════ */}
-            <section className="section-padding gradient-subtle">
-                <div className="container-lg fb-px">
-                    <SectionReveal className="fb-center-header" variant="blur" duration={1.1}>
-                        <span className="section-label"><Award size={14} /> Success Stories</span>
-                        <h2 className="section-heading">Brands winning with <span className="gradient-text">YovoAI</span></h2>
-                    </SectionReveal>
+            {/* ════════════ 6. ECOSYSTEM — LIGHT SECTION, EXPOSURE ════════════ */}
+            <section className="fbx-eco fbx-sec-light">
+                <div className="fbx-eco__bg anim-exposure">
+                    <img src={forBrandCam} alt="Studio" className="fbx-eco__bg-img anim-parallax" />
+                    <div className="fbx-eco__overlay"></div>
+                </div>
 
-                    <div className="fb-cases-list">
-                        {caseStudies.map((cs, i) => (
-                            <PrismCard key={cs.brand} accent={caseAccents[i]} index={i} className="fb-case-card">
-                                <div className="fb-case-tags">
-                                    <span className="fb-case-brand-tag" style={{ color: caseAccents[i], borderColor: 'currentColor', background: `color-mix(in srgb, ${caseAccents[i]} 10%, transparent)` }}>{cs.brand}</span>
-                                    <span className="fb-case-industry-tag">{cs.industry}</span>
-                                </div>
-                                <div className="fb-case-grid">
-                                    <div>
-                                        <h4 className="fb-case-section-title">Challenge</h4>
-                                        <p className="prism-card-desc">{cs.challenge}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="fb-case-section-title" style={{ color: caseAccents[i] }}>Solution</h4>
-                                        <p className="prism-card-desc">{cs.solution}</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="fb-case-section-title" style={{ color: '#22c55e' }}>Results</h4>
-                                        <div className="fb-case-results">
-                                            {cs.results.map((r) => (
-                                                <div key={r.label} className="fb-case-result-item">
-                                                    <span className="fb-case-result-metric" style={{ background: `linear-gradient(135deg, ${caseAccents[i]}, #000)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{r.metric}</span>
-                                                    <span className="fb-case-result-label">{r.label}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="fb-case-quote-section">
-                                    <p className="fb-case-quote">"{cs.quote}"</p>
-                                    <p className="fb-case-author">— {cs.author}</p>
-                                </div>
-                            </PrismCard>
-                        ))}
+                <div className="fbx-eco__content">
+                    <span className="fbx-tag-light mb-4 !border-white/20 !text-white/80 !bg-white/10">The Ecosystem</span>
+                    <h2 className="fbx-heading !text-white mb-6">
+                        One ecosystem.<br />
+                        <span className="fbx-text-gradient">Infinite Scale.</span>
+                    </h2>
+                    <p className="fbx-eco__desc text-white/80">
+                        Whether you need five hyper-niche creators or five thousand brand ambassadors, YovoAI scales elastically to meet your campaign demands.
+                    </p>
+                    <div className="fbx-eco__stats">
+                        <div className="fbx-eco__stat"><span className="fbx-eco__val text-white">10K+</span><span className="fbx-eco__lbl text-white/60">Active Creators</span></div>
+                        <div className="fbx-eco__stat"><span className="fbx-eco__val text-white">40+</span><span className="fbx-eco__lbl text-white/60">Platforms</span></div>
                     </div>
                 </div>
             </section>
 
-            {/* ════════════ TRUSTED CTA ════════════ */}
-            <section className="section-padding">
-                <div className="container-lg fb-px fb-text-center">
-                    <SectionReveal variant="elastic" duration={1.3}>
-                        <PrismCard accent="#fbbf24" className="fb-cta-card">
-                            <div className="fb-cta-badge">
-                                <Award size={28} style={{ color: '#f97316' }} />
-                                <span className="fb-cta-badge-text gradient-text">Trusted by 150+ Brands</span>
-                            </div>
-                            <h2 className="section-heading fb-mb-6">Powered by voices that <span className="gradient-text">matter.</span></h2>
-                            <p className="fb-cta-desc">
-                                From emerging D2C startups to enterprise brands, YovoAI is the trusted partner for authentic, high-performing content at scale.
-                            </p>
-                            <div className="fb-cta-buttons">
-                                <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="magnetic-btn btn-primary"><Rocket size={16} /> Start Your Campaign</a>
-                                <Link to="/for-creators" className="magnetic-btn btn-outline">Or Become a Creator <ArrowRight size={16} /></Link>
-                            </div>
-                        </PrismCard>
-                    </SectionReveal>
+
+            {/* ════════════ 7. VELVET CURTAIN CTA & WINNER SECTION ════════════ */}
+            <section className="fbx-cta fbx-sec-dark anim-curtain-trig">
+                {/* Velvet Curtain Reveal masks */}
+                <div className="fbx-cta__curtain fbx-cta__curtain--left anim-curtain-l"></div>
+                <div className="fbx-cta__curtain fbx-cta__curtain--right anim-curtain-r"></div>
+
+                <div className="fbx-cta__inner">
+                    <div className="fbx-cta__win-img anim-mask-sweep">
+                        <img src={forBrandWin} alt="Winner" />
+                        <div className="fbx-cta__win-overlay"></div>
+                    </div>
+
+                    <div className="fbx-cta__content anim-royal text-center">
+                        <Award size={40} className="fbx-cta__icon mx-auto mb-6 text-orange-500" />
+                        <h2 className="fbx-heading text-white">
+                            Join the brands<br />that are <span className="fbx-text-gradient">winning.</span>
+                        </h2>
+                        <p className="fbx-subheading max-w-2xl mx-auto my-8 text-white/60">
+                            The future belongs to brands that build with their community, not just market to them. Your ultimate growth engine is waiting.
+                        </p>
+
+                        <div className="flex justify-center gap-6 mt-12">
+                            <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="fbx-btn fbx-btn--primary fbx-btn--lg anim-float">
+                                Start Your Campaign
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
+
         </main>
     )
 }

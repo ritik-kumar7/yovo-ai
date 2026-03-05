@@ -1,18 +1,20 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
     MapPin, Mail, Phone, Send, ArrowRight, MessageSquare,
-    Globe, Sparkles, CheckCircle
+    Globe, Sparkles, CheckCircle, ChevronDown, Rocket
 } from 'lucide-react'
-import SectionReveal from '../components/SectionReveal'
 import './Contact.css'
 import handleOnline from '../assets/images/handleOnline.jpg'
 
-const contactInfo = [
-    { icon: <MapPin size={22} />, label: 'Visit Us', value: 'S-04, D-53, Sector 2, Noida, UP, India', href: null },
-    { icon: <Mail size={22} />, label: 'Email Us', value: 'contact@yovoai.com', href: 'mailto:contact@yovoai.com' },
-    { icon: <Phone size={22} />, label: 'Call Us', value: '+91 8147540362', href: 'tel:+918147540362' },
+gsap.registerPlugin(ScrollTrigger)
 
+const contactInfo = [
+    { icon: <MapPin size={28} />, label: 'Headquarters', value: 'S-04, D-53, Sector 2, Noida, UP, India', href: null },
+    { icon: <Mail size={28} />, label: 'Direct Inquiries', value: 'contact@yovoai.com', href: 'mailto:contact@yovoai.com' },
+    { icon: <Phone size={28} />, label: 'Global Support', value: '+91 814754 0362', href: 'tel:+918147540362' },
 ]
 
 const faqs = [
@@ -23,191 +25,244 @@ const faqs = [
 ]
 
 export default function Contact() {
+    const mainRef = useRef(null)
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
     const [submitted, setSubmitted] = useState(false)
     const [openFaq, setOpenFaq] = useState(null)
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value })
 
     const handleSubmit = (e) => {
         e.preventDefault()
         setSubmitted(true)
-        setTimeout(() => setSubmitted(false), 4000)
+        setTimeout(() => setSubmitted(false), 5000)
         setFormData({ name: '', email: '', subject: '', message: '' })
     }
 
+    /* ─── Ultra Premium GSAP Animations ─── */
+    useEffect(() => {
+        let ctx = gsap.context(() => {
+            // Hero Reveal
+            gsap.fromTo('.anim-hero-up',
+                { y: 80, opacity: 0, filter: 'blur(10px)' },
+                { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.5, stagger: 0.15, ease: 'expo.out', delay: 0.2 }
+            )
+
+            // Parallax
+            gsap.utils.toArray('.anim-parallax').forEach(el => {
+                gsap.to(el, {
+                    yPercent: 20, ease: 'none',
+                    scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+                })
+            })
+
+            // Info Cards Magnetic Pull
+            gsap.fromTo('.anim-contact-card',
+                { opacity: 0, scale: 0.9, y: 60 },
+                {
+                    opacity: 1, scale: 1, y: 0, duration: 1.2, stagger: 0.1, ease: 'back.out(1.2)',
+                    scrollTrigger: { trigger: '.anim-contact-trig', start: 'top 85%' }
+                }
+            )
+
+            // Form Reveal
+            gsap.fromTo('.anim-form-reveal',
+                { x: -50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: '.anim-form-trig', start: 'top 75%' } }
+            )
+
+            gsap.fromTo('.anim-map-reveal',
+                { x: 50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.2, scrollTrigger: { trigger: '.anim-form-trig', start: 'top 75%' } }
+            )
+
+            // FAQ Stagger
+            gsap.fromTo('.anim-faq-item',
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.anim-faq-trig', start: 'top 80%' } }
+            )
+        }, mainRef)
+        return () => ctx.revert()
+    }, [])
+
     return (
-        <main className="ct-main">
+        <main className="con-main" ref={mainRef}>
 
-            {/* ════════════ HERO ════════════ */}
-            <section className="ct-hero">
-                <div className="ct-hero-bg">
-                    <img src={handleOnline} alt="" className="ct-hero-bg-img" />
-                    <div className="ct-hero-overlay"></div>
+            {/* ════════════ 1. HERO — DARK CINEMATIC ════════════ */}
+            <section className="con-hero con-sec-dark">
+                <div className="con-hero__bg-wrap">
+                    <img src={handleOnline} alt="Contact" className="con-hero__bg anim-parallax" />
+                    <div className="con-hero__overlay"></div>
+                    <div className="con-hero__glow"></div>
                 </div>
-                <div className="ct-hero-glow ct-hero-glow-1" />
-                <div className="ct-hero-glow ct-hero-glow-2" />
 
-                <div className="container-lg ct-px">
-                    <div className="ct-hero-inner">
-                        <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label">
-                            <MessageSquare size={14} /> Contact Us
-                        </motion.span>
-                        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                            className="ct-hero-title"
-                        >
-                            Let's build something
-                            <br />
-                            <span className="gradient-text">amazing together.</span>
-                        </motion.h1>
-                        <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                            className="ct-hero-desc"
-                        >
-                            Have a question, partnership idea, or just want to say hello? We'd love to hear from you.
-                        </motion.p>
+                <div className="con-container con-hero__content">
+                    <div className="con-hero__badge anim-hero-up">
+                        <MessageSquare size={14} className="con-text-orange" />
+                        <span>Get In Touch</span>
                     </div>
+
+                    <h1 className="con-heading !text-white anim-hero-up">
+                        Let's build something <br />
+                        <span className="con-text-gradient">extraordinary.</span>
+                    </h1>
+
+                    <p className="con-subheading mx-auto anim-hero-up text-white/70">
+                        Whether you are a global brand looking to scale or a creator ready to monetize, our team is standing by to help you take that next giant leap.
+                    </p>
                 </div>
             </section>
 
-            {/* ════════════ CONTACT INFO CARDS ════════════ */}
-            <section className="section-padding">
-                <div className="container-lg ct-px">
-                    <div className="ct-info-grid">
+            {/* ════════════ 2. INFO CARDS — DARK/GOLD PREMIUM ════════════ */}
+            <section className="con-info con-sec-dark anim-contact-trig">
+                <div className="con-container">
+                    <div className="con-info__grid">
                         {contactInfo.map((info, i) => (
-                            <SectionReveal key={info.label} delay={i * 0.08} variant="bounce" duration={0.9}>
-                                <div className="glass-card ct-info-card hover-depth">
-                                    <div className="premium-icon-orb premium-icon-orb--sm" style={{ '--orb-color': '#f97316', margin: '0 auto 1.5rem auto' }}>
-                                        <div className="premium-icon-orb__inner">
-                                            {info.icon}
-                                        </div>
-                                        <div className="premium-icon-orb__pulse" />
-                                    </div>
-                                    <h3 className="ct-info-label">{info.label}</h3>
-                                    {info.href ? (
-                                        <a href={info.href} className="ct-info-value ct-info-link">{info.value}</a>
-                                    ) : (
-                                        <p className="ct-info-value">{info.value}</p>
-                                    )}
+                            <div key={info.label} className="con-info-card anim-contact-card">
+                                <div className="con-info-icon-orb">
+                                    <div className="con-info-icon-inner">{info.icon}</div>
+                                    <div className="con-info-icon-pulse"></div>
                                 </div>
-                            </SectionReveal>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ════════════ FORM + MAP ════════════ */}
-            <section className="section-padding gradient-subtle">
-                <div className="container-lg ct-px">
-                    <div className="ct-form-grid">
-                        {/* Form */}
-                        <SectionReveal variant="fadeLeft" duration={1.1}>
-                            <div className="glass-card ct-form-card">
-                                <div className="ct-form-header">
-                                    <Send size={20} className="ct-form-header-icon" />
-                                    <h2 className="ct-form-title">Send us a message</h2>
-                                </div>
-                                <p className="ct-form-subtitle">We'll get back to you within 24 hours.</p>
-
-                                {submitted ? (
-                                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="ct-success">
-                                        <CheckCircle size={48} className="ct-success-icon" />
-                                        <h3 className="ct-success-title">Message Sent!</h3>
-                                        <p className="ct-success-desc">Thanks for reaching out. We'll respond shortly.</p>
-                                    </motion.div>
+                                <h3 className="con-info-label">{info.label}</h3>
+                                {info.href ? (
+                                    <a href={info.href} className="con-info-value con-info-link">{info.value}</a>
                                 ) : (
-                                    <form onSubmit={handleSubmit} className="ct-form">
-                                        <div className="ct-form-row">
-                                            <div className="ct-form-group">
-                                                <label className="ct-label" htmlFor="ct-name">Full Name</label>
-                                                <input id="ct-name" type="text" name="name" value={formData.name} onChange={handleChange} required className="ct-input" placeholder="Your name" />
-                                            </div>
-                                            <div className="ct-form-group">
-                                                <label className="ct-label" htmlFor="ct-email">Email</label>
-                                                <input id="ct-email" type="email" name="email" value={formData.email} onChange={handleChange} required className="ct-input" placeholder="you@example.com" />
-                                            </div>
-                                        </div>
-                                        <div className="ct-form-group">
-                                            <label className="ct-label" htmlFor="ct-subject">Subject</label>
-                                            <input id="ct-subject" type="text" name="subject" value={formData.subject} onChange={handleChange} required className="ct-input" placeholder="How can we help?" />
-                                        </div>
-                                        <div className="ct-form-group">
-                                            <label className="ct-label" htmlFor="ct-message">Message</label>
-                                            <textarea id="ct-message" name="message" value={formData.message} onChange={handleChange} required className="ct-input ct-textarea" placeholder="Tell us more..." rows={5} />
-                                        </div>
-                                        <button type="submit" className="magnetic-btn btn-primary ct-submit-btn">
-                                            <Send size={16} /> Send Message
-                                        </button>
-                                    </form>
+                                    <p className="con-info-value">{info.value}</p>
                                 )}
                             </div>
-                        </SectionReveal>
-
-                        {/* Map + Quick Links */}
-                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.1}>
-                            <div className="ct-sidebar">
-                                <div className="glass-card ct-map-card">
-                                    <iframe
-                                        title="YovoAI Office Location"
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14014.070608848182!2d77.29674746659201!3d28.584243551415042!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce500236944e9%3A0xbfdce5cf4c20f6aa!2sDiin%20technologies!5e0!3m2!1sen!2sin!4v1771663986962!5m2!1sen!2sin"
-                                        className="ct-map-iframe"
-                                        loading="lazy"
-                                        allowFullScreen
-                                    />
-                                </div>
-                                <div className="glass-card ct-quick-card">
-                                    <h3 className="ct-quick-title">
-                                        <Globe size={18} /> Quick Links
-                                    </h3>
-                                    <div className="ct-quick-links">
-                                        <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="ct-quick-link">
-                                            <Sparkles size={14} /> Download YovoAI App
-                                            <ArrowRight size={14} className="ct-quick-arrow" />
-                                        </a>
-                                        <a href="mailto:contact@yovoai.com" className="ct-quick-link">
-                                            <Mail size={14} /> Partnership Inquiries
-                                            <ArrowRight size={14} className="ct-quick-arrow" />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </SectionReveal>
-                    </div>
-                </div>
-            </section>
-
-            {/* ════════════ FAQ ════════════ */}
-            <section className="section-padding">
-                <div className="container-lg ct-px">
-                    <SectionReveal className="ct-center-header" variant="scaleUp" duration={1}>
-                        <span className="section-label"><MessageSquare size={14} /> FAQ</span>
-                        <h2 className="section-heading">Frequently <span className="gradient-text">asked</span> questions</h2>
-                        <p className="section-subtext">Quick answers to common questions about YovoAI</p>
-                    </SectionReveal>
-
-                    <div className="ct-faq-list">
-                        {faqs.map((faq, i) => (
-                            <SectionReveal key={faq.q} delay={i * 0.06} variant="slideRotate" duration={0.8}>
-                                <div
-                                    className={`glass-card ct-faq-item ${openFaq === i ? 'ct-faq-open' : ''}`}
-                                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                                >
-                                    <div className="ct-faq-question">
-                                        <span>{faq.q}</span>
-                                        <span className={`ct-faq-toggle ${openFaq === i ? 'ct-faq-toggle-open' : ''}`}>+</span>
-                                    </div>
-                                    {openFaq === i && (
-                                        <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="ct-faq-answer">
-                                            {faq.a}
-                                        </motion.p>
-                                    )}
-                                </div>
-                            </SectionReveal>
                         ))}
                     </div>
                 </div>
             </section>
+
+            <div className="con-horizon"><div className="con-horizon__line bg-white/10"></div></div>
+
+            {/* ════════════ 3. FORM & MAP — LIGHT ELEGANT ════════════ */}
+            <section className="con-form-sec con-sec-light anim-form-trig">
+                <div className="con-container">
+                    <div className="con-form-grid">
+
+                        {/* THE SLEEK FORM */}
+                        <div className="con-form-wrapper anim-form-reveal">
+                            <span className="con-tag-light mb-4">Direct Line</span>
+                            <h2 className="con-heading !text-black mb-8">
+                                Send a <span className="con-text-gradient">message.</span>
+                            </h2>
+
+                            <AnimatePresence mode="wait">
+                                {submitted ? (
+                                    <motion.div
+                                        key="success"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        className="con-form-success"
+                                    >
+                                        <div className="con-success-icon"><CheckCircle size={40} /></div>
+                                        <h3 className="text-2xl font-light text-black mb-2">Message received.</h3>
+                                        <p className="text-gray-600">Our team will be in touch with you shortly.</p>
+                                    </motion.div>
+                                ) : (
+                                    <motion.form
+                                        key="form"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        onSubmit={handleSubmit}
+                                        className="con-form"
+                                    >
+                                        <div className="con-form-row">
+                                            <div className="con-input-group">
+                                                <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Full Name" className="con-input" />
+                                            </div>
+                                            <div className="con-input-group">
+                                                <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Email Address" className="con-input" />
+                                            </div>
+                                        </div>
+                                        <div className="con-input-group">
+                                            <input type="text" name="subject" value={formData.subject} onChange={handleChange} required placeholder="Subject" className="con-input" />
+                                        </div>
+                                        <div className="con-input-group">
+                                            <textarea name="message" value={formData.message} onChange={handleChange} required placeholder="How can we help you?" className="con-input con-textarea" rows={5}></textarea>
+                                        </div>
+                                        <button type="submit" className="con-btn con-btn--primary mt-4">
+                                            <Send size={18} /> Send Message
+                                        </button>
+                                    </motion.form>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
+                        {/* MAP & SIDEBAR */}
+                        <div className="con-sidebar anim-map-reveal">
+                            <div className="con-map-card">
+                                <iframe
+                                    title="YovoAI Location"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14014.070608848182!2d77.29674746659201!3d28.584243551415042!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce500236944e9%3A0xbfdce5cf4c20f6aa!2sDiin%20technologies!5e0!3m2!1sen!2sin!4v1771663986962!5m2!1sen!2sin"
+                                    className="con-map-iframe"
+                                    loading="lazy"
+                                    allowFullScreen
+                                ></iframe>
+                                <div className="con-map-overlay-glow"></div>
+                            </div>
+
+                            <div className="con-quick-card">
+                                <h4 className="text-xl font-light mb-6 flex items-center gap-3">
+                                    <Globe className="con-text-orange" size={24} /> General Links
+                                </h4>
+                                <div className="space-y-4">
+                                    <a href="https://play.google.com/store/apps/details?id=com.diin.yovoai" target="_blank" rel="noopener noreferrer" className="con-quick-link group">
+                                        <div className="con-quick-link-icon"><Rocket size={16} /></div>
+                                        <span className="font-medium text-black group-hover:text-orange-600 transition-colors">Download YovoAI</span>
+                                        <ArrowRight size={16} className="ml-auto opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            {/* ════════════ 4. FAQ — DARK GLASS STACK ════════════ */}
+            <section className="con-faq-sec con-sec-dark anim-faq-trig">
+                <div className="con-container">
+                    <div className="con-faq__header">
+                        <span className="con-tag-dark mb-4 mx-auto">Knowledge Base</span>
+                        <h2 className="con-heading !text-white m-0 text-center">
+                            Common <span className="con-text-gradient">Inquiries.</span>
+                        </h2>
+                    </div>
+
+                    <div className="con-faq-list">
+                        {faqs.map((faq, i) => (
+                            <div
+                                key={i}
+                                className={`con-faq-item anim-faq-item ${openFaq === i ? 'con-faq-item--open' : ''}`}
+                                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                            >
+                                <div className="con-faq-q">
+                                    <span className="text-lg font-light">{faq.q}</span>
+                                    <ChevronDown size={20} className="con-faq-icon" />
+                                </div>
+                                <AnimatePresence>
+                                    {openFaq === i && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <p className="con-faq-a text-gray-400 mt-4 leading-relaxed">{faq.a}</p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
         </main>
     )
 }

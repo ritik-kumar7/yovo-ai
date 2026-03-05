@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowRight, Mail, MapPin, Phone, Rocket } from 'lucide-react'
 import './Footer.css'
 
 const footerLinks = {
@@ -39,48 +39,64 @@ export default function Footer() {
         <footer className="footer relative">
             <div className="footer-top-border" />
 
-            {/* CTA Strip */}
-            <div className="footer-cta gradient-brand">
-                <div className="footer-cta-container">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="footer-cta-title"
-                    >
-                        Ready to be heard?
-                    </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="footer-cta-desc"
-                    >
-                        Join YovoAI – Where voices rise, brands grow, and content goes viral.
-                    </motion.p>
+            {/* ════════════ ULTRA PREMIUM CTA STRIP ════════════ */}
+            <div className="footer-cta-supreme">
+                <div className="footer-cta-supreme__bg">
+                    <div className="footer-cta-supreme__glow"></div>
+                    <div className="footer-cta-supreme__grid"></div>
+                </div>
+
+                <div className="footer-cta-supreme__content">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <span className="footer-cta-supreme__tag">Your Next Move</span>
+                    </motion.div>
+
+                    <motion.h2
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="footer-cta-supreme__title"
+                    >
+                        Ready to be <br /><span className="footer-cta-supreme__title-italic">heard?</span>
+                    </motion.h2>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="footer-btn-group"
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="footer-cta-supreme__desc"
+                    >
+                        Join YovoAI – Where authentic voices rise, premium brands grow, and exceptional content goes viral globally.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="footer-cta-supreme__actions"
                     >
                         <a
                             href="https://play.google.com/store/apps/details?id=com.diin.yovoai"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="footer-btn-primary"
+                            className="footer-cta-btn footer-cta-btn--gold"
                         >
-                            Launch a Campaign <ArrowRight size={16} />
+                            <Rocket size={18} /> Launch a Campaign
                         </a>
                         <a
                             href="https://play.google.com/store/apps/details?id=com.diin.yovoai"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="footer-btn-outline"
+                            className="footer-cta-btn footer-cta-btn--glass"
                         >
-                            Become a Creator <ArrowRight size={16} />
+                            Become a Creator <ArrowRight size={18} />
                         </a>
                     </motion.div>
                 </div>

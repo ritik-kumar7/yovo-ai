@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import SectionReveal from '../components/SectionReveal'
 import './Home.css'
+import './HomeLux.css'
 import bgVideo from '../assets/video/bg_videoYovo.mp4'
 import futurasticAi from '../assets/images/futurasticAi.jpg'
 import techStyleDash from '../assets/images/techStyleDash.jpg'
@@ -107,168 +108,185 @@ const marqueeBrands = [
         id: 'stripe',
         node: <div className="mock-logo" style={{ fontWeight: 800, letterSpacing: '-0.05em' }}>stripe</div>,
     },
-
 ];
 
-
-/* ─── Premium 3D Tilt Card Component ─── */
-function PremiumCard({ children, className = '', index = 0, color = '#6366f1' }) {
-    const cardRef = useRef(null)
-    const glowRef = useRef(null)
-    const [isHovered, setIsHovered] = useState(false)
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, margin: '-60px' })
-
-    const handleMouseMove = useCallback((e) => {
-        const card = cardRef.current
-        if (!card) return
-        const rect = card.getBoundingClientRect()
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
-        const centerX = rect.width / 2
-        const centerY = rect.height / 2
-        const rotateX = ((y - centerY) / centerY) * -8
-        const rotateY = ((x - centerX) / centerX) * 8
-
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`
-
-        if (glowRef.current) {
-            glowRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${color}18, transparent 40%)`
-        }
-    }, [color])
-
-    const handleMouseLeave = useCallback(() => {
-        const card = cardRef.current
-        if (!card) return
-        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)'
-        if (glowRef.current) {
-            glowRef.current.style.background = 'transparent'
-        }
-        setIsHovered(false)
-    }, [])
-
-    const handleMouseEnter = useCallback(() => {
-        setIsHovered(true)
-    }, [])
-
-    const offsets = [0, 24, -12, 16, -20, 8]
-    const offset = offsets[index % offsets.length]
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{
-                duration: 0.7,
-                delay: index * 0.1,
-                ease: [0.22, 1, 0.36, 1],
-            }}
-            style={{ marginTop: `${offset}px` }}
-        >
-            <div
-                ref={cardRef}
-                className={`premium-card ${isHovered ? 'premium-card--hovered' : ''} ${className}`}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                onMouseEnter={handleMouseEnter}
-                style={{ '--card-accent': color }}
-            >
-                {/* Inner highlight */}
-                <div className="premium-card__highlight" />
-                {/* Dynamic glow */}
-                <div ref={glowRef} className="premium-card__glow" />
-                {/* Animated gradient border */}
-                <div className="premium-card__border" />
-                {/* Content */}
-                <div className="premium-card__content">
-                    {children}
-                </div>
-            </div>
-        </motion.div>
-    )
-}
-
-/* ─── Particle Canvas Component ─── */
-function ParticleField({ className = '' }) {
-    const canvasRef = useRef(null)
-
-    useEffect(() => {
-        const canvas = canvasRef.current
-        if (!canvas) return
-        const ctx = canvas.getContext('2d')
-        let animationId
-        let particles = []
-
-        const resize = () => {
-            canvas.width = canvas.offsetWidth * window.devicePixelRatio
-            canvas.height = canvas.offsetHeight * window.devicePixelRatio
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
-        }
-        resize()
-        window.addEventListener('resize', resize)
-
-        for (let i = 0; i < 40; i++) {
-            particles.push({
-                x: Math.random() * canvas.offsetWidth,
-                y: Math.random() * canvas.offsetHeight,
-                size: Math.random() * 2 + 0.5,
-                speedX: (Math.random() - 0.5) * 0.3,
-                speedY: (Math.random() - 0.5) * 0.3,
-                opacity: Math.random() * 0.4 + 0.1,
-            })
-        }
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
-            particles.forEach((p) => {
-                p.x += p.speedX
-                p.y += p.speedY
-                if (p.x < 0) p.x = canvas.offsetWidth
-                if (p.x > canvas.offsetWidth) p.x = 0
-                if (p.y < 0) p.y = canvas.offsetHeight
-                if (p.y > canvas.offsetHeight) p.y = 0
-
-                ctx.beginPath()
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(220, 20, 60, ${p.opacity})`
-                ctx.fill()
-            })
-            animationId = requestAnimationFrame(animate)
-        }
-        animate()
-
-        return () => {
-            cancelAnimationFrame(animationId)
-            window.removeEventListener('resize', resize)
-        }
-    }, [])
-
-    return <canvas ref={canvasRef} className={`particle-field ${className}`} />
-}
-
-
-/* ─── Stagger anim variants ─── */
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } }
-const fadeUp = { hidden: { opacity: 0, y: 32 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }
-
+/* ─── Luxury Animations Setup ─── */
+const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.15, delayChildren: 0.2 } } }
+const fadeUpBlur = { hidden: { opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" }, show: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } } }
+const textReveal = { hidden: { opacity: 0, y: 50, rotateX: -40, transformOrigin: "top center" }, show: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } } }
+const popIn = { hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1, transition: { duration: 1.2, ease: "back.out(1.5)" } } }
 
 export default function Home() {
     const heroRef = useRef(null)
-    const showcaseRef = useRef(null)
-    const [activeFeature, setActiveFeature] = useState(0)
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            /* Showcase cards */
-            gsap.fromTo('.showcase-card', { y: 50, opacity: 0 }, {
-                y: 0, opacity: 1, stagger: 0.08, duration: 0.6,
-                scrollTrigger: { trigger: showcaseRef.current, start: 'top 80%' },
-            })
-        })
+            // 0. Hero Background Intro
+            gsap.fromTo('.home-hero-bg',
+                { scale: 1.15, opacity: 0, filter: 'brightness(0)' },
+                { scale: 1, opacity: 1, filter: 'brightness(1)', duration: 2.5, ease: "power3.out" }
+            );
+
+            // 1. Stats Section (Global Impact) - 3D Flip & Counter Animation
+            gsap.fromTo('.lux-stats-hdr',
+                { opacity: 0, y: 40, filter: 'blur(10px)' },
+                { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: '.lux-stats', start: "top 80%" } }
+            );
+
+            const statsCards = gsap.utils.toArray('.lux-stat-item');
+            if (statsCards.length > 0) {
+                gsap.fromTo(statsCards,
+                    { opacity: 0, rotationY: -90, z: -100 },
+                    {
+                        opacity: 1, rotationY: 0, z: 0,
+                        duration: 1.5, stagger: 0.2, ease: "elastic.out(1, 0.6)",
+                        scrollTrigger: {
+                            trigger: '.lux-stats',
+                            start: "top 75%",
+                        }
+                    }
+                );
+            }
+
+            // 2. Video Showcase - Masked Image Unveil + Asymmetrical Stagger
+            gsap.fromTo('.lux-video-left',
+                { opacity: 0, x: -100, filter: 'blur(12px)' },
+                { opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: '.lux-video', start: "top 75%" } }
+            );
+
+            gsap.fromTo('.lux-video-device',
+                { clipPath: 'inset(100% 0 0 0 round 40px)', scale: 0.9 },
+                { clipPath: 'inset(0% 0% 0% 0% round 24px)', scale: 1, duration: 2, ease: "power3.inOut", scrollTrigger: { trigger: '.lux-video', start: "top 70%" } }
+            );
+
+            // 3. Why Choose Us - Immersive Horizontal Scroll
+            gsap.fromTo('.why-hdr',
+                { opacity: 0, y: -50, filter: 'blur(10px)' },
+                { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: '.lux-why-wrapper', start: "top 80%" } }
+            );
+
+            const luxWhyContainer = document.querySelector('.lux-why-track');
+            if (luxWhyContainer) {
+                gsap.to('.lux-why-track', {
+                    xPercent: -100 * (3 - 1) / 3, // Since there are 3 items, container is 300% wide. Move by -66.66% to reach last item.
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: '.lux-why-wrapper',
+                        pin: true,
+                        scrub: 1,
+                        end: "+=2500" // 2500px scroll duration for a premium luxurious feel
+                    }
+                });
+            }
+
+            // 4. Product Ecosystem - Horizontal Translation / Sticky right cards
+            gsap.fromTo('.pr-hdr',
+                { opacity: 0, x: -50 },
+                { opacity: 1, x: 0, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: '.lux-product', start: "top 80%" } }
+            );
+
+            const prRows = gsap.utils.toArray('.lux-pr-row');
+            if (prRows.length > 0) {
+                prRows.forEach((row, index) => {
+                    gsap.fromTo(row,
+                        { opacity: 0, x: 150, rotateX: 25 },
+                        {
+                            opacity: 1, x: 0, rotateX: 0, duration: 1.2, ease: "power4.out",
+                            scrollTrigger: {
+                                trigger: row,
+                                start: "top 90%",
+                            }
+                        }
+                    );
+                });
+            }
+
+            // 5. Process Timeline - Glowing Stroke Draw
+            gsap.fromTo('.lux-process .lux-label', { opacity: 0, filter: 'blur(5px)' }, { opacity: 1, filter: 'blur(0px)', duration: 1.5, scrollTrigger: { trigger: '.lux-process', start: "top 80%" } });
+
+            const ptRows = gsap.utils.toArray('.lux-pt-row');
+            if (ptRows.length > 0) {
+                ptRows.forEach((row, i) => {
+                    gsap.fromTo(row,
+                        { opacity: 0, scale: 0.8, y: 50 },
+                        {
+                            opacity: 1, scale: 1, y: 0, duration: 1.4, ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: row,
+                                start: "top 85%",
+                            }
+                        }
+                    );
+                });
+            }
+            // Central Stat Hero pop
+            gsap.fromTo('.lux-stat-hero',
+                { scale: 0.5, opacity: 0, rotation: -5 },
+                { scale: 1, opacity: 1, rotation: 0, duration: 1.8, ease: "elastic.out(1, 0.4)", scrollTrigger: { trigger: '.lux-stat-hero', start: "top 75%" } }
+            );
+
+            // 6. Value Prop - Heavy Parallax Mask Reveal
+            gsap.fromTo('.lux-value-bg',
+                { scale: 1.2, filter: 'brightness(2)' },
+                { scale: 1, filter: 'brightness(0.6)', duration: 2, ease: "power2.out", scrollTrigger: { trigger: '.lux-value', start: "top bottom", end: "center center", scrub: 1 } }
+            );
+
+            gsap.fromTo('.lux-value-content-anim',
+                { opacity: 0, y: 60, scale: 0.9 },
+                {
+                    opacity: 1, y: 0, scale: 1, duration: 1.5, ease: "back.out(1.1)",
+                    scrollTrigger: { trigger: '.lux-value', start: "top 50%" }
+                }
+            );
+
+            // 7. Feature Highlight - Cinematic Tilt
+            gsap.fromTo('.hl-left',
+                { opacity: 0, x: -60, filter: "blur(10px)" },
+                { opacity: 1, x: 0, filter: "blur(0px)", duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: '.lux-highlight', start: "top 75%" } }
+            );
+            gsap.fromTo('.hl-right',
+                { opacity: 0, rotationY: 20, z: -200, scale: 0.8 },
+                { opacity: 1, rotationY: 0, z: 0, scale: 1, duration: 1.8, ease: "power4.out", scrollTrigger: { trigger: '.lux-highlight', start: "top 75%" } }
+            );
+
+            // 8. Testimonials - Perspective Cards Flow
+            gsap.fromTo('.test-hdr', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: '.lux-testimonials', start: "top 85%" } });
+
+            const tests = gsap.utils.toArray('.lux-test-quote-block');
+            if (tests.length > 0) {
+                gsap.fromTo(tests,
+                    { opacity: 0, y: 100, rotateZ: 3, scale: 0.95 },
+                    {
+                        opacity: 1, y: 0, rotateZ: 0, scale: 1, duration: 1.5, stagger: 0.2, ease: "expo.out",
+                        scrollTrigger: {
+                            trigger: '.lux-test-slider',
+                            start: "top 80%",
+                        }
+                    }
+                );
+            }
+
+            // 9. Brands Marquee label fade
+            gsap.fromTo('.top-brands-section .lux-label', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out', scrollTrigger: { trigger: '.top-brands-section', start: "top 90%" } });
+
+            // Universal Parallax support
+            const parallaxImgs = gsap.utils.toArray('.lux-parallax-img');
+            parallaxImgs.forEach(img => {
+                gsap.to(img, {
+                    yPercent: 20,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: img.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
+
+        });
         return () => ctx.revert()
     }, [])
-
 
     return (
         <main className="home-main">
@@ -295,7 +313,7 @@ export default function Home() {
 
                         {/* Present Label */}
                         <motion.div
-                            variants={fadeUp}
+                            variants={fadeUpBlur}
                         >
                             <span className="home-hero-label">
                                 YOVO AI PRESENT
@@ -304,7 +322,7 @@ export default function Home() {
 
                         {/* Headline Part 1 */}
                         <motion.div
-                            variants={fadeUp}
+                            variants={textReveal}
                             className="home-hero-title-wrapper"
                         >
                             <h1 className="home-hero-title1">
@@ -314,7 +332,7 @@ export default function Home() {
 
                         {/* Headline Part 2 */}
                         <motion.h1
-                            variants={fadeUp}
+                            variants={textReveal}
                             className="home-hero-title2"
                         >
                             like never before
@@ -322,7 +340,7 @@ export default function Home() {
 
                         {/* Subheading */}
                         <motion.p
-                            variants={fadeUp}
+                            variants={fadeUpBlur}
                             className="home-hero-desc"
                         >
                             Get a unique, AI-experience in no time with our powerful models.
@@ -330,7 +348,7 @@ export default function Home() {
                         </motion.p>
 
                         {/* CTAs */}
-                        <motion.div variants={fadeUp} className="home-hero-cta-group">
+                        <motion.div variants={popIn} className="home-hero-cta-group">
                             <Link
                                 to="/features"
                                 className="home-hero-btn-primary"
@@ -348,7 +366,7 @@ export default function Home() {
                         </motion.div>
 
                         {/* Social Proof — rating section */}
-                        <motion.div variants={fadeUp} className="home-hero-social-proof">
+                        <motion.div variants={fadeUpBlur} className="home-hero-social-proof">
                             <div className="home-hero-avatars">
                                 {['AS', 'PR', 'MK', 'RJ'].map((initials, i) => (
                                     <div
@@ -388,381 +406,271 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* ════════════════════ LUXURY REDESIGN ════════════════════ */}
 
-            {/* ════════════════════ STATS — PREMIUM ════════════════════ */}
-            <section className="home-stats premium-stats-section">
-                <div className="home-stats-container">
-                    <div className="home-stats-grid">
-                        {stats.map((stat, i) => (
-                            <PremiumCard key={stat.label} index={i} color={stat.color} className="premium-stat-card">
-                                <div className="premium-stat-inner">
-                                    <div className="premium-icon-orb premium-icon-orb--stat" style={{ '--orb-color': stat.color }}>
-                                        <div className="premium-icon-orb__inner">
-                                            {stat.icon}
-                                        </div>
-                                        <div className="premium-icon-orb__pulse" />
-                                    </div>
-                                    <div className="premium-stat-text">
-                                        <div className="premium-stat-number">{stat.number}</div>
-                                        <div className="premium-stat-label">{stat.label}</div>
-                                    </div>
+            {/* 1. Global Impact (Stats) */}
+            <section className="lux-section lux-dark lux-stats relative bg-[#050505]">
+                {/* Subtle radial bg */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none"></div>
+                <div className="lux-container text-center lux-stats-hdr">
+                    <span className="lux-label border-white/20 text-white/50">Global Impact</span>
+                    <h2 className="lux-heading mt-6 leading-tight">Transforming<br />Brand <span className="lux-gradient italic font-light">Influence</span></h2>
+                </div>
+                <div className="lux-stats-grid mt-24 gap-8">
+                    {stats.map((stat, i) => (
+                        <div key={i} className="lux-stat-item relative group bg-[#0a0a0a] border border-white/5 rounded-3xl p-12 hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-all duration-500">
+                            {/* Glow accent */}
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: stat.color, boxShadow: `0 0 20px ${stat.color}` }}></div>
+                            <div className="lux-stat-val text-7xl font-light font-heading mb-6 tracking-tighter" style={{ color: stat.color }}>{stat.number}</div>
+                            <div className="lux-stat-info flex items-center justify-center gap-4">
+                                <span className="lux-stat-icon p-3 rounded-xl bg-white/5 text-white/80 group-hover:scale-110 transition-transform duration-500" style={{ color: stat.color }}>{stat.icon}</span>
+                                <span className="lux-stat-lbl text-xl text-white/70 font-light">{stat.label}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* 2. Video Showcase (Asymmetrical Layout) */}
+            <section className="lux-section lux-video lux-light bg-white py-32">
+                <div className="lux-container lux-split items-center">
+                    <div className="lux-split-left lux-video-left">
+                        <span className="lux-label border-black/20 text-black/50">Video Generation</span>
+                        <h2 className="lux-heading mt-6 mb-8 text-black leading-tight">From <span className="lux-gradient">Voice</span><br />To Viral.</h2>
+                        <p className="lux-desc text-black/70 text-lg leading-relaxed mb-8 max-w-xl">Watch how creators transform their authentic voices into scroll-stopping content. No agency needed. No delays.</p>
+                        <div className="lux-feature-stack flex flex-col gap-5 border-l border-black/10 pl-6">
+                            {['AI-enhanced video editing in real-time', 'Instant multi-platform distribution', 'Smart analytics that predict virality'].map((item, i) => (
+                                <div key={i} className="flex items-center gap-4 text-black/80 font-medium">
+                                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 flex-shrink-0" /> {item}
                                 </div>
-                            </PremiumCard>
-                        ))}
+                            ))}
+                        </div>
+                        <Link to="/features" className="lux-btn-primary mt-12 bg-black text-white hover:bg-gray-900 shadow-xl rounded-full px-10 py-4 flex w-fit items-center gap-3 transition-transform hover:-translate-y-1">
+                            Explore Features <ArrowRight size={18} />
+                        </Link>
+                    </div>
+                    <div className="lux-split-right pr-0 md:pl-16 w-full">
+                        <div className="lux-video-device w-full aspect-[4/5] md:aspect-square bg-gray-100 rounded-3xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.15)] relative">
+                            <iframe
+                                src="https://www.youtube.com/embed/1pdkiWD5sCw?autoplay=1&mute=1&loop=1&controls=0&playlist=1pdkiWD5sCw&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1"
+                                allow="autoplay; encrypted-media"
+                                allowFullScreen frameBorder="0"
+                                title="YovoAI Demo"
+                                className="absolute inset-0 w-full h-full object-cover scale-[1.05]"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
 
-
-            {/* ════════════════════ VIDEO SHOWCASE ════════════════════ */}
-            <section className="section-padding gradient-subtle">
-                <div className="home-section-container">
-                    <div className="home-split-grid">
-                        <SectionReveal variant="slideRotate" duration={1}>
-                            <span className="section-label"><Video size={13} /> See it in Action</span>
-                            <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                                From <span className="gradient-text">voice to viral</span> in seconds
-                            </h2>
-                            <p className="home-section-desc">
-                                Watch how creators transform their authentic voices into scroll-stopping content. No agency needed. No delays.
-                            </p>
-                            <div className="home-feature-list">
-                                {['AI-enhanced video editing in real-time', 'Instant multi-platform distribution', 'Smart analytics that predict virality'].map((item) => (
-                                    <div key={item} className="home-feature-item">
-                                        <div className="home-feature-icon">
-                                            <ChevronRight size={12} />
-                                        </div>
-                                        <span className="home-feature-text">{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            <Link to="/features" className="btn-primary home-btn-sm">
-                                Explore All Features <ArrowRight size={15} />
-                            </Link>
-                        </SectionReveal>
-                        <SectionReveal delay={0.2} variant="scaleUp" duration={1.2}>
-                            <div className="home-video-wrapper">
-                                <div className="home-video-container">
-                                    <div className="home-video-device">
-                                        <iframe
-                                            src="https://www.youtube.com/embed/1pdkiWD5sCw?autoplay=1&mute=1&loop=1&controls=0&playlist=1pdkiWD5sCw&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1"
-                                            width="100%" height="100%"
-                                            allow="autoplay; encrypted-media"
-                                            allowFullScreen frameBorder="0"
-                                            title="YovoAI Demo"
-                                            className="home-video-iframe"
-                                        />
-                                    </div>
-                                    <div className="home-video-shadow" />
-                                </div>
-                            </div>
-                        </SectionReveal>
-                    </div>
+            {/* 3. Why Choose Us (Horizontal Pinning Premium Architecture) */}
+            <section className="lux-why-wrapper bg-[#fafafa] overflow-hidden h-screen flex flex-col">
+                {/* Header Section (Static flow) */}
+                <div className="why-hdr text-center pt-20 md:pt-28 pb-4 flex-shrink-0 w-full z-20 relative">
+                    <span className="lux-label border-black/20 text-black/50 tracking-[0.2em] bg-white/50 backdrop-blur-md px-6 py-2 rounded-full inline-block mb-3 text-xs md:text-sm">Why Choose Us</span>
+                    <h2 className="lux-heading leading-tight text-4xl md:text-5xl lg:text-6xl">The Power of<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 to-zinc-400">AI-Driven UGC</span></h2>
                 </div>
-            </section>
 
-
-            {/* ════════════════════ WHY YOVOAI — PREMIUM CARDS ════════════════════ */}
-            <section className="section-padding premium-section">
-                <div className="premium-section__bg">
-                    <div className="premium-section__radial premium-section__radial--1" />
-                    <div className="premium-section__radial premium-section__radial--2" />
-                    <ParticleField />
-                </div>
-                <div className="home-section-container">
-                    <SectionReveal className="home-center-header" variant="blur" duration={1}>
-                        <span className="section-label section-label--glow"><Zap size={13} /> Why Choose Us</span>
-                        <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            Why <span className="gradient-text-premium">YovoAI</span>?
-                        </h2>
-                        <p className="section-subtext premium-subtext">The power of AI-driven UGC that transforms your brand's voice into measurable growth</p>
-                    </SectionReveal>
-
-                    <div className="premium-features-grid">
+                {/* Horizontal Track Section (Takes remaining space) */}
+                <div className="relative flex-1 w-full flex items-center">
+                    <div className="lux-why-track flex absolute top-0 left-0 h-full items-center" style={{ width: `${features.length * 100}vw` }}>
                         {features.map((f, i) => (
-                            <PremiumCard key={f.title} index={i} color={f.color}>
-                                <div className="premium-icon-orb" style={{ '--orb-color': f.color }}>
-                                    <div className="premium-icon-orb__inner">
-                                        {f.icon}
-                                    </div>
-                                    <div className="premium-icon-orb__pulse" />
+                            <div key={i} className="w-screen h-full flex flex-col items-center justify-center relative px-6 md:px-20 pb-16 md:pb-24">
+                                {/* Giant Background Number */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[35vh] md:text-[45vh] font-heading font-black text-black/[0.03] select-none pointer-events-none leading-none tracking-tighter mix-blend-multiply">
+                                    0{i + 1}
                                 </div>
-                                <h3 className="premium-card-title">{f.title}</h3>
-                                <p className="premium-card-desc">{f.desc}</p>
-                            </PremiumCard>
+
+                                <div className="relative z-10 max-w-3xl text-center group">
+                                    <div className="w-20 h-20 md:w-28 md:h-28 mx-auto rounded-full bg-white shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex justify-center items-center mb-6 md:mb-10 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-all duration-1000 ease-out cursor-crosshair border border-black/5" style={{ color: f.color }}>
+                                        <div className="transform scale-[1.3] md:scale-[1.8] group-hover:scale-[2] group-hover:rotate-12 transition-transform duration-1000 ease-out">{f.icon}</div>
+                                    </div>
+                                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-heading font-light text-black mb-4 tracking-tight leading-tight transition-colors duration-700 drop-shadow-sm px-4">{f.title}</h3>
+                                    <p className="text-base md:text-lg lg:text-xl text-black/50 font-light leading-relaxed group-hover:text-black/80 transition-colors duration-700 max-w-2xl mx-auto px-4 max-h-[100px] md:max-h-full overflow-hidden text-ellipsis">{f.desc}</p>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
             </section>
 
+            {/* 4. Product Ecosystem (Immersive List) */}
+            <section className="lux-section lux-dark lux-product bg-[#050505] min-h-screen py-32 flex items-center relative overflow-hidden">
+                {/* Abstract moving gradient orb behind */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-pink-600/5 blur-[120px] rounded-full mix-blend-screen pointer-events-none"></div>
 
-            {/* ════════════════════ PRODUCT SHOWCASE — INTERACTIVE AI CORE ════════════════════ */}
-            <section ref={showcaseRef} className="section-padding engine-master-section">
-                <div className="engine-master-bg">
-                    <div className="engine-master-glow" style={{ background: productShowcase[activeFeature]?.color || '#DC143C' }} />
-                    <ParticleField />
-                </div>
-                <div className="home-section-container">
-                    <SectionReveal className="home-center-header" variant="scaleUp" duration={1}>
-                        <span className="section-label section-label--glow"><Sparkles size={13} /> Product</span>
-                        <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            The <span className="gradient-text-premium">AI Engine</span> Behind Your Growth
-                        </h2>
-                        <p className="section-subtext premium-subtext">A complete ecosystem of intelligent tools designed to maximize your content impact</p>
-                    </SectionReveal>
-
-                    <div className="engine-hub-layout">
-                        {/* Left Column */}
-                        <div className="engine-hub-column left-column">
-                            {productShowcase.slice(0, 3).map((item, i) => {
-                                const index = i;
-                                return (
-                                    <div
-                                        key={item.title}
-                                        className={`engine-hub-card ${activeFeature === index ? 'is-active' : ''}`}
-                                        onMouseEnter={() => setActiveFeature(index)}
-                                        style={{ '--item-color': item.color }}
-                                    >
-                                        <div className="engine-hub-card-header">
-                                            <div className="engine-hub-icon">
-                                                {item.icon}
-                                            </div>
-                                            <h3 className="engine-hub-title">{item.title}</h3>
-                                        </div>
-                                        <p className="engine-hub-desc">{item.desc}</p>
-                                    </div>
-                                )
-                            })}
+                <div className="lux-container lux-split items-start relative z-10 w-full max-w-7xl">
+                    <div className="lux-split-left pr-hdr relative h-full">
+                        <div className="sticky top-40 pt-10">
+                            <span className="lux-label border-white/20 text-white/50">Platform Core</span>
+                            <h2 className="lux-heading mt-6 leading-tight text-white mb-8">The <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">Engine</span><br />Behind Growth</h2>
+                            <p className="lux-desc max-w-md text-white/60 text-xl font-light">A complete ecosystem of intelligent tools designed to seamlessly maximize your content's cultural impact.</p>
                         </div>
+                    </div>
+                    <div className="lux-product-list w-full flex flex-col relative z-10">
+                        {productShowcase.map((item, i) => (
+                            <div key={i} className="lux-pr-row group relative py-12 flex flex-col md:flex-row items-start md:items-center gap-6 cursor-crosshair border-b border-white/5 hover:border-white/20 transition-colors duration-700" style={{ '--h-color': item.color }}>
 
-                        {/* Center Column */}
-                        <div className="engine-hub-center">
-                            <div className="engine-core">
-                                <div className="engine-core-rings">
-                                    <div className="engine-ring engine-ring-1" />
-                                    <div className="engine-ring engine-ring-2" style={{ borderColor: `color-mix(in srgb, ${productShowcase[activeFeature]?.color} 30%, transparent)` }} />
-                                    <div className="engine-ring engine-ring-3" style={{ borderColor: `color-mix(in srgb, ${productShowcase[activeFeature]?.color} 40%, transparent)` }} />
+                                {/* Background massive abstract text on hover */}
+                                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[10rem] font-heading font-black opacity-0 group-hover:opacity-[0.02] transition-all duration-1000 pointer-events-none whitespace-nowrap overflow-hidden translate-x-20 group-hover:translate-x-0 tracking-tighter" style={{ color: item.color }}>
+                                    {item.title.split(' ')[0]}
                                 </div>
 
-                                <div className="engine-core-center" style={{ '--core-color': productShowcase[activeFeature]?.color || '#DC143C' }}>
-                                    <div className="engine-core-icon-wrap" key={activeFeature}>
-                                        {productShowcase[activeFeature]?.icon}
-                                    </div>
-                                    <div className="engine-core-sparkles">
-                                        <Sparkles size={24} />
-                                        <Zap size={20} />
-                                        <Star size={16} />
-                                    </div>
+                                <div className="w-16 flex-shrink-0 text-white/10 group-hover:text-white/40 transition-colors font-heading text-4xl font-thin tracking-widest flex flex-col items-center">
+                                    0{i + 1}
+                                    <div className="w-[1px] h-12 bg-white/10 mt-4 group-hover:bg-white/30 group-hover:h-24 transition-all duration-700"></div>
                                 </div>
 
-                                <div className="engine-data-stream" style={{ color: productShowcase[activeFeature]?.color }}>
-                                    {productShowcase[activeFeature]?.title.toUpperCase()} // ACTIVE
+                                <div className="flex-1 flex flex-col pr-8 z-10">
+                                    <h3 className="text-3xl md:text-5xl font-light text-white/50 group-hover:text-white transition-all duration-700 tracking-tight mb-4 group-hover:translate-x-2">{item.title}</h3>
+                                    <p className="text-white/40 text-lg group-hover:text-white/70 transition-all duration-700 max-w-lg group-hover:translate-x-2">{item.desc}</p>
+                                </div>
+
+                                <div className="hidden md:flex w-20 h-20 items-center justify-center rounded-full bg-white/[0.02] border border-white/5 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-125 group-hover:border-white/20 transition-all duration-700" style={{ color: item.color }}>
+                                    <div className="transform scale-125">{item.icon}</div>
                                 </div>
                             </div>
-                        </div>
+                        ))}
+                        <div className="border-b border-white/5"></div>
+                    </div>
+                </div>
+            </section>
 
-                        {/* Right Column */}
-                        <div className="engine-hub-column right-column">
-                            {productShowcase.slice(3, 6).map((item, i) => {
-                                const index = i + 3;
-                                return (
-                                    <div
-                                        key={item.title}
-                                        className={`engine-hub-card ${activeFeature === index ? 'is-active' : ''}`}
-                                        onMouseEnter={() => setActiveFeature(index)}
-                                        style={{ '--item-color': item.color }}
-                                    >
-                                        <div className="engine-hub-card-header">
-                                            <div className="engine-hub-icon">
-                                                {item.icon}
-                                            </div>
-                                            <h3 className="engine-hub-title">{item.title}</h3>
-                                        </div>
-                                        <p className="engine-hub-desc">{item.desc}</p>
+            {/* 5. Process (Massive Typography Timeline) */}
+            <section className="lux-section lux-process lux-light bg-white py-40 overflow-hidden relative">
+                {/* Luxury noise overlay or gradient */}
+                <div className="absolute top-0 right-0 w-1/2 h-[600px] bg-gradient-to-bl from-orange-500/5 to-transparent blur-3xl pointer-events-none rounded-full"></div>
+
+                <div className="lux-container max-w-7xl mx-auto relative z-10">
+                    <span className="lux-label border-black/20 text-black/50 inline-block mb-32 tracking-[0.2em]">How It Works</span>
+
+                    <div className="lux-process-timeline flex flex-col gap-32 relative">
+                        {howItWorks.map((step, i) => (
+                            <div key={i} className={`lux-pt-row relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-32 w-full group ${i % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+
+                                {/* Massive Number & Icon Overlay */}
+                                <div className="flex-1 flex justify-center items-center relative w-full h-[300px]">
+                                    <div className="absolute text-[16rem] md:text-[22rem] font-heading font-normal text-black/[0.03] group-hover:text-black/[0.08] transition-colors duration-1000 z-0 select-none tracking-tighter shrink-0 flex items-center justify-center">
+                                        {step.step}
                                     </div>
-                                )
-                            })}
+                                    <div className="w-40 h-40 rounded-full bg-white/80 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.06)] border border-white flex items-center justify-center text-black/30 group-hover:text-orange-500 group-hover:scale-125 transition-all duration-700 relative z-10 mx-auto">
+                                        <div className="transform scale-[2.5]">{step.icon}</div>
+                                    </div>
+                                </div>
+
+                                {/* Content Block without boundaries */}
+                                <div className={`flex-1 flex flex-col relative z-10 ${i % 2 !== 0 ? 'items-end text-right md:pr-16' : 'items-start text-left md:pl-16'}`}>
+                                    <div className="flex items-center gap-4 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-700">
+                                        {i % 2 !== 0 && <span className="text-orange-500 font-heading tracking-[0.2em] uppercase text-sm">Phase {step.step}</span>}
+                                        <div className="w-16 h-[1px] bg-orange-500"></div>
+                                        {i % 2 === 0 && <span className="text-orange-500 font-heading tracking-[0.2em] uppercase text-sm">Phase {step.step}</span>}
+                                    </div>
+                                    <h3 className="text-5xl md:text-7xl font-light mb-8 text-black group-hover:scale-[1.05] transition-transform duration-700 tracking-tight origin-left">{step.title}</h3>
+                                    <p className="text-black/50 text-xl md:text-2xl leading-relaxed max-w-lg group-hover:text-black/80 transition-colors duration-700 font-light">{step.desc}</p>
+                                </div>
+
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="lux-stat-hero mt-48 bg-[#0a0a0a] text-white py-24 px-12 md:px-24 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.2)] relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-16 border border-white/10">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right_center,rgba(249,115,22,0.2),transparent_70%)] pointer-events-none group-hover:scale-110 group-hover:translate-x-10 transition-transform duration-[1.5s]"></div>
+                        <div className="flex-1 text-center md:text-left relative z-10">
+                            <h4 className="text-3xl md:text-5xl font-light text-white/90 leading-tight tracking-tight max-w-2xl">Increase in community-led conversions within the first 30 days.</h4>
+                        </div>
+                        <div className="flex-shrink-0 text-center relative z-10">
+                            <div className="lux-stat-h-val text-8xl md:text-[12rem] font-heading font-normal leading-none bg-gradient-to-r from-orange-400 via-pink-500 to-rose-500 text-transparent bg-clip-text group-hover:scale-110 transition-transform duration-700 inline-block drop-shadow-[0_0_30px_rgba(249,115,22,0.5)]">3x</div>
+                            <span className="block mt-6 text-white/50 tracking-[0.3em] uppercase text-sm font-semibold">Average Growth</span>
                         </div>
                     </div>
                 </div>
             </section>
 
+            {/* 6. Value Prop (Full Width Cinematic Background Overlap) */}
+            <section className="lux-section lux-value relative py-48 overflow-hidden min-h-screen flex items-center justify-center">
+                <div className="lux-value-bg absolute inset-0 z-0">
+                    <img src={futurasticAi} alt="AI Future" className="lux-parallax-img w-full h-[120%] object-cover absolute -top-[10%]" />
+                    <div className="lux-bg-overlay absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
+                </div>
+                <div className="lux-container relative z-10 lux-value-content-anim text-center max-w-4xl">
+                    <h2 className="lux-heading text-white text-6xl md:text-8xl leading-none">Not another AI tool.<br />A Growth <span className="lux-italic lux-gradient">Revolution.</span></h2>
+                    <p className="lux-desc text-white/70 mx-auto text-xl md:text-2xl mt-12 leading-relaxed font-light">
+                        YovoAI is a paradigm shift. We merge the raw authenticity of user-generated content with precision AI to create marketing that doesn't feel like marketing.
+                    </p>
+                    <Link to="/about" className="lux-btn-white mt-16 bg-white text-black px-10 py-5 rounded-full inline-flex items-center gap-3 font-medium hover:scale-105 transition-transform">Learn Our Story <ArrowRight size={18} /></Link>
+                </div>
+            </section>
 
-            {/* ════════════════════ HOW IT WORKS ════════════════════ */}
-            <section className="section-padding">
-                <div className="home-section-container">
-                    <SectionReveal className="home-center-header" variant="flipY" duration={1}>
-                        <span className="section-label"><Focus size={13} /> Process</span>
-                        <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            How It <span className="gradient-text">Works</span>
-                        </h2>
-                    </SectionReveal>
-
-                    <div className="home-process-container">
-                        <div className="home-process-line" />
-                        <div className="home-process-grid">
-                            {howItWorks.map((step, i) => (
-                                <SectionReveal key={step.step} delay={i * 0.15} variant="bounce" duration={0.9}>
-                                    <div className="home-process-step">
-                                        <div className="home-process-number">
-                                            {step.step}
-                                        </div>
-                                        <h3 className="home-process-title">
-                                            {step.icon} {step.title}
-                                        </h3>
-                                        <p className="home-process-desc">{step.desc}</p>
-                                    </div>
-                                </SectionReveal>
+            {/* 7. Feature Highlight (Cinematic Image Side) */}
+            <section className="lux-section lux-highlight lux-light bg-white py-32">
+                <div className="lux-container lux-split lux-split-rev items-center gap-16">
+                    <div className="lux-split-left hl-left">
+                        <span className="lux-label border-black/20 text-black/50">Next-Gen AI</span>
+                        <h2 className="lux-heading mt-6 mb-12 leading-tight text-black">Content that converts.<br />Communities that last.</h2>
+                        <div className="lux-mini-stats-grid grid grid-cols-2 gap-x-8 gap-y-12">
+                            {[
+                                { num: '95%', label: 'Brand Safety Score' },
+                                { num: '2.4x', label: 'Avg. Engagement Rate' },
+                                { num: '<5min', label: 'Content Creation Time' },
+                                { num: '40+', label: 'Platform Integrations' },
+                            ].map((s, i) => (
+                                <div key={i} className="lux-ms-item border-l-2 border-orange-500/30 pl-6 group hover:border-orange-500 transition-colors">
+                                    <div className="lux-ms-num text-5xl font-heading font-light text-black mb-2">{s.num}</div>
+                                    <div className="lux-ms-lbl text-black/50 group-hover:text-black/80 transition-colors uppercase tracking-widest text-xs">{s.label}</div>
+                                </div>
                             ))}
                         </div>
-
-                        <SectionReveal delay={0.4} className="home-process-stat" variant="elastic" duration={1.2}>
-                            <div className="home-process-stat-inner">
-                                <div className="home-process-stat-header">
-                                    <LineChart size={18} />
-                                    <span className="home-process-stat-title">3x Increase</span>
-                                </div>
-                                <p className="home-process-stat-desc">Avg. community-led conversions in 30 days</p>
-                            </div>
-                        </SectionReveal>
+                    </div>
+                    <div className="lux-split-right flex justify-end hl-right relative perspective-1000 w-full pl-0 md:pl-10">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/10 to-transparent blur-3xl transform -translate-x-10 translate-y-10 z-0 rounded-full"></div>
+                        <div className="lux-cinematic-img w-full rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative z-10 border border-black/5">
+                            <img src={techStyleDash} alt="Dashboard" className="w-full h-auto object-cover scale-[1.03] hover:scale-100 transition-transform duration-1000" />
+                        </div>
                     </div>
                 </div>
             </section>
 
-
-            {/* ════════════════════ VALUE PROP ════════════════════ */}
-            <section className="section-padding gradient-subtle">
-                <div className="home-section-container">
-                    <div className="home-split-grid">
-                        <SectionReveal variant="fadeLeft" duration={1.1}>
-                            <div className="home-image-wrapper">
-                                <img src={futurasticAi} alt="AI-Powered Future" className="home-image" />
-                                <div className="home-image-shadow" />
-                            </div>
-                        </SectionReveal>
-                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.1}>
-                            <span className="section-label"><Sparkles size={13} /> Our Promise</span>
-                            <h2 className="section-heading home-section-header-tight">
-                                Not another <span className="gradient-text">AI tool.</span>
-                                <br />A growth revolution.
-                            </h2>
-                            <p className="home-section-desc">
-                                YovoAI is a paradigm shift. We merge the raw authenticity of user-generated content with precision AI to create marketing that doesn't feel like marketing.
-                            </p>
-                            <div className="home-feature-list">
-                                {['Turn every customer into a content creator', 'AI that understands your brand DNA', 'Creation to viral distribution in minutes', 'Measurable ROI from day one'].map((item) => (
-                                    <div key={item} className="home-feature-item-align">
-                                        <div className="home-feature-icon home-feature-icon-mt">
-                                            <ChevronRight size={12} />
-                                        </div>
-                                        <span className="home-feature-text">{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            <Link to="/about" className="btn-primary home-btn-sm">
-                                Learn Our Story <ArrowRight size={15} />
-                            </Link>
-                        </SectionReveal>
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ════════════════════ TESTIMONIALS ════════════════════ */}
-            <section className="section-padding">
-                <div className="home-section-container">
-                    <SectionReveal className="home-center-header" variant="scaleDown" duration={1}>
-                        <span className="section-label"><Star size={13} /> Testimonials</span>
-                        <h2 className="section-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            What Our <span className="gradient-text">Users Say</span>
-                        </h2>
-                    </SectionReveal>
-
-                    <div className="home-testimonials-grid">
+            {/* 8. Testimonials (Elegant Quote Layout) */}
+            <section className="lux-section lux-dark lux-testimonials bg-[#0a0a0a] py-32 overflow-hidden">
+                <div className="lux-container text-center max-w-6xl">
+                    <span className="lux-label border-white/20 text-white/50 inline-block test-hdr">What They Say</span>
+                    <div className="lux-test-slider grid md:grid-cols-3 gap-8 mt-24">
                         {testimonials.map((t, i) => (
-                            <SectionReveal key={t.author} delay={i * 0.1} variant="rotateIn" duration={0.9}>
-                                <div className="home-testimonial-card">
-                                    <div className="home-testimonial-stars">
-                                        {[...Array(5)].map((_, j) => <Star key={j} size={14} />)}
-                                    </div>
-                                    <p className="home-testimonial-text">"{t.text}"</p>
-                                    <div className="home-testimonial-author">
-                                        <div className="home-testimonial-avatar">{t.avatar}</div>
-                                        <div className="home-testimonial-info">
-                                            <div className="home-testimonial-name">{t.author}</div>
-                                            <div className="home-testimonial-position">{t.position}</div>
-                                        </div>
+                            <div key={i} className="lux-test-quote-block bg-gradient-to-b from-[#151515] to-[#111] border border-white/5 p-12 rounded-3xl text-left flex flex-col justify-between hover:border-white/10 hover:-translate-y-3 transition-all duration-500 group relative">
+                                <div className="absolute -top-6 -left-2 text-7xl font-serif text-white/5 opacity-50 group-hover:opacity-100 transition-opacity select-none">"</div>
+                                <h3 className="lux-test-text text-xl font-light text-white/80 leading-relaxed mb-10 z-10 relative">"{t.text}"</h3>
+                                <div className="lux-test-author flex items-center gap-4 z-10 relative">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-sm font-semibold border border-white/10">{t.avatar}</div>
+                                    <div>
+                                        <span className="lux-test-name block text-white font-medium">{t.author}</span>
+                                        <span className="lux-test-pos block text-white/50 text-sm mt-1">{t.position}</span>
                                     </div>
                                 </div>
-                            </SectionReveal>
+                            </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-
-            {/* ════════════════════ FEATURE HIGHLIGHT ════════════════════ */}
-            <section className="section-padding gradient-subtle">
-                <div className="home-section-container">
-                    <div className="home-split-grid">
-                        <SectionReveal variant="glitch" duration={1}>
-                            <span className="section-label"><Zap size={13} /> Next-Gen AI</span>
-                            <h2 className="section-heading home-section-header-tight">
-                                Content that <span className="gradient-text">converts.</span>
-                                <br />Communities that <span className="gradient-text">last.</span>
-                            </h2>
-                            <p className="home-section-desc">
-                                Our proprietary AI models understand culture, context, and communities. Every piece is designed to feel authentic, drive engagement, and build lasting connections.
-                            </p>
-                            <div className="home-mini-stats-grid">
-                                {[
-                                    { num: '95%', label: 'Brand Safety Score' },
-                                    { num: '2.4x', label: 'Avg. Engagement Rate' },
-                                    { num: '<5min', label: 'Content Creation Time' },
-                                    { num: '40+', label: 'Platform Integrations' },
-                                ].map((s) => (
-                                    <div key={s.label} className="home-mini-stat-card">
-                                        <div className="home-mini-stat-num">{s.num}</div>
-                                        <div className="home-mini-stat-label">{s.label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </SectionReveal>
-                        <SectionReveal delay={0.2} variant="fadeRight" duration={1.2}>
-                            <div className="home-image-wrapper">
-                                <img src={techStyleDash} alt="AI Dashboard" className="home-image" />
-                                <div className="home-image-shadow-alt" />
-                            </div>
-                        </SectionReveal>
-                    </div>
+            {/* 9. Top Brands Marquee */}
+            <section className="lux-section lux-light py-24 top-brands-section bg-zinc-50 border-t border-black/5">
+                <div className="lux-container text-center">
+                    <span className="lux-label border-black/20 text-black/50">Trusted By Global Leaders</span>
                 </div>
-            </section>
-
-            {/* ════════════════════ TOP BRANDS MARQUEE ════════════════════ */}
-            <section className="section-padding top-brands-section">
-                <div className="home-section-container">
-                    <SectionReveal className="home-center-header" variant="fadeUp" duration={1}>
-                        <span className="section-label section-label--glow"><Star size={13} /> Trusted By</span>
-                        <h2 className="section-heading premium-heading" style={{ fontFamily: 'var(--f-heading)' }}>
-                            Top <span className="gradient-text-premium">Brands</span>
-                        </h2>
-                    </SectionReveal>
-
-                    <div className="marquee-container">
-                        <div className="marquee-content">
-                            {marqueeBrands.map((brand, i) => (
-                                <div key={`brand1-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id}`}>
-                                    {brand.node}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="marquee-content" aria-hidden="true">
-                            {marqueeBrands.map((brand, i) => (
-                                <div key={`brand2-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id}`}>
-                                    {brand.node}
-                                </div>
-                            ))}
-                        </div>
+                <div className="marquee-container mt-16 flex overflow-hidden group">
+                    <div className="marquee-content flex gap-16 md:gap-32 items-center px-8 md:px-16 animate-marquee-fast">
+                        {marqueeBrands.map((brand, i) => (
+                            <div key={`brand1-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id} text-3xl md:text-4xl opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer`}>
+                                {brand.node}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="marquee-content flex gap-16 md:gap-32 items-center px-8 md:px-16 animate-marquee-fast" aria-hidden="true">
+                        {marqueeBrands.map((brand, i) => (
+                            <div key={`brand2-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id} text-3xl md:text-4xl opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer`}>
+                                {brand.node}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

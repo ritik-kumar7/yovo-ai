@@ -1,0 +1,805 @@
+/* HomeLux.css */
+/* Luxury high-end styles for the redesigned Homepage */
+
+.lux-section {
+    padding: 8rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .lux-section {
+        padding: 10rem 2rem;
+    }
+}
+
+.lux-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+.lux-dark {
+    background-color: var(--c-brand);
+    color: var(--c-surface);
+}
+
+.lux-dark h1,
+.lux-dark h2,
+.lux-dark h3,
+.lux-dark h4,
+.lux-dark h5,
+.lux-dark h6 {
+    color: var(--c-surface);
+}
+
+.lux-dark p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.lux-light {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+}
+
+.lux-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.2rem;
+}
+
+.lux-heading {
+    font-size: 3rem;
+    line-height: 1.1;
+    font-family: var(--f-heading);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .lux-heading {
+        font-size: 4.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .lux-heading {
+        font-size: 5.5rem;
+    }
+}
+
+.lux-desc {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 38rem;
+    opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+    .lux-desc {
+        font-size: 1.25rem;
+    }
+}
+
+.lux-gradient {
+    background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+.lux-italic {
+    font-style: italic;
+    font-weight: 300;
+}
+
+/* Base interactive elements */
+.lux-btn-primary,
+.lux-btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 1.2rem 2.5rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.5s var(--ease-out-expo);
+}
+
+.lux-btn-primary {
+    background: var(--c-brand);
+    color: var(--c-surface);
+}
+
+.lux-btn-primary:hover {
+    background: var(--c-brand-l);
+    transform: scale(1.05);
+}
+
+.lux-btn-white {
+    background: var(--c-surface);
+    color: var(--c-brand);
+}
+
+.lux-btn-white:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
+}
+
+
+/* Layout grids */
+.lux-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 1024px) {
+    .lux-split {
+        grid-template-columns: 1fr 1fr;
+        gap: 8rem;
+    }
+
+    .lux-split-rev .lux-split-left {
+        order: 2;
+    }
+
+    .lux-split-rev .lux-split-right {
+        order: 1;
+    }
+}
+
+
+/* Stats */
+.lux-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 4rem;
+}
+
+@media (min-width: 768px) {
+    .lux-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.lux-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.lux-stat-val {
+    font-family: var(--f-heading);
+    font-size: 4rem;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.lux-stat-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--c-surface);
+    opacity: 0.8;
+}
+
+/* Video */
+.lux-feature-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.lux-feature-line {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.lux-line-dot {
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+.lux-video-device {
+    width: 100%;
+    aspect-ratio: 9/16;
+    max-width: 320px;
+    margin: 0 auto;
+    border-radius: 2rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.3);
+}
+
+.lux-video-device iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Why Choose Us - Immersive Full Width layout */
+.lux-center {
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.lux-why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .lux-why-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.lux-why-item {
+    padding: 3rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    transition: border-color 0.5s ease;
+}
+
+.lux-why-item:hover {
+    border-color: #fbbf24;
+}
+
+.lux-why-icon {
+    margin-bottom: 2rem;
+    background: rgba(0, 0, 0, 0.03);
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.lux-why-title {
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+/* Product list */
+.lux-product-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.lux-pr-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.lux-pr-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 1rem;
+}
+
+.lux-pr-num {
+    font-family: var(--f-heading);
+    font-size: 1.2rem;
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.lux-pr-content {
+    flex-grow: 1;
+}
+
+.lux-pr-title {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    color: var(--h-color);
+}
+
+.lux-pr-desc {
+    font-size: 1.1rem;
+    opacity: 0.7;
+    max-width: 25rem;
+    margin-bottom: 0;
+}
+
+.lux-pr-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: var(--h-color);
+    flex-shrink: 0;
+}
+
+/* Process Massive Timeline */
+.lux-process-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    position: relative;
+}
+
+.lux-pt-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .lux-pt-row {
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+.lux-pt-num {
+    font-size: 8rem;
+    line-height: 1;
+    font-weight: 200;
+    color: rgba(0, 0, 0, 0.05);
+    font-family: var(--f-heading);
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .lux-pt-num {
+        font-size: 12rem;
+    }
+}
+
+.lux-pt-content {
+    padding-left: 2rem;
+    position: relative;
+}
+
+.lux-pt-content::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #fbbf24, transparent);
+}
+
+.lux-pt-title {
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.lux-pt-desc {
+    font-size: 1.2rem;
+    max-width: 32rem;
+    opacity: 0.8;
+}
+
+.lux-stat-hero {
+    position: relative;
+}
+
+.lux-stat-h-val {
+    font-size: 8rem;
+    font-weight: 200;
+    font-family: var(--f-heading);
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    line-height: 1;
+}
+
+@media (min-width: 768px) {
+    .lux-stat-h-val {
+        font-size: 14rem;
+    }
+}
+
+.lux-stat-h-lbl {
+    font-size: 1.5rem;
+    opacity: 0.8;
+    margin-top: 1rem;
+}
+
+/* Value Prop cinematic */
+.lux-value {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0;
+}
+
+.lux-value-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.lux-parallax-img {
+    width: 100%;
+    height: 130%;
+    object-fit: cover;
+    position: absolute;
+    top: -15%;
+    left: 0;
+    filter: saturate(0.8) brightness(0.6);
+}
+
+.lux-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.lux-value-content {
+    padding: 6rem 1.5rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .lux-value-content {
+        padding: 10rem 4rem;
+    }
+}
+
+/* Highlight section */
+.lux-cinematic-img {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.lux-cinematic-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transform: scale(1.05);
+    transition: transform 1s ease;
+}
+
+.lux-cinematic-img:hover img {
+    transform: scale(1);
+}
+
+.lux-mini-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.lux-ms-item {
+    border-left: 2px solid rgba(0, 0, 0, 0.1);
+    padding-left: 1.5rem;
+}
+
+.lux-ms-num {
+    font-family: var(--f-heading);
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 0.2rem;
+    letter-spacing: -0.03em;
+}
+
+.lux-ms-lbl {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Testimonials */
+.lux-test-slider {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 1024px) {
+    .lux-test-slider {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.lux-test-quote-block {
+    position: relative;
+}
+
+.lux-test-text {
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+    .lux-test-text {
+        font-size: 2rem;
+    }
+}
+
+.lux-test-author {
+    display: flex;
+    flex-direction: column;
+}
+
+.lux-test-name {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.lux-test-pos {
+    opacity: 0.5;
+    font-size: 0.9rem;
+}
+
+/* Utils */
+.mt-8 {
+    margin-top: 2rem;
+}
+
+.mt-10 {
+    margin-top: 2.5rem;
+}
+
+.mt-12 {
+    margin-top: 3rem;
+}
+
+.mt-16 {
+    margin-top: 4rem;
+}
+
+.mt-20 {
+    margin-top: 5rem;
+}
+
+.mt-24 {
+    margin-top: 6rem;
+}
+
+.mt-32 {
+    margin-top: 8rem;
+}
+
+.pt-0 {
+    padding-top: 0;
+}
+
+.pb-32 {
+    padding-bottom: 8rem;
+}
+
+.pt-20 {
+    padding-top: 5rem;
+}
+
+.block {
+    display: block;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-white\/80 {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.max-w-xl {
+    max-width: 36rem;
+}
+
+.max-w-2xl {
+    max-width: 42rem;
+}
+
+.leading-relaxed {
+    line-height: 1.625;
+}
+
+.lux-philosophy-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 1024px) {
+    .lux-philosophy-layout {
+        grid-template-columns: 1fr 2fr;
+        gap: 8rem;
+    }
+}
+
+.lux-philosophy-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (min-width: 768px) {
+    .lux-philosophy-item {
+        grid-template-columns: 120px 1fr 80px;
+        align-items: center;
+        gap: 3rem;
+    }
+}
+
+.lux-core-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5rem;
+}
+
+@media (min-width: 768px) {
+    .lux-core-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8rem 4rem;
+    }
+}
+
+.lux-2col-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 768px) {
+    .lux-2col-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6rem;
+    }
+}
+
+.lux-4col-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .lux-4col-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.lux-mt-12 {
+    margin-top: 3rem;
+}
+
+.lux-mt-16 {
+    margin-top: 4rem;
+}
+
+.lux-mt-20 {
+    margin-top: 5rem;
+}
+
+.lux-mt-24 {
+    margin-top: 6rem;
+}
+
+.lux-mb-12 {
+    margin-bottom: 3rem;
+}
+
+.lux-mb-16 {
+    margin-bottom: 4rem;
+}
+
+.lux-mb-20 {
+    margin-bottom: 5rem;
+}
+
+.lux-mb-24 {
+    margin-bottom: 6rem;
+}
+
+.lux-roadmap-card {
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem;
+    transition: all 0.5s ease;
+}
+
+.lux-roadmap-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.relative {
+    position: relative;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.group:hover .group-hover\:scale-110 {
+    transform: scale(1.1);
+}
+
+.transition-transform {
+    transition-property: transform;
+}
+
+.duration-500 {
+    transition-duration: 500ms;
+}
+
+.sticky {
+    position: sticky;
+}
+
+.top-32 {
+    top: 8rem;
+}

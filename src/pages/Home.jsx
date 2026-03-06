@@ -575,7 +575,7 @@ export default function Home() {
                     <div className="lux-stat-hero mt-48 bg-[#0a0a0a] text-white py-24 px-12 md:px-24 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.2)] relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-16 border border-white/10">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_right_center,rgba(249,115,22,0.2),transparent_70%)] pointer-events-none group-hover:scale-110 group-hover:translate-x-10 transition-transform duration-[1.5s]"></div>
                         <div className="flex-1 text-center md:text-left relative z-10">
-                            <h4 className="text-3xl md:text-5xl font-light text-white/90 leading-tight tracking-tight max-w-2xl">Increase in community-led conversions within the first 30 days.</h4>
+                            <h4 className="text-3xl md:text-5xl font-light text-white leading-tight tracking-tight max-w-2xl">Increase in community-led conversions within the first 30 days.</h4>
                         </div>
                         <div className="flex-shrink-0 text-center relative z-10">
                             <div className="lux-stat-h-val text-8xl md:text-[12rem] font-heading font-normal leading-none bg-gradient-to-r from-orange-400 via-pink-500 to-rose-500 text-transparent bg-clip-text group-hover:scale-110 transition-transform duration-700 inline-block drop-shadow-[0_0_30px_rgba(249,115,22,0.5)]">3x</div>

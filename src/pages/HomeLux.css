@@ -20,9 +20,33 @@
     z-index: 10;
 }
 
+/* --- Added Premium Hover for Hero Avatars --- */
+.home-hero-avatar {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home-hero-avatar:hover {
+    transform: translateY(-8px) scale(1.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10 !important;
+}
+
+.home-hero-btn-primary:hover svg,
+.home-hero-btn-secondary:hover svg {
+    transform: scale(1.2) rotate(45deg);
+    color: #fbbf24;
+    transition: all 0.5s ease;
+}
+
 .lux-dark {
     background-color: var(--c-brand);
     color: var(--c-surface);
+    transition: background 1s ease;
+}
+
+.lux-dark:hover {
+    /* Subtle background glow deeping in sections */
+    background-color: #030303;
 }
 
 .lux-dark h1,
@@ -53,6 +77,13 @@
     opacity: 0.7;
     border-bottom: 1px solid currentColor;
     padding-bottom: 0.2rem;
+    transition: all 0.5s ease;
+}
+
+.lux-label:hover {
+    letter-spacing: 0.3em;
+    opacity: 1;
+    color: var(--c-brand);
 }
 
 .lux-heading {
@@ -136,6 +167,42 @@
 .lux-btn-white:hover {
     background: rgba(255, 255, 255, 0.9);
     transform: scale(1.05);
+}
+
+/* --- Premium Button Hover Animations --- */
+.lux-btn-primary,
+.lux-btn-white {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.lux-btn-primary::after,
+.lux-btn-white::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.6s ease;
+    z-index: -1;
+}
+
+.lux-btn-primary:hover::after,
+.lux-btn-white:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.lux-btn-primary:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.lux-btn-white:hover {
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
 }
 
 
@@ -232,6 +299,12 @@
     overflow: hidden;
     position: relative;
     box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.3);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-video-device:hover {
+    transform: rotateX(5deg) scale(1.02);
+    box-shadow: 0 60px 100px -20px rgba(0, 0, 0, 0.4);
 }
 
 .lux-video-device iframe {
@@ -284,6 +357,34 @@
     font-weight: 400;
     margin-bottom: 1rem;
     letter-spacing: -0.02em;
+}
+
+/* --- Added Premium Hover for Why Choose Us items --- */
+.lux-why-item {
+    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+}
+
+.lux-why-item:hover {
+    background: #fff;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.08);
+    transform: scale(1.02);
+}
+
+.lux-why-item:hover .lux-why-icon {
+    background: var(--c-brand);
+    color: #fff;
+    transform: translateY(-20px) scale(1.2) rotate(12deg);
+    box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
+}
+
+.lux-why-item:hover .lux-why-title {
+    color: var(--c-brand);
+    letter-spacing: 0.05em;
 }
 
 /* Product list */
@@ -345,6 +446,46 @@
     border-radius: 50%;
     color: var(--h-color);
     flex-shrink: 0;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* --- Added Premium Hover for Product Rows --- */
+.lux-pr-row {
+    transition: padding 0.8s cubic-bezier(0.16, 1, 0.3, 1), background 0.8s ease;
+}
+
+.lux-pr-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
+    transition: left 0.8s ease;
+}
+
+.lux-pr-row:hover::before {
+    left: 100%;
+}
+
+.lux-pr-row:hover {
+    padding-left: 2.5rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.lux-pr-row:hover .lux-pr-title {
+    letter-spacing: 0.1em;
+    color: #fff;
+    transform: translateX(10px);
+}
+
+.lux-pr-row:hover .lux-pr-icon {
+    transform: scale(1.3) rotate(360deg);
+    background: var(--h-color);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 0 30px var(--h-color);
 }
 
 /* Process Massive Timeline */
@@ -411,6 +552,33 @@
     opacity: 0.8;
 }
 
+/* --- Added Premium Hover for Process Items --- */
+.lux-pt-row {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-pt-row:hover .lux-pt-row>div:first-child .w-40 {
+    transform: scale(1.15) rotate(-5deg);
+    background: #fff;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+    color: var(--c-brand);
+}
+
+.lux-pt-row:hover .lux-pt-row>div:first-child .absolute.w-64 {
+    transform: scale(1.4) rotate(180deg);
+    border-color: var(--c-brand-l);
+    opacity: 0.3;
+}
+
+.lux-pt-row:hover h3 {
+    letter-spacing: -0.01em;
+    transform: scale(1.02);
+}
+
+.lux-pt-row:hover p {
+    color: #000;
+}
+
 .lux-stat-hero {
     position: relative;
 }
@@ -426,6 +594,31 @@
     background-clip: text;
     display: inline-block;
     line-height: 1;
+}
+
+/* --- Added Premium Hover for Stats Cards --- */
+.lux-stat-item {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.lux-stat-item:hover {
+    transform: translateY(-20px) rotateX(10deg) rotateY(5deg);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 30px 60px -12px rgba(0, 0, 0, 0.45),
+        0 18px 36px -18px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 255, 255, 0.02);
+}
+
+.lux-stat-item:hover .lux-stat-val {
+    transform: translateZ(50px);
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.lux-stat-item:hover .lux-stat-info {
+    transform: translateZ(30px);
 }
 
 @media (min-width: 768px) {
@@ -528,6 +721,26 @@
     letter-spacing: 0.05em;
 }
 
+/* --- Added Premium Hover for Mini Stats --- */
+.lux-ms-item {
+    transition: all 0.5s var(--ease-out-expo);
+    cursor: default;
+}
+
+.lux-ms-item:hover {
+    padding-left: 2.5rem;
+    border-left-color: #f97316;
+}
+
+.lux-ms-item:hover .lux-ms-num {
+    background: linear-gradient(135deg, #f97316, #db2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transform: scale(1.1);
+    transform-origin: left;
+}
+
 /* Testimonials */
 .lux-test-slider {
     display: grid;
@@ -572,6 +785,51 @@
 .lux-test-pos {
     opacity: 0.5;
     font-size: 0.9rem;
+}
+
+/* --- Added Premium Hover for Testimonials --- */
+.lux-test-quote-block {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.lux-test-quote-block::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.lux-test-quote-block:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.6);
+}
+
+.lux-test-quote-block:hover::after {
+    opacity: 1;
+    animation: borderBeam 3s linear infinite;
+}
+
+@keyframes borderBeam {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.lux-test-quote-block:hover .lux-test-author {
+    transform: translateX(10px);
 }
 
 /* Utils */
@@ -787,6 +1045,26 @@
 
 .group:hover .group-hover\:scale-110 {
     transform: scale(1.1);
+}
+
+/* --- Added Premium Hover for Marquee Items --- */
+.marquee-item {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: grayscale(1) opacity(0.5);
+}
+
+.marquee-item:hover {
+    filter: grayscale(0) opacity(1);
+    transform: scale(1.2);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.marquee-item .mock-logo svg {
+    transition: transform 0.6s ease;
+}
+
+.marquee-item:hover .mock-logo svg {
+    transform: scale(1.2) rotate(10deg);
 }
 
 .transition-transform {

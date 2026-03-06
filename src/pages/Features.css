@@ -88,6 +88,8 @@
     -webkit-text-fill-color: transparent !important;
     color: transparent !important;
     display: inline-block;
+    padding-right: 0.1em;
+    padding-bottom: 0.1em;
 }
 
 /* Variant: Orange to Amber (hero "One platform.") */

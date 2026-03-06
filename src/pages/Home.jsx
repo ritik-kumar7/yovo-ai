@@ -651,27 +651,74 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* 9. Top Brands Marquee */}
-            <section className="lux-section lux-light py-24 top-brands-section bg-zinc-50 border-t border-black/5">
-                <div className="lux-container text-center">
-                    <span className="lux-label border-black/20 text-black/50">Trusted By Global Leaders</span>
+            {/* 9. Top Brands Marquee - Redesigned Premium Dark Mode */}
+            <section className="lux-section lux-dark py-32 top-brands-section relative bg-[#030303] overflow-hidden border-t border-white/5">
+                {/* Immersive background effects */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] md:w-[60vw] md:h-[60vw] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_60%)] pointer-events-none z-0"></div>
+                <div className="absolute top-0 right-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent blur-[100px] rounded-full mix-blend-screen pointer-events-none z-0"></div>
+                <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-gradient-to-tr from-pink-500/10 via-orange-500/5 to-transparent blur-[100px] rounded-full mix-blend-screen pointer-events-none z-0"></div>
+
+                <div className="lux-container text-center relative z-10 flex flex-col items-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 shadow-[0_0_30px_rgba(255,255,255,0.02)] hover:bg-white/[0.05] transition-colors cursor-default"
+                    >
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399] animate-pulse"></span>
+                        <span className="text-xs font-semibold text-white/70 uppercase tracking-[0.2em]">Global Trust</span>
+                    </motion.div>
+
+                    <motion.h2
+                        initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                        transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-tight leading-tight mb-6"
+                    >
+                        Trusted By <span className="lux-gradient font-serif italic pr-2">Global Leaders</span>
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 1.5, delay: 0.5 }}
+                        viewport={{ once: true }}
+                        className="text-lg md:text-xl text-white/40 max-w-2xl font-light mt-2"
+                    >
+                        Powering the content ecosystem for the world's most innovative brands and disruptive creators.
+                    </motion.p>
                 </div>
-                <div className="marquee-container mt-16 flex overflow-hidden group">
-                    <div className="marquee-content flex gap-16 md:gap-32 items-center px-8 md:px-16 animate-marquee-fast">
-                        {marqueeBrands.map((brand, i) => (
-                            <div key={`brand1-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id} text-3xl md:text-4xl opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer`}>
-                                {brand.node}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="marquee-content flex gap-16 md:gap-32 items-center px-8 md:px-16 animate-marquee-fast" aria-hidden="true">
-                        {marqueeBrands.map((brand, i) => (
-                            <div key={`brand2-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id} text-3xl md:text-4xl opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer`}>
-                                {brand.node}
-                            </div>
-                        ))}
+
+                <div className="marquee-wrapper relative mt-24 max-w-[100vw] overflow-hidden group py-10 z-10">
+                    {/* Gradient fading edges for infinity effect */}
+                    <div className="absolute top-0 left-0 w-32 md:w-64 h-full bg-gradient-to-r from-[#030303] to-transparent z-20 pointer-events-none"></div>
+                    <div className="absolute top-0 right-0 w-32 md:w-64 h-full bg-gradient-to-l from-[#030303] to-transparent z-20 pointer-events-none"></div>
+
+                    {/* Top/bottom subtle borders for the track */}
+                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+
+                    <div className="marquee-container flex">
+                        <div className="marquee-content flex items-center gap-24 md:gap-40 px-12 md:px-20 animate-[scroll_40s_linear_infinite] group-hover:[animation-play-state:paused]">
+                            {marqueeBrands.map((brand, i) => (
+                                <div key={`brand1-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id} text-4xl md:text-5xl cursor-pointer flex-shrink-0`}>
+                                    {brand.node}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="marquee-content flex items-center gap-24 md:gap-40 px-12 md:px-20 animate-[scroll_40s_linear_infinite] group-hover:[animation-play-state:paused]" aria-hidden="true">
+                            {marqueeBrands.map((brand, i) => (
+                                <div key={`brand2-${brand.id}-${i}`} className={`marquee-item marquee-item-${brand.id} text-4xl md:text-5xl cursor-pointer flex-shrink-0`}>
+                                    {brand.node}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
+
+                {/* Bottom Reflection Line */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
             </section>
         </main>
     )

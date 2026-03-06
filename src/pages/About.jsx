@@ -141,18 +141,18 @@ export default function About() {
             });
 
             // ════════ 5. CORE DNA ════════
-            gsap.fromTo('.core-title',
+            gsap.fromTo('.dna-title',
                 { opacity: 0, y: 50, filter: 'blur(10px)' },
-                { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: '.core-title', start: "top 85%" } }
+                { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: "power3.out", stagger: 0.15, scrollTrigger: { trigger: '.dna-header-block', start: "top 85%" } }
             );
 
-            const coreCards = gsap.utils.toArray('.core-card');
+            const coreCards = gsap.utils.toArray('.dna-item');
             gsap.fromTo(coreCards,
-                { y: 150, opacity: 0, scale: 0.85, rotationX: 45 },
+                { y: 100, opacity: 0, rotationX: 20 },
                 {
-                    y: 0, opacity: 1, scale: 1, rotationX: 0,
-                    duration: 1.4, stagger: 0.12, ease: "back.out(1.1)",
-                    scrollTrigger: { trigger: '.core-grid', start: "top 75%" }
+                    y: 0, opacity: 1, rotationX: 0,
+                    duration: 1.4, stagger: 0.15, ease: "back.out(1.1)",
+                    scrollTrigger: { trigger: '.dna-list', start: "top 75%" }
                 }
             );
 
@@ -278,8 +278,9 @@ export default function About() {
                                 <div className="absolute -inset-8 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-2xl rounded-[3rem] pointer-events-none" style={{ background: `radial-gradient(circle at center, ${item.accent}15 0%, transparent 70%)` }}></div>
 
                                 <div className="relative z-10 border-t border-white/10 pt-10 pb-6 transition-all duration-700 group-hover:border-white/40 flex flex-col md:flex-row gap-8 items-start">
-                                    <div className="text-7xl md:text-8xl font-heading font-thin opacity-20 group-hover:opacity-60 transition-all duration-700 w-24 flex-shrink-0" style={{ color: item.accent }}>
-                                        0{i + 1}
+                                    <div className="w-24 flex-shrink-0 flex items-center justify-start opacity-40 group-hover:opacity-100 transition-opacity duration-700" style={{ color: item.accent }}>
+                                        <div className="w-3 h-3 rounded-full bg-current shadow-[0_0_15px_current] group-hover:scale-150 transition-all duration-700"></div>
+                                        <div className="h-[2px] w-12 bg-current ml-2 origin-left scale-x-50 opacity-50 group-hover:opacity-100 group-hover:scale-x-100 transition-all duration-[800ms] ease-out"></div>
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-3xl md:text-4xl font-heading font-light mb-4 text-white group-hover:translate-x-3 transition-transform duration-700">{item.title}</h3>
@@ -297,46 +298,48 @@ export default function About() {
             </section>
 
             {/* ════════════ CORE DNA (Interactive Typography List) ════════════ */}
-            <section className="lux-section lux-light relative bg-[#fafafa] overflow-hidden pt-32 pb-32">
-                <div className="lux-container max-w-7xl mx-auto text-center md:text-left mb-20 md:mb-32 px-6 md:px-16 flex flex-col md:flex-row md:items-end justify-between gap-10 relative z-10 pt-16">
-                    <div className="flex flex-col gap-6">
-                        <span className="lux-label text-black/50 tracking-[0.2em] text-sm font-bold uppercase inline-block self-start border border-black/10 px-6 py-2 rounded-full">Our DNA</span>
-                        <h2 className="text-6xl md:text-8xl lg:text-[7rem] font-heading font-light tracking-tight leading-[0.9] text-black m-0">
-                            Core <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 font-normal italic pr-4">Principles</span>
+            <section className="lux-section lux-light relative bg-[#fafafa] overflow-hidden" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>
+                <div className="lux-container max-w-7xl mx-auto text-center md:text-left mb-16 md:mb-24 px-6 md:px-12 lg:px-16 flex flex-col md:flex-row md:items-end justify-between gap-10 relative z-10 dna-header-block" style={{ paddingTop: '4rem' }}>
+                    <div className="flex flex-col items-center md:items-start gap-4 md:gap-6 w-full md:w-auto">
+                        <span className="lux-label text-black/50 tracking-[0.2em] text-xs md:text-sm font-bold uppercase border border-black/10 px-6 py-2 rounded-full inline-flex dna-title">Our DNA</span>
+                        <h2 className="text-5xl md:text-7xl lg:text-[7rem] font-heading font-light tracking-tight leading-none text-black m-0 flex-wrap overflow-visible dna-title">
+                            Core <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 font-normal italic inline-block pr-6 pb-2">Principles</span>
                         </h2>
                     </div>
-                    <p className="max-w-md text-xl text-black/50 font-light hidden lg:block pb-4 leading-relaxed">
+                    <p className="max-w-md text-lg md:text-xl text-black/50 font-light hidden md:block md:pb-4 leading-relaxed text-left md:text-right dna-title">
                         We don't fit into existing molds. These tenets guide every algorithm we write and every feature we launch.
                     </p>
                 </div>
 
                 <div className="w-full flex flex-col dna-list">
                     {values.map((v, i) => (
-                        <div key={i} className="group relative w-full border-t border-black/10 last:border-b-0 overflow-hidden cursor-crosshair h-auto min-h-[160px] md:min-h-[220px] flex items-center transition-all duration-700">
+                        <div key={i} className="dna-item group relative w-full border-t border-black/10 last:border-b-0 overflow-hidden cursor-crosshair flex flex-col justify-center min-h-[160px] md:min-h-[200px] transition-all duration-700 hover:bg-black/[0.02]">
 
-                            {/* Hover Expansion Background Overlay - Slides in from bottom */}
-                            <div className="absolute inset-0 bg-[#050505] translate-y-full group-hover:translate-y-0 transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] z-0 pointer-events-none"></div>
+                            {/* Soft glowing ambient orb on hover (Light Theme Friendly) */}
+                            <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] scale-50 group-hover:scale-100 opacity-0 group-hover:opacity-20 blur-[100px] transition-all duration-[1200ms] ease-out rounded-full pointer-events-none mix-blend-multiply" style={{ backgroundColor: v.accent }}></div>
 
-                            {/* Colorful glow burst on hover */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 group-hover:w-[120vw] group-hover:h-[120vw] opacity-0 group-hover:opacity-20 blur-3xl transition-all duration-1000 ease-out rounded-full z-[1] pointer-events-none" style={{ backgroundColor: v.accent }}></div>
+                            {/* Animated line sliding across bottom */}
+                            <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-1000 ease-out z-20" style={{ backgroundColor: v.accent }}></div>
 
-                            <div className="lux-container max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between px-6 md:px-16 py-12 gap-8 group-hover:text-white transition-colors duration-500">
+                            <div className="lux-container max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between px-6 md:px-12 lg:px-16 py-10 md:py-12 gap-6 md:gap-8 bg-transparent transition-transform duration-700 group-hover:translate-x-4 md:group-hover:translate-x-8">
 
                                 {/* Left: Number & Title */}
-                                <div className="flex items-center gap-8 md:gap-16 w-full md:w-auto">
-                                    <span className="text-2xl md:text-3xl font-heading font-black text-black/20 group-hover:text-white/40 transition-colors duration-500">0{i + 1}</span>
-                                    <h3 className="text-5xl md:text-7xl lg:text-[5.5rem] font-heading font-light tracking-tighter leading-none m-0 transform group-hover:-translate-y-2 group-hover:translate-x-4 transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)]">
+                                <div className="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                                    <div className="w-6 h-6 md:w-8 md:h-8 border-[2px] border-black/20 group-hover:rotate-180 group-hover:scale-110 group-hover:border-current group-hover:rounded-full transition-all duration-[800ms] ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center" style={{ borderColor: v.accent, color: v.accent }}>
+                                        <div className="w-2 h-2 rounded-full bg-current scale-0 group-hover:scale-100 transition-transform duration-[800ms] delay-100"></div>
+                                    </div>
+                                    <h3 className="text-4xl md:text-5xl lg:text-[5rem] text-black font-heading font-light tracking-tighter leading-none m-0 group-hover:text-black transition-colors duration-500">
                                         {v.title}
                                     </h3>
                                 </div>
 
                                 {/* Right: Icon & Description (Revealed) */}
-                                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 w-full md:w-auto justify-end">
-                                    <p className="text-lg md:text-xl font-light leading-relaxed max-w-sm opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-[800ms] delay-100 ease-[cubic-bezier(0.76,0,0.24,1)] text-white/70">
+                                <div className="flex flex-row items-center gap-6 md:gap-10 w-full md:w-auto md:justify-end mt-4 md:mt-0">
+                                    <p className="text-base md:text-lg lg:text-xl font-light leading-relaxed max-w-xs md:max-w-sm text-black/60 group-hover:text-black/90 transition-colors duration-500">
                                         {v.desc}
                                     </p>
-                                    <div className="w-16 h-16 md:w-24 md:h-24 rounded-full border border-black/10 group-hover:border-white/20 flex items-center justify-center transform scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-[800ms] delay-200 ease-[cubic-bezier(0.76,0,0.24,1)] flex-shrink-0" style={{ color: v.accent }}>
-                                        <div className="scale-[1.5] md:scale-[2]">{v.icon}</div>
+                                    <div className="flex w-16 h-16 md:w-20 md:h-20 rounded-full border border-black/10 group-hover:border-current group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.08)] group-hover:-translate-y-2 items-center justify-center flex-shrink-0 transition-all duration-[700ms] ease-[cubic-bezier(0.4,0,0.2,1)] bg-white/50 backdrop-blur-sm" style={{ color: v.accent }}>
+                                        <div className="scale-[1.2] md:scale-[1.5] group-hover:scale-[1.3] md:group-hover:scale-[1.6] transition-transform duration-[700ms]">{v.icon}</div>
                                     </div>
                                 </div>
                             </div>
@@ -363,9 +366,10 @@ export default function About() {
                         <div key={i} className="group relative w-full border-t border-white/10 last:border-b py-24 md:py-32 flex flex-col md:flex-row items-center cursor-default hover:bg-white/[0.02] transition-colors duration-1000">
 
                             {/* Giant Hollow Number overlay strictly in background */}
-                            <div className="absolute right-[5%] md:left-[5%] top-1/2 -translate-y-1/2 text-[15rem] md:text-[30rem] font-heading font-black leading-none text-transparent stroke-white opacity-[0.03] group-hover:opacity-[0.08] group-hover:-translate-y-[60%] transition-all duration-1000 ease-[cubic-bezier(0.33,1,0.68,1)] select-none pointer-events-none z-0"
-                                style={{ WebkitTextStroke: '2px rgba(255,255,255,1)' }}>
-                                0{i + 1}
+                            <div className="absolute right-[5%] md:left-[5%] top-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 border-[1px] border-white/5 rounded-full group-hover:scale-125 group-hover:border-white/10 group-hover:rotate-90 opacity-20 transition-all duration-[1500ms] ease-out pointer-events-none flex items-center justify-center shadow-[inset_0_0_100px_rgba(255,255,255,0.02)]">
+                                <div className="w-48 h-48 md:w-72 md:h-72 border-[1px] border-white/[0.03] rounded-full rotate-45 group-hover:-rotate-45 transition-transform duration-[2000ms] flex items-center justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-white/50 group-hover:shadow-[0_0_15px_white] transition-all duration-700"></div>
+                                </div>
                             </div>
 
                             <div className="lux-container max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10 px-6 md:px-16">

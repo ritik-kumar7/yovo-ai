@@ -628,14 +628,9 @@ export default function Features() {
                             {/* Content Side */}
                             <div style={{ order: 2 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem' }}>
-                                    <span style={{
-                                        fontFamily: 'var(--f-heading)',
-                                        fontSize: '5rem',
-                                        fontWeight: 200,
-                                        lineHeight: 1,
-                                        color: 'rgba(255,255,255,0.04)',
-                                        letterSpacing: '-0.04em',
-                                    }}>01</span>
+                                    <div className="flex items-center justify-center w-12 h-12 rounded-full border border-blue-400/30 bg-blue-400/10 shrink-0">
+                                        <div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_15px_#60a5fa] animate-pulse-soft"></div>
+                                    </div>
                                     <div style={{ width: '3rem', height: '1px', background: 'rgba(96,165,250,0.4)' }} />
                                 </div>
                                 <h3 style={{
@@ -721,14 +716,9 @@ export default function Features() {
                                 }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '36rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem' }}>
-                                            <span style={{
-                                                fontFamily: 'var(--f-heading)',
-                                                fontSize: '5rem',
-                                                fontWeight: 200,
-                                                lineHeight: 1,
-                                                color: 'rgba(255,255,255,0.04)',
-                                                letterSpacing: '-0.04em',
-                                            }}>02</span>
+                                            <div className="flex items-center justify-center w-12 h-12 border border-orange-500/30 bg-orange-500/10 rotate-45 shrink-0">
+                                                <div className="w-2 h-2 bg-orange-500 shadow-[0_0_15px_#f97316] animate-pulse-soft"></div>
+                                            </div>
                                             <div style={{ width: '3rem', height: '1px', background: 'rgba(249,115,22,0.4)' }} />
                                         </div>
                                         <AudioWaveform size={40} style={{ color: '#f97316', marginBottom: '1.5rem' }} strokeWidth={1} />
@@ -811,14 +801,9 @@ export default function Features() {
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '4rem', marginBottom: '4rem', flexWrap: 'wrap' }}>
                                 <div style={{ flex: '1 1 300px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem' }}>
-                                        <span style={{
-                                            fontFamily: 'var(--f-heading)',
-                                            fontSize: '5rem',
-                                            fontWeight: 200,
-                                            lineHeight: 1,
-                                            color: 'rgba(255,255,255,0.04)',
-                                            letterSpacing: '-0.04em',
-                                        }}>03</span>
+                                        <div className="flex items-center justify-center w-12 h-12 rounded-lg border border-rose-500/30 bg-rose-500/10 shrink-0">
+                                            <div className="w-1 h-3 rounded-full bg-rose-500 shadow-[0_0_15px_#f43f5e] animate-pulse-soft"></div>
+                                        </div>
                                         <div style={{ width: '3rem', height: '1px', background: 'rgba(244,63,94,0.4)' }} />
                                     </div>
                                     <BrainCircuit size={40} style={{ color: '#f43f5e', marginBottom: '1.5rem' }} strokeWidth={1} />
@@ -949,8 +934,14 @@ export default function Features() {
                         {ugcFeatures.map((item, i) => (
                             <div key={i} className="ugc-row relative w-full py-12 lg:py-16 border-b border-white/10 group flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
                                 <div className="flex items-center gap-10 lg:gap-16 relative z-10 w-full lg:w-auto mt-2">
-                                    <span className="text-4xl lg:text-5xl font-heading font-black text-white/5 group-hover:text-orange-500 transition-colors duration-700">0{i + 1}</span>
-                                    <h3 className="text-3xl lg:text-5xl font-heading font-light tracking-tight group-hover:translate-x-4 transition-transform duration-700 origin-left">{item.title}</h3>
+                                    <div className="flex items-center justify-center w-10 h-10 md:w-16 md:h-16 relative text-white/10 group-hover:text-orange-500 transition-colors duration-700 shrink-0">
+                                        <span className="absolute top-0 left-0 w-2 h-2 md:w-3 md:h-3 border-t border-l border-current transition-all duration-700 group-hover:-translate-x-1 group-hover:-translate-y-1"></span>
+                                        <span className="absolute top-0 right-0 w-2 h-2 md:w-3 md:h-3 border-t border-r border-current transition-all duration-700 group-hover:translate-x-1 group-hover:-translate-y-1"></span>
+                                        <span className="absolute bottom-0 left-0 w-2 h-2 md:w-3 md:h-3 border-b border-l border-current transition-all duration-700 group-hover:-translate-x-1 group-hover:translate-y-1"></span>
+                                        <span className="absolute bottom-0 right-0 w-2 h-2 md:w-3 md:h-3 border-b border-r border-current transition-all duration-700 group-hover:translate-x-1 group-hover:translate-y-1"></span>
+                                        <div className="w-2 h-2 rounded-full bg-current opacity-30 group-hover:opacity-100 group-hover:shadow-[0_0_15px_current] transition-all duration-700"></div>
+                                    </div>
+                                    <h3 className="text-3xl lg:text-5xl font-heading font-light tracking-tight group-hover:translate-x-4 md:group-hover:translate-x-8 transition-transform duration-700 origin-left">{item.title}</h3>
                                 </div>
                                 <p className="text-xl lg:text-2xl text-white/40 font-light leading-relaxed max-w-2xl lg:text-right group-hover:text-white/80 transition-colors duration-700 relative z-10">
                                     {item.desc}

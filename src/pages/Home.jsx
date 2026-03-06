@@ -476,10 +476,9 @@ export default function Home() {
                     <div className="lux-why-track flex absolute top-0 left-0 h-full items-center" style={{ width: `${features.length * 100}vw` }}>
                         {features.map((f, i) => (
                             <div key={i} className="w-screen h-full flex flex-col items-center justify-center relative px-6 md:px-20 pb-16 md:pb-24">
-                                {/* Giant Background Number */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[35vh] md:text-[45vh] font-heading font-black text-black/[0.03] select-none pointer-events-none leading-none tracking-tighter mix-blend-multiply">
-                                    0{i + 1}
-                                </div>
+                                {/* Abstract Geometric Background */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vh] h-[40vh] md:w-[50vh] md:h-[50vh] border border-black/[0.03] rounded-[30%] rotate-45 group-hover:rotate-90 group-hover:scale-125 transition-all duration-[2000ms] select-none pointer-events-none mix-blend-multiply"></div>
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vh] h-[55vh] md:w-[70vh] md:h-[70vh] border border-black/[0.02] rounded-full group-hover:scale-110 transition-transform duration-[1500ms] select-none pointer-events-none mix-blend-multiply"></div>
 
                                 <div className="relative z-10 max-w-3xl text-center group">
                                     <div className="w-20 h-20 md:w-28 md:h-28 mx-auto rounded-full bg-white shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex justify-center items-center mb-6 md:mb-10 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-all duration-1000 ease-out cursor-crosshair border border-black/5" style={{ color: f.color }}>
@@ -495,7 +494,7 @@ export default function Home() {
             </section>
 
             {/* 4. Product Ecosystem (Immersive List) */}
-            <section className="lux-section lux-dark lux-product bg-[#050505] min-h-screen py-32 flex items-center relative overflow-hidden">
+            <section className="lux-section lux-dark lux-product bg-[#050505] min-h-screen py-32 flex items-center relative overflow-hidden" style={{ paddingTop: '8rem', paddingBottom: '8rem' }}>
                 {/* Abstract moving gradient orb behind */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-pink-600/5 blur-[120px] rounded-full mix-blend-screen pointer-events-none"></div>
 
@@ -516,9 +515,9 @@ export default function Home() {
                                     {item.title.split(' ')[0]}
                                 </div>
 
-                                <div className="w-16 flex-shrink-0 text-white/10 group-hover:text-white/40 transition-colors font-heading text-4xl font-thin tracking-widest flex flex-col items-center">
-                                    0{i + 1}
-                                    <div className="w-[1px] h-12 bg-white/10 mt-4 group-hover:bg-white/30 group-hover:h-24 transition-all duration-700"></div>
+                                <div className="w-16 flex-shrink-0 text-white/10 group-hover:text-current transition-colors flex flex-col items-center translate-y-2">
+                                    <div className="w-3 h-3 rotate-45 border border-current bg-transparent group-hover:bg-current transition-all duration-700 shadow-[0_0_0_current] group-hover:shadow-[0_0_15px_current]"></div>
+                                    <div className="w-[1px] h-16 bg-white/10 mt-4 group-hover:bg-current group-hover:h-32 transition-all duration-700"></div>
                                 </div>
 
                                 <div className="flex-1 flex flex-col pr-8 z-10">
@@ -548,10 +547,10 @@ export default function Home() {
                         {howItWorks.map((step, i) => (
                             <div key={i} className={`lux-pt-row relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-32 w-full group ${i % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
 
-                                {/* Massive Number & Icon Overlay */}
+                                {/* Abstract Background & Icon Overlay */}
                                 <div className="flex-1 flex justify-center items-center relative w-full h-[300px]">
-                                    <div className="absolute text-[16rem] md:text-[22rem] font-heading font-normal text-black/[0.03] group-hover:text-black/[0.08] transition-colors duration-1000 z-0 select-none tracking-tighter shrink-0 flex items-center justify-center">
-                                        {step.step}
+                                    <div className="absolute w-64 h-64 md:w-80 md:h-80 border-[0.5px] border-black/5 rounded-[40%] group-hover:rounded-full group-hover:border-black/10 group-hover:scale-110 transition-all duration-[2000ms] animate-[spin_20s_linear_infinite] z-0 select-none pointer-events-none mix-blend-multiply flex items-center justify-center">
+                                        <div className="w-56 h-56 md:w-72 md:h-72 border-[0.5px] border-black/5 rounded-full rotate-45 group-hover:-rotate-45 transition-transform duration-[3000ms]"></div>
                                     </div>
                                     <div className="w-40 h-40 rounded-full bg-white/80 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.06)] border border-white flex items-center justify-center text-black/30 group-hover:text-orange-500 group-hover:scale-125 transition-all duration-700 relative z-10 mx-auto">
                                         <div className="transform scale-[2.5]">{step.icon}</div>
@@ -561,9 +560,9 @@ export default function Home() {
                                 {/* Content Block without boundaries */}
                                 <div className={`flex-1 flex flex-col relative z-10 ${i % 2 !== 0 ? 'items-end text-right md:pr-16' : 'items-start text-left md:pl-16'}`}>
                                     <div className="flex items-center gap-4 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-700">
-                                        {i % 2 !== 0 && <span className="text-orange-500 font-heading tracking-[0.2em] uppercase text-sm">Phase {step.step}</span>}
+                                        {i % 2 !== 0 && <span className="bg-orange-500 shadow-[0_0_15px_#f97316] w-2 h-2 rounded-full block"></span>}
                                         <div className="w-16 h-[1px] bg-orange-500"></div>
-                                        {i % 2 === 0 && <span className="text-orange-500 font-heading tracking-[0.2em] uppercase text-sm">Phase {step.step}</span>}
+                                        {i % 2 === 0 && <span className="bg-orange-500 shadow-[0_0_15px_#f97316] w-2 h-2 rounded-full block"></span>}
                                     </div>
                                     <h3 className="text-5xl md:text-7xl font-light mb-8 text-black group-hover:scale-[1.05] transition-transform duration-700 tracking-tight origin-left">{step.title}</h3>
                                     <p className="text-black/50 text-xl md:text-2xl leading-relaxed max-w-lg group-hover:text-black/80 transition-colors duration-700 font-light">{step.desc}</p>

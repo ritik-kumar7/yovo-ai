@@ -11,6 +11,8 @@ import Features from './pages/Features'
 import ForBrands from './pages/ForBrands'
 import ForCreators from './pages/ForCreators'
 import Contact from './pages/Contact'
+import Preloader from './components/Preloader'
+import { useState } from 'react'
 
 
 
@@ -81,14 +83,20 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <BrowserRouter>
-      <SmoothScroll>
-        <FloatingParticles />
-        <Navbar />
-        <AnimatedRoutes />
-        <Footer />
-      </SmoothScroll>
+      {isLoading ? (
+        <Preloader onComplete={() => setIsLoading(false)} />
+      ) : (
+        <SmoothScroll>
+          <FloatingParticles />
+          <Navbar />
+          <AnimatedRoutes />
+          <Footer />
+        </SmoothScroll>
+      )}
     </BrowserRouter>
   )
 }

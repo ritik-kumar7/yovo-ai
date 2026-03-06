@@ -958,3 +958,87 @@
 .features-main::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.35);
 }
+
+/* ═══════════════════════════════════════════
+   PREMIUM HOVER EFFECTS — Features Page
+   ═══════════════════════════════════════════ */
+
+/* ─── 1. Arsenal Feature Image Wrappers ─── */
+.feat-card-img-1>div:nth-child(2) {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feat-card-img-1:hover>div:nth-child(2) {
+    box-shadow: 0 40px 80px -10px rgba(0, 0, 0, 0.9), 0 0 0 2px rgba(96, 165, 250, 0.3) inset;
+    transform: translateY(-8px);
+}
+
+.feat-voice-bg {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feat-voice-bg:hover {
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) inset, 0 30px 60px rgba(0, 0, 0, 0.8);
+    transform: scale(1.02);
+}
+
+/* ─── 2. UGC Rows: Neon Underline Sweep ─── */
+.ugc-row {
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ugc-row::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ec4899, #f97316, transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    z-index: 5;
+}
+
+.ugc-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+    transform: translateX(10px);
+}
+
+.ugc-row:hover::before {
+    transform: scaleX(1);
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+}
+
+.ugc-row .ugc-icon-wrap {
+    transition: all 0.5s ease;
+}
+
+.ugc-row:hover .ugc-icon-wrap {
+    background: rgba(236, 72, 153, 0.1);
+    color: #ec4899;
+    transform: scale(1.1) rotate(10deg);
+}
+
+/* ─── 3. Comparison Metrics: Glowing Progress ─── */
+.comp-row {
+    transition: all 0.4s ease;
+}
+
+.comp-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* ─── 4. Performance Card: Deep Glow ─── */
+.features-main .comp-table-wrap+div>div {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.features-main .comp-table-wrap+div>div:hover {
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(96, 165, 250, 0.2) inset !important;
+    transform: translateY(-8px);
+}

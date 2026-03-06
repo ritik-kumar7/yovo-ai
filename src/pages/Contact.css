@@ -518,3 +518,118 @@
     transform: rotate(180deg);
     color: #f97316;
 }
+
+/* ═══════════════════════════════════════════
+   PREMIUM HOVER EFFECTS — Contact Page
+   ═══════════════════════════════════════════ */
+
+/* ─── 1. Info Cards: Orb Tracking Glow ─── */
+.con-info-card {
+    position: relative;
+    z-index: 1;
+}
+
+.con-info-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 2.1rem;
+    background: radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(249, 115, 22, 0.4), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.con-info-card:hover::before {
+    opacity: 1;
+}
+
+/* ─── 2. Form Inputs: Underline Grow ─── */
+.con-input-group {
+    position: relative;
+}
+
+.con-input-group::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    background: #f97316;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.con-input-group:focus-within::after {
+    transform: scaleX(1);
+}
+
+/* ─── 3. Quick Links: Sliding Background ─── */
+.con-quick-link {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: 1px solid transparent;
+}
+
+.con-quick-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.05), transparent);
+    transition: none;
+    z-index: -1;
+}
+
+.con-quick-link:hover::before {
+    animation: quickLinkSweep 0.8s ease forwards;
+}
+
+@keyframes quickLinkSweep {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.con-quick-link:hover {
+    border-color: rgba(249, 115, 22, 0.2);
+    box-shadow: 0 10px 20px rgba(249, 115, 22, 0.05);
+}
+
+/* ─── 4. FAQ Outline Glow ─── */
+.con-faq-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.con-faq-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: #f97316;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.con-faq-item:hover::before {
+    width: 4px;
+}
+
+.con-faq-item--open::before {
+    width: 4px;
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
+}

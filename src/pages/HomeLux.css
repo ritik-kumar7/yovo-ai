@@ -313,79 +313,317 @@
     object-fit: cover;
 }
 
-/* Why Choose Us - Immersive Full Width layout */
-.lux-center {
-    max-width: 50rem;
-    margin: 0 auto;
-}
+/* ═══════════════════════════════════════════
+   WHY CHOOSE US — Bento Showcase
+   ═══════════════════════════════════════════ */
 
-.lux-why-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
+.wcu-section {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fafaf9 0%, #f3ede6 100%);
+    padding: 7rem 1.5rem 5rem;
 }
 
 @media (min-width: 768px) {
-    .lux-why-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .wcu-section {
+        padding: 10rem 2rem 8rem;
     }
 }
 
-.lux-why-item {
-    padding: 3rem 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    transition: border-color 0.5s ease;
+/* Header */
+.wcu-header {
+    text-align: center;
+    margin-bottom: 4rem;
 }
 
-.lux-why-item:hover {
-    border-color: #fbbf24;
+@media (min-width: 768px) {
+    .wcu-header {
+        margin-bottom: 5rem;
+    }
 }
 
-.lux-why-icon {
+.wcu-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.35rem;
     margin-bottom: 2rem;
-    background: rgba(0, 0, 0, 0.03);
-    width: 4rem;
-    height: 4rem;
+}
+
+.wcu-heading {
+    font-family: var(--f-heading);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    color: #0a0a0a;
+    margin-bottom: 0;
+}
+
+.wcu-heading-accent {
+    font-style: italic;
+    font-weight: 400;
+    background: linear-gradient(135deg, #e11d48 0%, #f97316 50%, #eab308 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ─── Bento Grid ─── */
+.wcu-bento {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .wcu-bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 1.5rem;
+    }
+}
+
+/* ─── Panel Base ─── */
+.wcu-panel {
+    position: relative;
+    border-radius: 1.75rem;
+    overflow: hidden;
+    cursor: default;
+    min-height: 280px;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wcu-panel:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.12);
+}
+
+/* Hero panel — spans 2 columns on desktop */
+.wcu-panel--hero {
+    min-height: 340px;
+}
+
+@media (min-width: 768px) {
+    .wcu-panel--hero {
+        grid-column: 1 / -1;
+        min-height: 380px;
+    }
+}
+
+.wcu-panel--sm {
+    min-height: 300px;
+}
+
+@media (min-width: 768px) {
+    .wcu-panel--sm {
+        min-height: 340px;
+    }
+}
+
+/* Panel Background */
+.wcu-panel-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg,
+            rgba(255, 255, 255, 0.95) 0%,
+            rgba(255, 255, 255, 0.7) 60%,
+            rgba(255, 255, 255, 0.5) 100%);
+    backdrop-filter: blur(30px) saturate(120%);
+    -webkit-backdrop-filter: blur(30px) saturate(120%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 1.75rem;
+    transition: all 0.6s ease;
+    z-index: 0;
+}
+
+.wcu-panel:hover .wcu-panel-bg {
+    border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+    background: linear-gradient(160deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0.85) 60%,
+            color-mix(in srgb, var(--accent) 4%, white) 100%);
+}
+
+/* ─── Massive Metric ─── */
+.wcu-panel-metric {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 0.5rem;
+    font-family: var(--f-heading);
+    font-weight: 200;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    color: rgba(0, 0, 0, 0.04);
+    user-select: none;
+    z-index: 1;
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 7rem;
+}
+
+@media (min-width: 768px) {
+    .wcu-panel-metric {
+        font-size: 10rem;
+    }
+
+    .wcu-panel--hero .wcu-panel-metric {
+        font-size: 16rem;
+        right: 3rem;
+        bottom: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .wcu-panel--hero .wcu-panel-metric {
+        font-size: 20rem;
+    }
+}
+
+.wcu-panel:hover .wcu-panel-metric {
+    color: var(--accent);
+    opacity: 0.1;
+    transform: scale(1.06) translateX(-8px);
+    filter: blur(0.5px);
+}
+
+/* ─── Panel Body (Content) ─── */
+.wcu-panel-body {
+    position: relative;
+    z-index: 2;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+}
+
+@media (min-width: 768px) {
+    .wcu-panel-body {
+        padding: 3rem 2.5rem;
+    }
+
+    .wcu-panel--hero .wcu-panel-body {
+        padding: 3.5rem 3rem;
+        max-width: 60%;
+    }
+}
+
+/* Icon orb */
+.wcu-panel-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-}
-
-.lux-why-title {
-    font-size: 1.75rem;
-    font-weight: 400;
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
-}
-
-/* --- Added Premium Hover for Why Choose Us items --- */
-.lux-why-item {
-    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        0 0 0 4px color-mix(in srgb, var(--accent) 6%, transparent);
+    margin-bottom: 1.5rem;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
-    z-index: 1;
 }
 
-.lux-why-item:hover {
-    background: #fff;
-    padding-top: 4rem;
-    padding-bottom: 2rem;
-    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.08);
-    transform: scale(1.02);
+.wcu-panel-icon::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1.5px dashed color-mix(in srgb, var(--accent) 20%, transparent);
+    opacity: 0;
+    transform: scale(0.7) rotate(0deg);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.lux-why-item:hover .lux-why-icon {
-    background: var(--c-brand);
-    color: #fff;
-    transform: translateY(-20px) scale(1.2) rotate(12deg);
-    box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
+.wcu-panel:hover .wcu-panel-icon {
+    transform: scale(1.12) rotate(6deg);
+    box-shadow:
+        0 8px 24px color-mix(in srgb, var(--accent) 15%, transparent),
+        0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
-.lux-why-item:hover .lux-why-title {
-    color: var(--c-brand);
-    letter-spacing: 0.05em;
+.wcu-panel:hover .wcu-panel-icon::before {
+    opacity: 1;
+    transform: scale(1.3) rotate(90deg);
 }
+
+/* Title */
+.wcu-panel-title {
+    font-family: var(--f-heading);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #0a0a0a;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.15;
+    transition: all 0.5s ease;
+}
+
+@media (min-width: 768px) {
+    .wcu-panel-title {
+        font-size: 1.75rem;
+    }
+
+    .wcu-panel--hero .wcu-panel-title {
+        font-size: 2.2rem;
+    }
+}
+
+.wcu-panel:hover .wcu-panel-title {
+    color: color-mix(in srgb, var(--accent) 80%, #333);
+}
+
+/* Description */
+.wcu-panel-desc {
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 1.7;
+    max-width: 26rem;
+    transition: color 0.5s ease;
+}
+
+.wcu-panel:hover .wcu-panel-desc {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Accent Strip ─── */
+.wcu-panel-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 0;
+    border-radius: 0 4px 0 0;
+    background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 40%, transparent));
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 3;
+}
+
+.wcu-panel:hover .wcu-panel-strip {
+    width: 100%;
+}
+
 
 /* Product list */
 .lux-product-list {
@@ -1243,4 +1481,411 @@
     .lg\:gap-16 {
         gap: 4rem !important;
     }
+}
+
+/* ═══════════════════════════════════════════
+   PREMIUM HOVER EFFECTS — Per Section
+   ═══════════════════════════════════════════ */
+
+/* ─── 1. Stats Section: Neon Pulse Border ─── */
+.lux-stat-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.lux-stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.03),
+            transparent);
+    transition: none;
+}
+
+.lux-stat-item:hover::before {
+    animation: shimmerSweep 1.5s ease forwards;
+}
+
+@keyframes shimmerSweep {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.lux-stat-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    border: 1px solid transparent;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.lux-stat-item:hover::after {
+    border-color: var(--h-color, rgba(255, 255, 255, 0.1));
+    box-shadow:
+        inset 0 0 30px rgba(255, 255, 255, 0.02),
+        0 0 20px color-mix(in srgb, var(--h-color, #fff) 15%, transparent);
+}
+
+.lux-stat-item .lux-stat-val {
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-stat-item:hover .lux-stat-val {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 25px currentColor);
+}
+
+.lux-stat-item .lux-stat-lbl {
+    transition: all 0.5s ease;
+}
+
+.lux-stat-item:hover .lux-stat-lbl {
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.05em;
+}
+
+/* ─── 2. Video Section: Slide-in Dot Trail ─── */
+.lux-feature-stack>div {
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0.75rem 0;
+}
+
+.lux-feature-stack>div:hover {
+    transform: translateX(12px);
+    color: #0a0a0a !important;
+}
+
+.lux-feature-stack>div>.w-2 {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-feature-stack>div:hover>.w-2 {
+    transform: scale(2.5);
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+}
+
+.lux-video-device {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-video-device:hover {
+    transform: scale(1.02) rotate(-0.5deg);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ─── 4. Product Ecosystem: Flame Trail Sweep ─── */
+.lux-pr-row {
+    position: relative;
+}
+
+.lux-pr-row::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--h-color, #f97316), transparent);
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-pr-row:hover::after {
+    width: 100%;
+}
+
+.lux-pr-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, var(--h-color, #f97316), transparent);
+    transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+}
+
+.lux-pr-row:hover::before {
+    height: 100%;
+    opacity: 0.6;
+    box-shadow: 0 0 15px var(--h-color, #f97316);
+}
+
+/* ─── 5. How It Works: Magnetic Pulse Ring ─── */
+.lux-pt-row .w-40.h-40 {
+    position: relative;
+}
+
+.lux-pt-row .w-40.h-40::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-pt-row:hover .w-40.h-40::before {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+    border-color: rgba(249, 115, 22, 0.3);
+}
+
+.lux-pt-row .w-40.h-40::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    opacity: 0;
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-pt-row:hover .w-40.h-40::after {
+    opacity: 1;
+    border-color: rgba(249, 115, 22, 0.1);
+    transform: scale(1.35);
+    box-shadow: 0 0 40px rgba(249, 115, 22, 0.08);
+}
+
+/* Process stat hero card */
+.lux-stat-hero {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-stat-hero:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 60px 120px rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.lux-stat-hero .lux-stat-h-val {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-stat-hero:hover .lux-stat-h-val {
+    filter: drop-shadow(0 0 50px rgba(249, 115, 22, 0.6));
+}
+
+/* ─── 7. Feature Highlight: Diamond Shimmer ─── */
+.lux-ms-item {
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.lux-ms-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, #f97316, #ec4899);
+    transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 2px;
+}
+
+.lux-ms-item:hover::before {
+    height: 100%;
+}
+
+.lux-ms-item:hover {
+    transform: translateX(8px);
+    border-left-color: transparent !important;
+}
+
+.lux-ms-item .lux-ms-num {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-ms-item:hover .lux-ms-num {
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.3));
+    transform: scale(1.05);
+}
+
+.lux-cinematic-img {
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-cinematic-img:hover {
+    transform: perspective(1000px) rotateY(-2deg) rotateX(1deg);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ─── 8. Testimonials: Aurora Gradient Border ─── */
+.lux-test-quote-block {
+    position: relative;
+    overflow: hidden;
+}
+
+.lux-test-quote-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    padding: 1px;
+    background: linear-gradient(var(--aurora-angle, 0deg),
+            transparent 0%,
+            rgba(249, 115, 22, 0.3) 25%,
+            rgba(236, 72, 153, 0.3) 50%,
+            rgba(99, 102, 241, 0.2) 75%,
+            transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+.lux-test-quote-block:hover::before {
+    opacity: 1;
+    animation: auroraRotate 3s linear infinite;
+}
+
+@keyframes auroraRotate {
+    0% {
+        --aurora-angle: 0deg;
+    }
+
+    100% {
+        --aurora-angle: 360deg;
+    }
+}
+
+/* Fallback for browsers without @property */
+@supports not (background: paint(something)) {
+    .lux-test-quote-block:hover::before {
+        background: linear-gradient(135deg,
+                transparent 0%,
+                rgba(249, 115, 22, 0.25) 25%,
+                rgba(236, 72, 153, 0.2) 50%,
+                rgba(99, 102, 241, 0.15) 75%,
+                transparent 100%);
+        opacity: 1;
+    }
+}
+
+.lux-test-quote-block::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #f97316, #ec4899, #6366f1);
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-test-quote-block:hover::after {
+    width: 100%;
+}
+
+.lux-test-quote-block .lux-test-text {
+    transition: all 0.5s ease;
+}
+
+.lux-test-quote-block:hover .lux-test-text {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Testimonial avatar glow */
+.lux-test-author>div:first-child {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lux-test-quote-block:hover .lux-test-author>div:first-child {
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+    border-color: rgba(249, 115, 22, 0.3) !important;
+    transform: scale(1.1);
+}
+
+/* ─── 9. Brand Marquee: Holographic 3D Tilt ─── */
+.marquee-item {
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marquee-item:hover {
+    transform: translateY(-6px) scale(1.1);
+    filter: brightness(1.5) drop-shadow(0 8px 20px rgba(255, 255, 255, 0.08));
+}
+
+.marquee-item::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #f97316, #ec4899, #6366f1, #f97316);
+    background-size: 200% 100%;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marquee-item:hover::after {
+    width: 80%;
+    animation: holographicShine 1.5s linear infinite;
+}
+
+@keyframes holographicShine {
+    0% {
+        background-position: 0% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ─── Value Prop Section: Button Aura ─── */
+.lux-btn-white {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.lux-btn-white::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #f97316, #ec4899, #6366f1);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.5s ease;
+    filter: blur(8px);
+}
+
+.lux-btn-white:hover::before {
+    opacity: 0.4;
+}
+
+.lux-btn-white:hover {
+    box-shadow: 0 10px 40px rgba(249, 115, 22, 0.2) !important;
 }

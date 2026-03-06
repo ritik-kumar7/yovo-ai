@@ -667,3 +667,130 @@
     pointer-events: none;
     z-index: 0;
 }
+
+/* ═══════════════════════════════════════════
+   PREMIUM HOVER EFFECTS — For Creators Page
+   ═══════════════════════════════════════════ */
+
+/* ─── 1. Lifestyle Stats: Golden Glow ─── */
+.fbc-lifestyle__stat {
+    transition: all 0.4s ease;
+}
+
+.fbc-lifestyle__stat:hover .fbc-stat-num {
+    text-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+    transform: scale(1.05) translateY(-5px);
+}
+
+/* ─── 2. Benefit Cards: Golden Border Wrap ─── */
+.fbc-benefit-card {
+    position: relative;
+    z-index: 1;
+}
+
+.fbc-benefit-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 2rem;
+    padding: 2px;
+    background: linear-gradient(135deg, transparent, #fbbf24, #f97316, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.fbc-benefit-card:hover::before {
+    opacity: 1;
+}
+
+.fbc-benefit-icon-wrap {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fbc-benefit-card:hover .fbc-benefit-icon-wrap {
+    transform: scale(1.15) rotate(10deg);
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+    box-shadow: 0 10px 25px rgba(251, 191, 36, 0.2);
+}
+
+/* ─── 3. Tools Menu: Sweeping Accent ─── */
+.fbc-tool-item {
+    transition: transform 0.4s ease;
+}
+
+.fbc-tool-item:hover {
+    transform: translateX(10px);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+}
+
+.fbc-tool-item:hover .fbc-tool-item-title::after {
+    width: 40px;
+}
+
+.fbc-tool-item-title {
+    position: relative;
+    display: inline-block;
+}
+
+.fbc-tool-item-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #fbbf24;
+    transition: width 0.4s ease;
+}
+
+/* ─── 4. Tiers Stack: 3D Pop ─── */
+.fbc-tier-card {
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+}
+
+.fbc-tier-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(251, 191, 36, 0.15) inset;
+}
+
+/* ─── 5. Community Float Stats: Glass Pulse ─── */
+.fbc-float-stat {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fbc-float-stat:hover {
+    transform: scale(1.05) translateY(-5px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(251, 191, 36, 0.2);
+}
+
+/* ─── 6. Story Cards: Golden Edge Light ─── */
+.fbc-story-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.fbc-story-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(251, 191, 36, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.fbc-story-card:hover::after {
+    opacity: 1;
+}

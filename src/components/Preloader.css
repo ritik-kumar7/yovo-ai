@@ -1,0 +1,149 @@
+.preloader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #050505;
+    z-index: 9999;
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        visibility 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.preloader-container.entering {
+    opacity: 1;
+    visibility: visible;
+}
+
+.preloader-container.exiting {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.preloader-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: contentEntry 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.preloader-logo-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    animation: logoScaleOut 0.8s cubic-bezier(0.85, 0, 0.15, 1) forwards 2.3s;
+}
+
+.logo-bw {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Soft slightly visible base shape, similar to a track/bar background */
+    filter: invert(100%) opacity(10%);
+}
+
+.color-reveal-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Start completely hidden from the top */
+    clip-path: inset(0 0 100% 0);
+    /* Smooth, pleasant easing for the fill, like a progress bar */
+    animation: fillFromTop 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.4s;
+    filter: drop-shadow(0px 0px 8px rgba(255, 140, 0, 0.5));
+}
+
+.logo-color {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Glowing laser line that sweeps down exactly with the reveal */
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: -10%;
+    width: 120%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #FFD700, #F27121, transparent);
+    box-shadow: 0 0 15px 4px rgba(242, 113, 33, 0.6);
+    opacity: 0;
+    transform: translateY(0);
+    border-radius: 50%;
+    animation: scanLineDown 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards 0.5s;
+    mix-blend-mode: screen;
+}
+
+/* Animations */
+@keyframes contentEntry {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fillFromTop {
+    0% {
+        clip-path: inset(0 0 100% 0);
+    }
+
+    100% {
+        clip-path: inset(0 0 0% 0);
+    }
+}
+
+@keyframes scanLineDown {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    95% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(180px);
+        /* Move completely to bottom based on wrapper height */
+        opacity: 0;
+    }
+}
+
+@keyframes logoScaleOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+
+    40% {
+        transform: scale(1.1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 0;
+        filter: blur(4px);
+    }
+}

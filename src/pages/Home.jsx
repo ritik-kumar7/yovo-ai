@@ -24,9 +24,9 @@ const stats = [
 ]
 
 const features = [
-    { icon: <Rocket size={26} />, title: '100x Organic Reach', desc: 'AI-optimized UGC strategies that outperform traditional ads by putting real voices at the center.', color: '#f73ce1ff' },
-    { icon: <Timer size={26} />, title: '80% Faster Content', desc: 'Generate, refine, and publish studio-quality content in minutes — not weeks.', color: '#ff671cff' },
-    { icon: <LineChart size={26} />, title: '60% Better Engagement', desc: 'Authentic UGC + AI-optimized formats that audiences actually trust and share.', color: '#ff0000ff' },
+    { icon: <Rocket size={26} />, metric: '100x', title: 'Organic Reach', desc: 'AI-optimized UGC strategies that outperform traditional ads by putting real voices at the center.', color: '#f73ce1ff' },
+    { icon: <Timer size={26} />, metric: '80%', title: 'Faster Content', desc: 'Generate, refine, and publish studio-quality content in minutes — not weeks.', color: '#ff671cff' },
+    { icon: <LineChart size={26} />, metric: '60%', title: 'Better Engagement', desc: 'Authentic UGC + AI-optimized formats that audiences actually trust and share.', color: '#ff0000ff' },
 ]
 
 const howItWorks = [
@@ -159,25 +159,11 @@ export default function Home() {
                 { clipPath: 'inset(0% 0% 0% 0% round 24px)', scale: 1, duration: 2, ease: "power3.inOut", scrollTrigger: { trigger: '.lux-video', start: "top 70%" } }
             );
 
-            // 3. Why Choose Us - Immersive Horizontal Scroll
+            // 3. Why Choose Us - Premium Reveal
             gsap.fromTo('.why-hdr',
                 { opacity: 0, y: -50, filter: 'blur(10px)' },
-                { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: '.lux-why-wrapper', start: "top 80%" } }
+                { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: '.wcu-section', start: "top 80%" } }
             );
-
-            const luxWhyContainer = document.querySelector('.lux-why-track');
-            if (luxWhyContainer) {
-                gsap.to('.lux-why-track', {
-                    xPercent: -100 * (3 - 1) / 3, // Since there are 3 items, container is 300% wide. Move by -66.66% to reach last item.
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: '.lux-why-wrapper',
-                        pin: true,
-                        scrub: 1,
-                        end: "+=2500" // 2500px scroll duration for a premium luxurious feel
-                    }
-                });
-            }
 
             // 4. Product Ecosystem - Horizontal Translation / Sticky right cards
             gsap.fromTo('.pr-hdr',
@@ -418,7 +404,7 @@ export default function Home() {
                 </div>
                 <div className="lux-stats-grid mt-24 gap-8">
                     {stats.map((stat, i) => (
-                        <div key={i} className="lux-stat-item relative group bg-[#0a0a0a] border border-white/5 rounded-3xl p-12 hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-all duration-500">
+                        <div key={i} className="lux-stat-item relative group bg-[#0a0a0a] border border-white/5 rounded-3xl p-12 hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-all duration-500" style={{ '--h-color': stat.color }}>
                             {/* Glow accent */}
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: stat.color, boxShadow: `0 0 20px ${stat.color}` }}></div>
                             <div className="lux-stat-val text-7xl font-light font-heading mb-6 tracking-tighter" style={{ color: stat.color }}>{stat.number}</div>
@@ -463,32 +449,95 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* 3. Why Choose Us (Horizontal Pinning Premium Architecture) */}
-            <section className="lux-why-wrapper bg-[#fafafa] overflow-hidden h-screen flex flex-col">
-                {/* Header Section (Static flow) */}
-                <div className="why-hdr text-center pt-20 md:pt-28 pb-4 flex-shrink-0 w-full z-20 relative">
-                    <span className="lux-label border-black/20 text-black/50 tracking-[0.2em] bg-white/50 backdrop-blur-md px-6 py-2 rounded-full inline-block mb-3 text-xs md:text-sm">Why Choose Us</span>
-                    <h2 className="lux-heading leading-tight text-4xl md:text-5xl lg:text-6xl">The Power of<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 to-zinc-400">AI-Driven UGC</span></h2>
-                </div>
+            {/* 3. Why Choose Us — Bento Showcase */}
+            <section className="wcu-section" id="why-choose-us">
+                <div className="lux-container relative z-10">
+                    {/* Header */}
+                    <div className="why-hdr wcu-header">
+                        <motion.span
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            viewport={{ once: true }}
+                            className="wcu-label"
+                        >Why Choose Us</motion.span>
 
-                {/* Horizontal Track Section (Takes remaining space) */}
-                <div className="relative flex-1 w-full flex items-center">
-                    <div className="lux-why-track flex absolute top-0 left-0 h-full items-center" style={{ width: `${features.length * 100}vw` }}>
-                        {features.map((f, i) => (
-                            <div key={i} className="w-screen h-full flex flex-col items-center justify-center relative px-6 md:px-20 pb-16 md:pb-24">
-                                {/* Abstract Geometric Background */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vh] h-[40vh] md:w-[50vh] md:h-[50vh] border border-black/[0.03] rounded-[30%] rotate-45 group-hover:rotate-90 group-hover:scale-125 transition-all duration-[2000ms] select-none pointer-events-none mix-blend-multiply"></div>
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vh] h-[55vh] md:w-[70vh] md:h-[70vh] border border-black/[0.02] rounded-full group-hover:scale-110 transition-transform duration-[1500ms] select-none pointer-events-none mix-blend-multiply"></div>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 50, filter: 'blur(12px)' }}
+                            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                            viewport={{ once: true }}
+                            className="wcu-heading"
+                        >
+                            The Power of<br />
+                            <span className="wcu-heading-accent">AI-Driven UGC</span>
+                        </motion.h2>
+                    </div>
 
-                                <div className="relative z-10 max-w-3xl text-center group">
-                                    <div className="w-20 h-20 md:w-28 md:h-28 mx-auto rounded-full bg-white shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex justify-center items-center mb-6 md:mb-10 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.12)] transition-all duration-1000 ease-out cursor-crosshair border border-black/5" style={{ color: f.color }}>
-                                        <div className="transform scale-[1.3] md:scale-[1.8] group-hover:scale-[2] group-hover:rotate-12 transition-transform duration-1000 ease-out">{f.icon}</div>
-                                    </div>
-                                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-heading font-light text-black mb-4 tracking-tight leading-tight transition-colors duration-700 drop-shadow-sm px-4">{f.title}</h3>
-                                    <p className="text-base md:text-lg lg:text-xl text-black/50 font-light leading-relaxed group-hover:text-black/80 transition-colors duration-700 max-w-2xl mx-auto px-4 max-h-[100px] md:max-h-full overflow-hidden text-ellipsis">{f.desc}</p>
+                    {/* Bento Grid */}
+                    <div className="wcu-bento">
+                        {/* Panel 1 — Hero (large) */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 60, scale: 0.97 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            className="wcu-panel wcu-panel--hero group"
+                            style={{ '--accent': features[0].color }}
+                        >
+                            <div className="wcu-panel-bg"></div>
+                            <div className="wcu-panel-metric">{features[0].metric}</div>
+                            <div className="wcu-panel-body">
+                                <div className="wcu-panel-icon" style={{ color: features[0].color }}>
+                                    {features[0].icon}
                                 </div>
+                                <h3 className="wcu-panel-title">{features[0].title}</h3>
+                                <p className="wcu-panel-desc">{features[0].desc}</p>
                             </div>
-                        ))}
+                            <div className="wcu-panel-strip"></div>
+                        </motion.div>
+
+                        {/* Panel 2 */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 60, scale: 0.97 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            className="wcu-panel wcu-panel--sm group"
+                            style={{ '--accent': features[1].color }}
+                        >
+                            <div className="wcu-panel-bg"></div>
+                            <div className="wcu-panel-metric">{features[1].metric}</div>
+                            <div className="wcu-panel-body">
+                                <div className="wcu-panel-icon" style={{ color: features[1].color }}>
+                                    {features[1].icon}
+                                </div>
+                                <h3 className="wcu-panel-title">{features[1].title}</h3>
+                                <p className="wcu-panel-desc">{features[1].desc}</p>
+                            </div>
+                            <div className="wcu-panel-strip"></div>
+                        </motion.div>
+
+                        {/* Panel 3 */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 60, scale: 0.97 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            className="wcu-panel wcu-panel--sm group"
+                            style={{ '--accent': features[2].color }}
+                        >
+                            <div className="wcu-panel-bg"></div>
+                            <div className="wcu-panel-metric">{features[2].metric}</div>
+                            <div className="wcu-panel-body">
+                                <div className="wcu-panel-icon" style={{ color: features[2].color }}>
+                                    {features[2].icon}
+                                </div>
+                                <h3 className="wcu-panel-title">{features[2].title}</h3>
+                                <p className="wcu-panel-desc">{features[2].desc}</p>
+                            </div>
+                            <div className="wcu-panel-strip"></div>
+                        </motion.div>
                     </div>
                 </div>
             </section>

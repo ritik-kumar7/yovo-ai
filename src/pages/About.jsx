@@ -366,10 +366,8 @@ export default function About() {
                         <div key={i} className="group relative w-full border-t border-white/10 last:border-b py-24 md:py-32 flex flex-col md:flex-row items-center cursor-default hover:bg-white/[0.02] transition-colors duration-1000">
 
                             {/* Giant Hollow Number overlay strictly in background */}
-                            <div className="absolute right-[5%] md:left-[5%] top-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 border-[1px] border-white/5 rounded-full group-hover:scale-125 group-hover:border-white/10 group-hover:rotate-90 opacity-20 transition-all duration-[1500ms] ease-out pointer-events-none flex items-center justify-center shadow-[inset_0_0_100px_rgba(255,255,255,0.02)]">
-                                <div className="w-48 h-48 md:w-72 md:h-72 border-[1px] border-white/[0.03] rounded-full rotate-45 group-hover:-rotate-45 transition-transform duration-[2000ms] flex items-center justify-center">
-                                    <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-white/50 group-hover:shadow-[0_0_15px_white] transition-all duration-700"></div>
-                                </div>
+                            <div className="absolute right-[5%] md:left-[5%] top-1/2 -translate-y-1/2 font-heading font-black text-[15rem] md:text-[25rem] leading-none opacity-15 transition-all duration-1000 group-hover:opacity-30 group-hover:scale-110 pointer-events-none text-transparent" style={{ WebkitTextStroke: '4px rgba(255,255,255,0.4)' }}>
+                                0{i + 1}
                             </div>
 
                             <div className="lux-container max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10 px-6 md:px-16">

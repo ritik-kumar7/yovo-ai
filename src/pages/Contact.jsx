@@ -12,7 +12,7 @@ import handleOnline from '../assets/images/handleOnline.jpg'
 gsap.registerPlugin(ScrollTrigger)
 
 const contactInfo = [
-    { icon: <MapPin size={28} />, label: 'Headquarters', value: 'S-04, D-53, Sector 2, Noida, UP, India', href: null },
+    { icon: <MapPin size={28} />, label: 'Headquarters', value: 'Ground floor, C-116, C Block, Sector 2, Noida, Uttar Pradesh 201301', href: null },
     { icon: <Mail size={28} />, label: 'Direct Inquiries', value: 'contact@yovoai.com', href: 'mailto:contact@yovoai.com' },
     { icon: <Phone size={28} />, label: 'Global Support', value: '+91 814754 0362', href: 'tel:+918147540362' },
 ]

@@ -150,7 +150,7 @@ npm run preview
 
 - **Email**: [contact@yovoai.com](mailto:contact@yovoai.com)
 - **Phone**: [+91 8147540362](tel:+918147540362)
-- **Address**: S-04, D-53, Sector 2, Noida, UP, India
+- **Address**: Ground floor, C-116, C Block, Sector 2, Noida, Uttar Pradesh 201301
 - **YouTube**: [@YovoAIofficial](https://www.youtube.com/@YovoAIofficial)
 
 ---

@@ -148,7 +148,7 @@ export default function Footer() {
                         <ul className="footer-links">
                             <li className="footer-contact-item">
                                 <MapPin size={15} className="footer-contact-icon" />
-                                <span>S-04, D-53, Sector 2, Noida, UP, India</span>
+                                <span>Ground floor, C-116, C Block, Sector 2, Noida, Uttar Pradesh 201301</span>
                             </li>
                             <li className="footer-contact-item">
                                 <Mail size={15} className="footer-contact-icon" />

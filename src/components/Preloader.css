@@ -55,10 +55,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* Start completely hidden from the top */
-    clip-path: inset(0 0 100% 0);
-    /* Smooth, pleasant easing for the fill, like a progress bar */
-    animation: fillFromTop 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.4s;
+    /* Start fully hidden — 4 bands all collapsed */
+    clip-path: polygon(
+            /* Band 1 (0–25%): collapsed at top edge */
+            0% 0%, 100% 0%, 100% 0%, 0% 0%,
+            /* Band 2 (25–50%): collapsed at bottom edge */
+            0% 50%, 100% 50%, 100% 50%, 0% 50%,
+            /* Band 3 (50–75%): collapsed at top edge */
+            0% 50%, 100% 50%, 100% 50%, 0% 50%,
+            /* Band 4 (75–100%): collapsed at bottom edge */
+            0% 100%, 100% 100%, 100% 100%, 0% 100%);
+    animation: fillAlternating 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.4s;
     filter: drop-shadow(0px 0px 8px rgba(255, 140, 0, 0.5));
 }
 
@@ -97,13 +104,55 @@
     }
 }
 
-@keyframes fillFromTop {
+/*
+  Alternating-direction fill:
+  4 horizontal bands, each a rectangle in the polygon.
+  - Band 1 (top 25%): grows DOWNWARD from top
+  - Band 2 (25–50%): grows UPWARD from 50% line
+  - Band 3 (50–75%): grows DOWNWARD from 50% line
+  - Band 4 (bottom 25%): grows UPWARD from bottom
+  Staggered timing gives a wave-like feel.
+*/
+@keyframes fillAlternating {
+
+    /* All bands collapsed */
     0% {
-        clip-path: inset(0 0 100% 0);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%,
+                0% 50%, 100% 50%, 100% 50%, 0% 50%,
+                0% 50%, 100% 50%, 100% 50%, 0% 50%,
+                0% 100%, 100% 100%, 100% 100%, 0% 100%);
     }
 
+    /* Band 1 starts opening downward, Band 4 starts opening upward */
+    25% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 15%, 0% 15%,
+                0% 50%, 100% 50%, 100% 50%, 0% 50%,
+                0% 50%, 100% 50%, 100% 50%, 0% 50%,
+                0% 88%, 100% 88%, 100% 100%, 0% 100%);
+    }
+
+    /* Band 1 nearly full, Band 2 & 3 start opening, Band 4 growing */
+    50% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 22%, 0% 22%,
+                0% 35%, 100% 35%, 100% 50%, 0% 50%,
+                0% 50%, 100% 50%, 100% 65%, 0% 65%,
+                0% 80%, 100% 80%, 100% 100%, 0% 100%);
+    }
+
+    /* All bands almost touching */
+    75% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 25%, 0% 25%,
+                0% 26%, 100% 26%, 100% 50%, 0% 50%,
+                0% 50%, 100% 50%, 100% 74%, 0% 74%,
+                0% 75%, 100% 75%, 100% 100%, 0% 100%);
+    }
+
+    /* Fully revealed — all bands merge into full coverage */
     100% {
-        clip-path: inset(0 0 0% 0);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 25%, 0% 25%,
+                0% 25%, 100% 25%, 100% 50%, 0% 50%,
+                0% 50%, 100% 50%, 100% 75%, 0% 75%,
+                0% 75%, 100% 75%, 100% 100%, 0% 100%);
     }
 }
 
